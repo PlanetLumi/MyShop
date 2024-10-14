@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class BackDoorClient
 {
-   public static void main (String args[])
+   public static void main (String[] args)
    {
      String stockURL = args.length < 1     // URL of stock RW
                      ? Names.STOCK_RW      //  default  location
