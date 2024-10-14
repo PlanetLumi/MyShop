@@ -6,8 +6,7 @@ import clients.packing.PackingView;
  * The Packing Controller
  */
 
-public class PackingController
-{
+public class PackingController {
     private PackingModel model = null;
     private PackingView  view  = null;
     /**
@@ -15,8 +14,7 @@ public class PackingController
      * @param model The model
      * @param view  The view from which the interaction came
      */
-    public PackingController( PackingModel model, PackingView view )
-    {
+    public PackingController( PackingModel model, PackingView view ) {
         this.view  = view;
         this.model = model;
     }
@@ -24,10 +22,8 @@ public class PackingController
     /**
      * Picked interaction from view
      */
-    public void doPacked()
-    {
+    public void doPacked() {
         model.doPacked();
     }
-
 }
 

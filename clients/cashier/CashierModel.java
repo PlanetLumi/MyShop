@@ -10,8 +10,7 @@ import java.util.Observable;
 /**
  * Implements the Model of the cashier client
  */
-public class CashierModel extends Observable
-{
+public class CashierModel extends Observable {
     private enum State { process, checked }
 
     private State       theState   = State.process;   // Current state
@@ -28,14 +27,11 @@ public class CashierModel extends Observable
      * @param mf The factory to create the connection objects
      */
 
-    public CashierModel(MiddleFactory mf)
-    {
-        try                                           //
-        {
+    public CashierModel(MiddleFactory mf) {
+        try {
             theStock = mf.makeStockReadWriter();        // Database access
             theOrder = mf.makeOrderProcessing();        // Process order
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             DEBUG.error("CashierModel.constructor\n%s", e.getMessage() );
         }
         theState   = State.process;                  // Current state
@@ -45,8 +41,7 @@ public class CashierModel extends Observable
      * Get the Basket of products
      * @return basket
      */
-    public Basket getBasket()
-    {
+    public Basket getBasket() {
         return theBasket;
     }
 
@@ -54,19 +49,17 @@ public class CashierModel extends Observable
      * Check if the product is in Stock
      * @param productNum The product number
      */
-    public void doCheck(String productNum )
-    {
+    public void doCheck(String productNum ) {
         String theAction = "";
         theState  = State.process;                  // State process
         pn  = productNum.trim();                    // Product no.
         int    amount  = 1;                         //  & quantity
-        try
-        {
-            if ( theStock.exists( pn ) )              // Stock Exists?
-            {                                         // T
+        try {
+            if ( theStock.exists( pn ) ) {            // Stock Exists?
+                                                      // T
                 Product pr = theStock.getDetails(pn);   //  Get details
-                if ( pr.getQuantity() >= amount )       //  In stock?
-                {                                       //  T
+                if ( pr.getQuantity() >= amount ) {     //  In stock?
+                                                        //  T
                     theAction =                           //   Display
                             String.format( "%s : %7.2f (%2d) ", //
                                     pr.getDescription(),              //    description
@@ -83,8 +76,7 @@ public class CashierModel extends Observable
                 theAction =                             //  Unknown
                         "Unknown product number " + pn;       //  product no.
             }
-        } catch( StockException e )
-        {
+        } catch( StockException e ) {
             DEBUG.error( "%s\n%s",
                     "CashierModel.doCheck", e.getMessage() );
             theAction = e.getMessage();
@@ -95,22 +87,20 @@ public class CashierModel extends Observable
     /**
      * Buy the product
      */
-    public void doBuy()
-    {
+    public void doBuy() {
         String theAction = "";
         int    amount  = 1;                         //  & quantity
-        try
-        {
-            if ( theState != State.checked )          // Not checked
-            {                                         //  with customer
+        try {
+            if ( theState != State.checked ) {        // Not checked
+                                                      //  with customer
                 theAction = "please check its availablity";
             } else {
                 boolean stockBought =                   // Buy
                         theStock.buyStock(                    //  however
                                 theProduct.getProductNum(),         //  may fail
                                 theProduct.getQuantity() );         //
-                if ( stockBought )                      // Stock bought
-                {                                       // T
+                if ( stockBought ) {                    // Stock bought
+                                                        // T
                     makeBasketIfReq();                    //  new Basket ?
                     theBasket.add( theProduct );          //  Add to bought
                     theAction = "Purchased " +            //    details
@@ -119,8 +109,7 @@ public class CashierModel extends Observable
                     theAction = "!!! Not in stock";       //  Now no stock
                 }
             }
-        } catch( StockException e )
-        {
+        } catch( StockException e ) {
             DEBUG.error( "%s\n%s",
                     "CashierModel.doBuy", e.getMessage() );
             theAction = e.getMessage();
@@ -132,23 +121,19 @@ public class CashierModel extends Observable
     /**
      * Customer pays for the contents of the basket
      */
-    public void doBought()
-    {
+    public void doBought() {
         String theAction = "";
         int    amount  = 1;                       //  & quantity
-        try
-        {
-            if ( theBasket != null &&
-                    theBasket.size() >= 1 )            // items > 1
-            {                                       // T
+        try {
+            if ( theBasket != null && theBasket.size() >= 1 ) { // items > 1
+                                                    // T
                 theOrder.newOrder( theBasket );       //  Process order
                 theBasket = null;                     //  reset
             }                                       //
             theAction = "Start New Order";            // New order
             theState = State.process;               // All Done
             theBasket = null;
-        } catch( OrderException e )
-        {
+        } catch( OrderException e ) {
             DEBUG.error( "%s\n%s",
                     "CashierModel.doCancel", e.getMessage() );
             theAction = e.getMessage();
@@ -161,25 +146,20 @@ public class CashierModel extends Observable
      * ask for update of view callled at start of day
      * or after system reset
      */
-    public void askForUpdate()
-    {
+    public void askForUpdate() {
         setChanged(); notifyObservers("Welcome");
     }
 
     /**
      * make a Basket when required
      */
-    private void makeBasketIfReq()
-    {
-        if ( theBasket == null )
-        {
-            try
-            {
+    private void makeBasketIfReq() {
+        if ( theBasket == null ) {
+            try {
                 int uon   = theOrder.uniqueNumber();     // Unique order num.
                 theBasket = makeBasket();                //  basket list
                 theBasket.setOrderNum( uon );            // Add an order number
-            } catch ( OrderException e )
-            {
+            } catch ( OrderException e ) {
                 DEBUG.error( "Comms failure\n" +
                         "CashierModel.makeBasket()\n%s", e.getMessage() );
             }
@@ -190,8 +170,7 @@ public class CashierModel extends Observable
      * return an instance of a new Basket
      * @return an instance of a new Basket
      */
-    protected Basket makeBasket()
-    {
+    protected Basket makeBasket() {
         return new Basket();
     }
 }

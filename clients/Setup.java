@@ -12,8 +12,7 @@ import java.util.ArrayList;
  * @version 3.0 Derby
  */
 
-class Setup
-{
+class Setup {
     private static String[] sqlStatements = {
 
 //  " SQL code to set up database tables",
@@ -64,32 +63,26 @@ class Setup
 
     };
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Connection theCon    = null;      // Connection to database
         DBAccess   dbDriver  = null;
         DBAccessFactory.setAction("Create");
         System.out.println("Setup CatShop database of stock items");
-        try
-        {
+        try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
             theCon  = DriverManager.getConnection
                     ( dbDriver.urlOfDatabase(),
                             dbDriver.username(),
                             dbDriver.password() );
-        }
-        catch ( SQLException e )
-        {
+        } catch ( SQLException e ) {
             System.err.println( "Problem with connection to " +
                     dbDriver.urlOfDatabase() );
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState:     " + e.getSQLState());
             System.out.println("VendorError:  " + e.getErrorCode());
             System.exit( -1 );
-        }
-        catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             System.err.println("Can not load JDBC/ODBC driver.");
             System.exit( -1 );
         }
@@ -102,13 +95,10 @@ class Setup
         }
 
         // execute SQL commands to create table, insert data
-        for ( String sqlStatement : sqlStatements )
-        {
-            try
-            {
+        for ( String sqlStatement : sqlStatements ) {
+            try {
                 System.out.println( sqlStatement );
-                switch ( sqlStatement.charAt(0) )
-                {
+                switch ( sqlStatement.charAt(0) ) {
                     case '/' :
                         System.out.println("------------------------------");
                         break;
@@ -138,8 +128,7 @@ class Setup
                         stmt.execute(sqlStatement);
                 }
                 //System.out.println();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println("problems with SQL sent to " +
                         dbDriver.urlOfDatabase() +
                         "\n" + sqlStatement + "\n" + e.getMessage());
@@ -148,8 +137,7 @@ class Setup
 
         try {
             theCon.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("problems with close " +
                     ": "+e.getMessage());
         }
@@ -157,10 +145,8 @@ class Setup
     }
 
 
-    private static void query( Statement stmt, String url, String stm )
-    {
-        try
-        {
+    private static void query( Statement stmt, String url, String stm ) {
+        try {
             ResultSet res = stmt.executeQuery( stm );
 
             ArrayList<String> names = new ArrayList<>(10);
@@ -168,24 +154,20 @@ class Setup
             ResultSetMetaData md = res.getMetaData();
             int cols = md.getColumnCount();
 
-            for ( int j=1; j<=cols; j++ )
-            {
+            for ( int j=1; j<=cols; j++ ) {
                 String name = md.getColumnName(j);
                 System.out.printf( "%-14.14s ", name );
                 names.add( name );
             }
             System.out.println();
 
-            for ( int j=1; j<=cols; j++ )
-            {
+            for ( int j=1; j<=cols; j++ ) {
                 System.out.printf( "%-14.14s ",  md.getColumnTypeName(j)  );
             }
             System.out.println();
 
-            while ( res.next() )
-            {
-                for ( int j=0; j<cols; j++ )
-                {
+            while ( res.next() ) {
+                for ( int j=0; j<cols; j++ ) {
                     String name = names.get(j);
                     System.out.printf( "%-14.14s ", res.getString( name )  );
                 }
@@ -193,21 +175,16 @@ class Setup
             }
 
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("problems with SQL sent to "+url+
                     "\n" + e.getMessage());
         }
     }
 
-    private static String m( int len, String s )
-    {
-        if ( s.length() >= len )
-        {
+    private static String m( int len, String s ) {
+        if ( s.length() >= len ) {
             return s.substring( 0, len-1 ) + " ";
-        }
-        else
-        {
+        } else {
             StringBuilder res = new StringBuilder( len );
             res.append( s );
             for ( int i = s.length(); i<len; i++ )
@@ -215,5 +192,4 @@ class Setup
             return res.toString();
         }
     }
-
 }

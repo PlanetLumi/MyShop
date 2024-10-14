@@ -12,8 +12,7 @@ import javax.swing.*;
  */
 
 
-public class CashierClient
-{
+public class CashierClient {
    public static void main (String[] args)
    {
      String stockURL = args.length < 1     // URL of stock RW

@@ -14,8 +14,7 @@ import java.util.Observer;
 
  */
 
-public class PackingView implements Observer
-{
+public class PackingView implements Observer {
     private static final String PACKED = "Packed";
 
     private static final int H = 300;       // Height of window pixels
@@ -38,13 +37,10 @@ public class PackingView implements Observer
      * @param x     x-cordinate of position of window on screen
      * @param y     y-cordinate of position of window on screen
      */
-    public PackingView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-    {
-        try                                           //
-        {
+    public PackingView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y ) {
+        try {                                         //
             theOrder = mf.makeOrderProcessing();        // Process order
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             System.out.println("Exception: " + e.getMessage() );
         }
         Container cp         = rpc.getContentPane();    // Content Pane
@@ -76,8 +72,7 @@ public class PackingView implements Observer
         rootWindow.setVisible( true );                  // Make visible
     }
 
-    public void setController( PackingController c )
-    {
+    public void setController( PackingController c ) {
         cont = c;
     }
 
@@ -87,20 +82,17 @@ public class PackingView implements Observer
      * @param arg      Specific args
      */
     @Override
-    public void update( Observable modelC, Object arg )
-    {
+    public void update( Observable modelC, Object arg ) {
         PackingModel model  = (PackingModel) modelC;
         String        message = (String) arg;
         theAction.setText( message );
 
         Basket basket =  model.getBasket();
-        if ( basket != null )
-        {
+        if ( basket != null ) {
             theOutput.setText( basket.getDetails() );
         } else {
             theOutput.setText("");
         }
     }
-
 }
 

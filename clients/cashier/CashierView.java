@@ -14,8 +14,7 @@ import java.util.Observer;
 /**
  * View of the model 
  */
-public class CashierView implements Observer
-{
+public class CashierView implements Observer {
     private static final int H = 300;       // Height of window pixels
     private static final int W = 400;       // Width  of window pixels
 
@@ -44,14 +43,11 @@ public class CashierView implements Observer
      * @param y     y-coordinate of position of window on screen
      */
 
-    public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
-    {
-        try                                           //
-        {
+    public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  ) {
+        try {
             theStock = mf.makeStockReadWriter();        // Database access
             theOrder = mf.makeOrderProcessing();        // Process order
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             System.out.println("Exception: " + e.getMessage() );
         }
         Container cp         = rpc.getContentPane();    // Content Pane
@@ -103,8 +99,7 @@ public class CashierView implements Observer
      * @param c   The controller
      */
 
-    public void setController( CashierController c )
-    {
+    public void setController( CashierController c ) {
         cont = c;
     }
 
@@ -114,18 +109,17 @@ public class CashierView implements Observer
      * @param arg      Specific args
      */
     @Override
-    public void update( Observable modelC, Object arg )
-    {
+    public void update( Observable modelC, Object arg ) {
         CashierModel model  = (CashierModel) modelC;
         String      message = (String) arg;
         theAction.setText( message );
         Basket basket = model.getBasket();
-        if ( basket == null )
-            theOutput.setText( "Customers order" );
-        else
-            theOutput.setText( basket.getDetails() );
+        if ( basket == null ) {
+            theOutput.setText("Customers order");
+        } else {
+            theOutput.setText(basket.getDetails());
+        }
 
         theInput.requestFocus();               // Focus is here
     }
-
 }

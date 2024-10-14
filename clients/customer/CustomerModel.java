@@ -14,8 +14,7 @@ import java.util.Observable;
 /**
  * Implements the Model of the customer client
  */
-public class CustomerModel extends Observable
-{
+public class CustomerModel extends Observable {
     private Product     theProduct = null;          // Current product
     private Basket      theBasket  = null;          // Bought items
 
@@ -29,13 +28,10 @@ public class CustomerModel extends Observable
      * Construct the model of the Customer
      * @param mf The factory to create the connection objects
      */
-    public CustomerModel(MiddleFactory mf)
-    {
-        try                                          //
-        {
+    public CustomerModel(MiddleFactory mf) {
+        try {
             theStock = mf.makeStockReader();           // Database access
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             DEBUG.error("CustomerModel.constructor\n" +
                     "Database not created?\n%s\n", e.getMessage() );
         }
@@ -46,8 +42,7 @@ public class CustomerModel extends Observable
      * return the Basket of products
      * @return the basket of products
      */
-    public Basket getBasket()
-    {
+    public Basket getBasket() {
         return theBasket;
     }
 
@@ -55,19 +50,17 @@ public class CustomerModel extends Observable
      * Check if the product is in Stock
      * @param productNum The product number
      */
-    public void doCheck(String productNum )
-    {
+    public void doCheck(String productNum ) {
         theBasket.clear();                          // Clear s. list
         String theAction = "";
         pn  = productNum.trim();                    // Product no.
         int    amount  = 1;                         //  & quantity
-        try
-        {
-            if ( theStock.exists( pn ) )              // Stock Exists?
-            {                                         // T
+        try {
+            if ( theStock.exists( pn ) ) {            // Stock Exists?
+                                                      // T
                 Product pr = theStock.getDetails( pn ); //  Product
-                if ( pr.getQuantity() >= amount )       //  In stock?
-                {
+                if ( pr.getQuantity() >= amount ) {     //  In stock?
+
                     theAction =                           //   Display
                             String.format( "%s : %7.2f (%2d) ", //
                                     pr.getDescription(),              //    description
@@ -85,8 +78,7 @@ public class CustomerModel extends Observable
                 theAction =                             //  Inform Unknown
                         "Unknown product number " + pn;       //  product number
             }
-        } catch( StockException e )
-        {
+        } catch( StockException e ) {
             DEBUG.error("CustomerClient.doCheck()\n%s",
                     e.getMessage() );
         }
@@ -96,8 +88,7 @@ public class CustomerModel extends Observable
     /**
      * Clear the products from the basket
      */
-    public void doClear()
-    {
+    public void doClear() {
         String theAction = "";
         theBasket.clear();                        // Clear s. list
         theAction = "Enter Product Number";       // Set display
@@ -109,16 +100,14 @@ public class CustomerModel extends Observable
      * Return a picture of the product
      * @return An instance of an ImageIcon
      */
-    public ImageIcon getPicture()
-    {
+    public ImageIcon getPicture() {
         return thePic;
     }
 
     /**
      * ask for update of view callled at start
      */
-    private void askForUpdate()
-    {
+    private void askForUpdate() {
         setChanged(); notifyObservers("START only"); // Notify
     }
 
@@ -126,8 +115,7 @@ public class CustomerModel extends Observable
      * Make a new Basket
      * @return an instance of a new Basket
      */
-    protected Basket makeBasket()
-    {
+    protected Basket makeBasket() {
         return new Basket();
     }
 }

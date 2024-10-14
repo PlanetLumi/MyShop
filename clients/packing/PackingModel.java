@@ -14,8 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Implements the Model of the warehouse packing client
  */
-public class PackingModel extends Observable
-{
+public class PackingModel extends Observable {
     private AtomicReference<Basket> theBasket = new AtomicReference<>();
 
     private StockReadWriter theStock   = null;
@@ -28,14 +27,11 @@ public class PackingModel extends Observable
      * Construct the model of the warehouse Packing client
      * @param mf The factory to create the connection objects
      */
-    public PackingModel(MiddleFactory mf)
-    {
-        try                                     //
-        {
+    public PackingModel(MiddleFactory mf) {
+        try {
             theStock = mf.makeStockReadWriter();  // Database access
             theOrder = mf.makeOrderProcessing();  // Process order
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             DEBUG.error("CustomerModel.constructor\n%s", e.getMessage() );
         }
 
@@ -49,28 +45,24 @@ public class PackingModel extends Observable
      * Semaphore used to only allow 1 order
      * to be packed at once by this person
      */
-    class StateOf
-    {
+    class StateOf {
         private boolean held = false;
 
         /**
          * Claim exclusive access
          * @return true if claimed else false
          */
-        public synchronized boolean claim()   // Semaphore
-        {
+        public synchronized boolean claim() { // Semaphore
             return held ? false : (held = true);
         }
 
         /**
          * Free the lock
          */
-        public synchronized void free()     //
-        {
+        public synchronized void free() {   //
             assert held;
             held = false;
         }
-
     }
 
     /**
@@ -78,19 +70,15 @@ public class PackingModel extends Observable
      * is a new order waiting to be packed and we have
      * nothing to do.
      */
-    private void checkForNewOrder()
-    {
-        while ( true )
-        {
-            try
-            {
+    private void checkForNewOrder() {
+        while ( true ) {
+            try {
                 boolean isFree = worker.claim();     // Are we free
-                if ( isFree )                        // T
-                {                                    //
+                if ( isFree ) {                      // T
                     Basket sb =
                             theOrder.getOrderToPack();       //  Order
-                    if ( sb != null )                  //  Order to pack
-                    {                                  //  T
+                    if ( sb != null ) {                //  Order to pack
+                                                       //  T
                         theBasket.set(sb);               //   Working on
                         theAction = "Bought Receipt";     //   what to do
                     } else {                           //  F
@@ -100,8 +88,7 @@ public class PackingModel extends Observable
                     setChanged(); notifyObservers(theAction);
                 }                                    //
                 Thread.sleep(2000);                  // idle
-            } catch ( Exception e )
-            {
+            } catch ( Exception e ) {
                 DEBUG.error("%s\n%s",                // Eek!
                         "BackGroundCheck.run()\n%s",
                         e.getMessage() );
@@ -114,22 +101,18 @@ public class PackingModel extends Observable
      * Return the Basket of products that are to be picked
      * @return the basket
      */
-    public Basket getBasket()
-    {
+    public Basket getBasket() {
         return theBasket.get();
     }
 
     /**
      * Process a packed Order
      */
-    public void doPacked()
-    {
+    public void doPacked() {
         String theAction = "";
-        try
-        {
+        try {
             Basket basket =  theBasket.get();       // Basket being packed
-            if ( basket != null )                   // T
-            {
+            if ( basket != null ) {                 // T
                 theBasket.set( null );                //  packed
                 int no = basket.getOrderNum();        //  Order no
                 theOrder.informOrderPacked( no );     //  Tell system
@@ -140,8 +123,8 @@ public class PackingModel extends Observable
             }
             setChanged(); notifyObservers(theAction);
         }
-        catch ( OrderException e )                // Error
-        {                                         //  Of course
+        catch ( OrderException e ) {              // Error
+                                                  //  Of course
             DEBUG.error( "ReceiptModel.doOk()\n%s\n",//  should not
                     e.getMessage() ); //  happen
         }

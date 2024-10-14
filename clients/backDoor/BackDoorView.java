@@ -12,8 +12,7 @@ import java.util.Observer;
  * Implements the Customer view.
  */
 
-public class BackDoorView implements Observer
-{
+public class BackDoorView implements Observer {
     private static final String RESTOCK  = "Add";
     private static final String CLEAR    = "Clear";
     private static final String QUERY    = "Query";
@@ -41,13 +40,10 @@ public class BackDoorView implements Observer
      * @param x     x-cordinate of position of window on screen
      * @param y     y-cordinate of position of window on screen
      */
-    public BackDoorView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-    {
-        try                                             //
-        {
+    public BackDoorView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y ) {
+        try {
             theStock = mf.makeStockReadWriter();          // Database access
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             System.out.println("Exception: " + e.getMessage() );
         }
         Container cp         = rpc.getContentPane();    // Content Pane
@@ -100,8 +96,7 @@ public class BackDoorView implements Observer
         theInput.requestFocus();                        // Focus is here
     }
 
-    public void setController( BackDoorController c )
-    {
+    public void setController( BackDoorController c ) {
         cont = c;
     }
 
@@ -111,8 +106,7 @@ public class BackDoorView implements Observer
      * @param arg      Specific args
      */
     @Override
-    public void update( Observable modelC, Object arg )
-    {
+    public void update( Observable modelC, Object arg ) {
         BackDoorModel model  = (BackDoorModel) modelC;
         String        message = (String) arg;
         theAction.setText( message );
@@ -120,5 +114,4 @@ public class BackDoorView implements Observer
         theOutput.setText( model.getBasket().getDetails() );
         theInput.requestFocus();
     }
-
 }

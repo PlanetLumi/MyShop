@@ -15,10 +15,8 @@ import java.util.Observer;
  * Implements the Customer view.
  */
 
-public class CustomerView implements Observer
-{
-    class Name                              // Names of buttons
-    {
+public class CustomerView implements Observer {
+    class Name {                            // Names of buttons
         public static final String CHECK  = "Check";
         public static final String CLEAR  = "Clear";
     }
@@ -46,13 +44,10 @@ public class CustomerView implements Observer
      * @param y     y-cordinate of position of window on screen
      */
 
-    public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-    {
-        try                                             //
-        {
+    public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y ) {
+        try {
             theStock  = mf.makeStockReader();             // Database Access
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             System.out.println("Exception: " + e.getMessage() );
         }
         Container cp         = rpc.getContentPane();    // Content Pane
@@ -104,8 +99,7 @@ public class CustomerView implements Observer
      * @param c   The controller
      */
 
-    public void setController( CustomerController c )
-    {
+    public void setController( CustomerController c ) {
         cont = c;
     }
 
@@ -115,14 +109,12 @@ public class CustomerView implements Observer
      * @param arg      Specific args
      */
 
-    public void update( Observable modelC, Object arg )
-    {
+    public void update( Observable modelC, Object arg ) {
         CustomerModel model  = (CustomerModel) modelC;
         String        message = (String) arg;
         theAction.setText( message );
         ImageIcon image = model.getPicture();  // Image of product
-        if ( image == null )
-        {
+        if ( image == null ) {
             thePicture.clear();                  // Clear picture
         } else {
             thePicture.set( image );             // Display picture
@@ -130,5 +122,4 @@ public class CustomerView implements Observer
         theOutput.setText( model.getBasket().getDetails() );
         theInput.requestFocus();               // Focus is here
     }
-
 }
