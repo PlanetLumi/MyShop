@@ -18,13 +18,13 @@ import java.rmi.RemoteException;
  */
 
 public interface RemoteStockRW_I
-       extends   RemoteStockR_I, Remote
+        extends   RemoteStockR_I, Remote
 {
-  boolean buyStock(String number, int amount)
-          throws RemoteException, StockException;
-  void    addStock(String number, int amount)
-          throws RemoteException, StockException;
-  void    modifyStock(Product detail)
-          throws RemoteException, StockException;
+    boolean buyStock(String number, int amount)
+            throws RemoteException, StockException;
+    void    addStock(String number, int amount)
+            throws RemoteException, StockException;
+    void    modifyStock(Product detail)
+            throws RemoteException, StockException;
 }
 

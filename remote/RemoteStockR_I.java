@@ -14,13 +14,13 @@ import java.rmi.RemoteException;
  */
 
 public interface RemoteStockR_I
-       extends Remote
+        extends Remote
 {
-  boolean   exists(String number)
+    boolean   exists(String number)
             throws RemoteException, StockException;
-  Product   getDetails(String number)
+    Product   getDetails(String number)
             throws RemoteException, StockException;
-  ImageIcon getImage(String number)
+    ImageIcon getImage(String number)
             throws RemoteException, StockException;
 }
 
