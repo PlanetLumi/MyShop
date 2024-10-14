@@ -9,8 +9,7 @@ import java.io.Serializable;
  * @version 2.0
  */
 
-public class Product implements Serializable
-{
+public class Product implements Serializable {
     private static final long serialVersionUID = 20092506;
     private String theProductNum;       // Product number
     private String theDescription;      // Description of product
@@ -24,37 +23,39 @@ public class Product implements Serializable
      * @param aPrice The price of the product
      * @param aQuantity The Quantity of the product involved
      */
-    public Product( String aProductNum, String aDescription,
-                    double aPrice, int aQuantity )
-    {
+    public Product( String aProductNum, String aDescription, double aPrice, int aQuantity ) {
         theProductNum  = aProductNum;     // Product number
         theDescription = aDescription;    // Description of product
         thePrice       = aPrice;          // Price of product
         theQuantity    = aQuantity;       // Quantity involved
     }
 
-    public String getProductNum()  { return theProductNum; }
-    public String getDescription() { return theDescription; }
-    public double getPrice()       { return thePrice; }
-    public int    getQuantity()    { return theQuantity; }
+    public String getProductNum()  {
+        return theProductNum;
+    }
+    public String getDescription() {
+        return theDescription;
+    }
+    public double getPrice() {
+        return thePrice;
+    }
+    public int getQuantity() {
+        return theQuantity;
+    }
 
-    public void setProductNum( String aProductNum )
-    {
+    public void setProductNum( String aProductNum ) {
         theProductNum = aProductNum;
     }
 
-    public void setDescription( String aDescription )
-    {
+    public void setDescription( String aDescription ) {
         theDescription = aDescription;
     }
 
-    public void setPrice( double aPrice )
-    {
+    public void setPrice( double aPrice ) {
         thePrice = aPrice;
     }
 
-    public void setQuantity( int aQuantity )
-    {
+    public void setQuantity( int aQuantity ) {
         theQuantity = aQuantity;
     }
 
