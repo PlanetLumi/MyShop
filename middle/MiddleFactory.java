@@ -12,8 +12,7 @@ package middle;
 
 // Pattern: Abstract Factory
 
-public interface MiddleFactory
-{
+public interface MiddleFactory {
 
     /**
      * Return an object to access the database for read only access
@@ -36,6 +35,5 @@ public interface MiddleFactory
      * @throws OrderException if issue
      */
     public OrderProcessing makeOrderProcessing() throws OrderException;
-
 }
 

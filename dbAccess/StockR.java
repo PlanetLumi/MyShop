@@ -25,8 +25,7 @@ import java.sql.*;
 /**
  * Implements read only access to the stock database.
  */
-public class StockR implements StockReader
-{
+public class StockR implements StockReader {
     private Connection theCon    = null;      // Connection to database
     private Statement  theStmt   = null;      // Statement object
 
@@ -35,11 +34,8 @@ public class StockR implements StockReader
      * Uses a factory method to help setup the connection
      * @throws StockException if problem
      */
-    public StockR()
-            throws StockException
-    {
-        try
-        {
+    public StockR() throws StockException {
+        try {
             DBAccess dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
 
@@ -50,13 +46,9 @@ public class StockR implements StockReader
 
             theStmt = theCon.createStatement();
             theCon.setAutoCommit( true );
-        }
-        catch ( SQLException e )
-        {
+        } catch ( SQLException e ) {
             throw new StockException( "SQL problem:" + e.getMessage() );
-        }
-        catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             throw new StockException("Can not load database driver.");
         }
     }
@@ -67,8 +59,7 @@ public class StockR implements StockReader
      * @return A statement object used to access the database
      */
 
-    protected Statement getStatementObject()
-    {
+    protected Statement getStatementObject() {
         return theStmt;
     }
 
@@ -78,8 +69,7 @@ public class StockR implements StockReader
      * @return a connection object
      */
 
-    protected Connection getConnectionObject()
-    {
+    protected Connection getConnectionObject() {
         return theCon;
     }
 
@@ -88,12 +78,8 @@ public class StockR implements StockReader
      * @param pNum The product number
      * @return true if exists otherwise false
      */
-    public synchronized boolean exists( String pNum )
-            throws StockException
-    {
-
-        try
-        {
+    public synchronized boolean exists( String pNum ) throws StockException {
+        try {
             ResultSet rs   = getStatementObject().executeQuery(
                     "select price from ProductTable " +
                             "  where  ProductTable.productNo = '" + pNum + "'"
@@ -102,8 +88,7 @@ public class StockR implements StockReader
             DEBUG.trace( "DB StockR: exists(%s) -> %s",
                     pNum, ( res ? "T" : "F" ) );
             return res;
-        } catch ( SQLException e )
-        {
+        } catch ( SQLException e ) {
             throw new StockException( "SQL exists: " + e.getMessage() );
         }
     }
@@ -114,11 +99,8 @@ public class StockR implements StockReader
      * @param pNum The product number
      * @return Details in an instance of a Product
      */
-    public synchronized Product getDetails( String pNum )
-            throws StockException
-    {
-        try
-        {
+    public synchronized Product getDetails( String pNum ) throws StockException {
+        try {
             Product   dt = new Product( "0", "", 0.00, 0 );
             ResultSet rs = getStatementObject().executeQuery(
                     "select description, price, stockLevel " +
@@ -126,8 +108,7 @@ public class StockR implements StockReader
                             "  where  ProductTable.productNo = '" + pNum + "' " +
                             "  and    StockTable.productNo   = '" + pNum + "'"
             );
-            if ( rs.next() )
-            {
+            if ( rs.next() ) {
                 dt.setProductNum( pNum );
                 dt.setDescription(rs.getString( "description" ) );
                 dt.setPrice( rs.getDouble( "price" ) );
@@ -135,8 +116,7 @@ public class StockR implements StockReader
             }
             rs.close();
             return dt;
-        } catch ( SQLException e )
-        {
+        } catch ( SQLException e ) {
             throw new StockException( "SQL getDetails: " + e.getMessage() );
         }
     }
@@ -147,23 +127,20 @@ public class StockR implements StockReader
      *  Assumed to exist in database.
      * @return ImageIcon representing the image
      */
-    public synchronized ImageIcon getImage( String pNum )
-            throws StockException
-    {
+    public synchronized ImageIcon getImage( String pNum ) throws StockException {
         String filename = "default.jpg";
-        try
-        {
+        try {
             ResultSet rs   = getStatementObject().executeQuery(
                     "select picture from ProductTable " +
                             "  where  ProductTable.productNo = '" + pNum + "'"
             );
 
             boolean res = rs.next();
-            if ( res )
-                filename = rs.getString( "picture" );
+            if ( res ) {
+                filename = rs.getString("picture");
+            }
             rs.close();
-        } catch ( SQLException e )
-        {
+        } catch ( SQLException e ) {
             DEBUG.error( "getImage()\n%s\n", e.getMessage() );
             throw new StockException( "SQL getImage: " + e.getMessage() );
         }
@@ -171,5 +148,4 @@ public class StockR implements StockReader
         //DEBUG.trace( "DB StockR: getImage -> %s", filename );
         return new ImageIcon( filename );
     }
-
 }

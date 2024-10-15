@@ -11,8 +11,7 @@ import java.util.Map;
  * @version 2.0
  */
 
-public interface OrderProcessing
-{
+public interface OrderProcessing {
     // Used by
     public void newOrder(Basket bought)              // Cashier
             throws OrderException;

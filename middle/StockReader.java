@@ -10,8 +10,7 @@ import javax.swing.*;
  * @version 2.0
  */
 
-public interface StockReader
-{
+public interface StockReader {
 
     /**
      * Checks if the product exits in the stock list

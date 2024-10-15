@@ -15,10 +15,8 @@ import java.rmi.registry.LocateRegistry;
  * @version 2.0
  */
 
-class Server
-{
-    public static void main( String args[] )
-    {
+class Server {
+    public static void main( String[] args ) {
         String stockR = args.length < 1      // URL of stock R
                 ? Names.STOCK_R       //  default  location
                 : args[0];            //  supplied location
@@ -34,26 +32,21 @@ class Server
         (new Server()).bind( stockR, stockRW, order );
     }
 
-    private void bind( String urlStockR, String urlStockRW,
-                       String urlOrder )
-    {
+    private void bind( String urlStockR, String urlStockRW, String urlOrder ) {
         R_StockR   theStockR;               // Remote stock object
         R_StockRW  theStockRW;              // Remote stock object
         R_Order    theOrder;                // Remote order object
         System.out.println( "Server: " );   // Introduction
-        try
-        {
+        try {
             LocateRegistry.createRegistry(1099);
             String IPAddress = InetAddress.getLocalHost().getHostAddress();
             System.out.println("Server IP address " + IPAddress );
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Fail Starting rmiregistry" + e.getMessage() );
             System.exit(0);
         }
 
-        try
-        {
+        try {
             theStockR = new R_StockR(urlStockR);            // Stock R
             Naming.rebind( urlStockR, theStockR );          //  bind to url
             System.out.println( "StockR  bound to: " +      //  Inform world
@@ -70,8 +63,8 @@ class Server
                     urlOrder );
 
         }
-        catch ( Exception err )                           // Error
-        {                                                 //
+        catch ( Exception err ) {                         // Error
+                                                          //
             System.out.println( "Fail Server: " +          // Variety of
                     err.getMessage() );        // reasons
         }

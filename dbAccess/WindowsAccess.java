@@ -5,15 +5,12 @@ package dbAccess;
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-class WindowsAccess extends DBAccess
-{
-    public void loadDriver() throws Exception
-    {
+class WindowsAccess extends DBAccess {
+    public void loadDriver() throws Exception {
         Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
     }
 
-    public String urlOfDatabase()
-    {
+    public String urlOfDatabase() {
         return "jdbc:odbc:cshop";
     }
 }

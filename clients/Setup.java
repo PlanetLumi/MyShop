@@ -187,8 +187,9 @@ class Setup {
         } else {
             StringBuilder res = new StringBuilder( len );
             res.append( s );
-            for ( int i = s.length(); i<len; i++ )
-                res.append( ' ' );
+            for ( int i = s.length(); i<len; i++ ) {
+                res.append(' ');
+            }
             return res.toString();
         }
     }

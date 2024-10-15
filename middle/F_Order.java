@@ -19,8 +19,7 @@ import java.util.Map;
  * @version 2.0
  */
 
-public class F_Order implements OrderProcessing
-{
+public class F_Order implements OrderProcessing {
     private RemoteOrder_I aR_Order    = null;
     private String        theOrderURL = null;
 
@@ -29,15 +28,13 @@ public class F_Order implements OrderProcessing
         theOrderURL = url;
     }
 
-    private void connect() throws OrderException
-    {
-        try                                            // Setup
-        {                                              //  connection
+    private void connect() throws OrderException {
+        try {                                          // Setup
+                                                       //  connection
             aR_Order =                                   //  Connect to
                     (RemoteOrder_I) Naming.lookup(theOrderURL); // Stub returned
-        }
-        catch ( Exception e )                          // Failure to
-        {                                              //  attach to the
+        } catch ( Exception e ) {                        // Failure to
+                                                      //  attach to the
             aR_Order = null;
             throw new OrderException( "Com: " +
                     e.getMessage()  );  //  object
@@ -46,31 +43,23 @@ public class F_Order implements OrderProcessing
     }
 
 
-    public void newOrder( Basket bought )
-            throws OrderException
-    {
+    public void newOrder( Basket bought ) throws OrderException {
         DEBUG.trace("F_Order:newOrder()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             aR_Order.newOrder( bought );
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }
     }
 
-    public int uniqueNumber()
-            throws OrderException
-    {
+    public int uniqueNumber() throws OrderException {
         DEBUG.trace("F_Order:uniqueNumber()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             return aR_Order.uniqueNumber();
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }
@@ -82,16 +71,12 @@ public class F_Order implements OrderProcessing
      * @return An order to pick
      */
 
-    public synchronized Basket getOrderToPack()
-            throws OrderException
-    {
+    public synchronized Basket getOrderToPack() throws OrderException {
         DEBUG.trace("F_Order:getOrderTioPack()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             return aR_Order.getOrderToPack();
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }
@@ -103,16 +88,12 @@ public class F_Order implements OrderProcessing
      * the shop floor.
      */
 
-    public synchronized boolean informOrderPacked( int orderNum )
-            throws OrderException
-    {
+    public synchronized boolean informOrderPacked( int orderNum ) throws OrderException {
         DEBUG.trace("F_Order:informOrderPacked()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             return aR_Order.informOrderPacked(orderNum);
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }
@@ -123,16 +104,12 @@ public class F_Order implements OrderProcessing
      * collected by the customer
      */
 
-    public synchronized boolean informOrderCollected( int orderNum )
-            throws OrderException
-    {
+    public synchronized boolean informOrderCollected( int orderNum ) throws OrderException {
         DEBUG.trace("F_Order:informOrderCollected()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             return aR_Order.informOrderCollected(orderNum);
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }
@@ -142,16 +119,12 @@ public class F_Order implements OrderProcessing
      * Returns information about all orders in the order processing system
      */
 
-    public synchronized Map<String, List<Integer> > getOrderState()
-            throws OrderException
-    {
+    public synchronized Map<String, List<Integer> > getOrderState() throws OrderException {
         DEBUG.trace("F_Order:getOrderState()" );
-        try
-        {
+        try {
             if ( aR_Order == null ) connect();
             return aR_Order.getOrderState();
-        } catch ( Exception e )
-        {
+        } catch ( Exception e ) {
             aR_Order = null;
             throw new OrderException( "Net: " + e.getMessage() );
         }

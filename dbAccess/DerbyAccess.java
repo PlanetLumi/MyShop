@@ -6,8 +6,7 @@ package dbAccess;
  * @version 2.0
  */
 
-class DerbyAccess extends DBAccess
-{
+class DerbyAccess extends DBAccess {
     private static final String URLdb =
             "jdbc:derby:catshop.db";
     private static final String DRIVER =
@@ -16,8 +15,7 @@ class DerbyAccess extends DBAccess
     /**
      * Load the Apache Derby database driver
      */
-    public void loadDriver() throws Exception
-    {
+    public void loadDriver() throws Exception {
         Class.forName(DRIVER).newInstance();
     }
 
@@ -25,8 +23,7 @@ class DerbyAccess extends DBAccess
      * Return the url to access the database
      * @return url to database
      */
-    public String urlOfDatabase()
-    {
+    public String urlOfDatabase() {
         return URLdb;
     }
 }

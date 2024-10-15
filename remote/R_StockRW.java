@@ -20,8 +20,7 @@ import java.rmi.RemoteException;
 
 public class      R_StockRW
         extends    java.rmi.server.UnicastRemoteObject
-        implements RemoteStockRW_I
-{
+        implements RemoteStockRW_I {
     private static final long serialVersionUID = 1;
     private StockRW aStockRW = null;
 
@@ -32,9 +31,7 @@ public class      R_StockRW
      * @throws java.rmi.RemoteException if issue
      * @throws middle.StockException if issue
      */
-    public R_StockRW(String url)
-            throws RemoteException, StockException
-    {
+    public R_StockRW(String url) throws RemoteException, StockException {
         aStockRW = new StockRW();
     }
 
@@ -44,9 +41,7 @@ public class      R_StockRW
      * @return true if product exists else false
      * @throws middle.StockException if underlying error
      */
-    public synchronized boolean exists( String pNum )
-            throws StockException
-    {
+    public synchronized boolean exists( String pNum ) throws StockException {
         return aStockRW.exists( pNum );
     }
 
@@ -56,9 +51,7 @@ public class      R_StockRW
      * @return StockNumber, Description, Price, Quantity
      * @throws middle.StockException if underlying error
      */
-    public synchronized Product getDetails( String pNum )
-            throws StockException
-    {
+    public synchronized Product getDetails( String pNum ) throws StockException {
         return aStockRW.getDetails( pNum );
     }
 
@@ -68,9 +61,7 @@ public class      R_StockRW
      * @return image
      * @throws middle.StockException if underlying error
      */
-    public synchronized ImageIcon getImage( String pNum )
-            throws StockException
-    {
+    public synchronized ImageIcon getImage( String pNum ) throws StockException {
         return aStockRW.getImage( pNum );
     }
 
@@ -85,9 +76,7 @@ public class      R_StockRW
     // Need to Fix
     //  What happens if can not commit data
     //
-    public synchronized boolean buyStock( String pNum, int amount )
-            throws StockException
-    {
+    public synchronized boolean buyStock( String pNum, int amount ) throws StockException {
         return aStockRW.buyStock( pNum, amount );
     }
 
@@ -97,9 +86,7 @@ public class      R_StockRW
      * @param amount Quantity
      * @throws middle.StockException if underlying error
      */
-    public synchronized void addStock( String pNum, int amount )
-            throws StockException
-    {
+    public synchronized void addStock( String pNum, int amount ) throws StockException {
         aStockRW.addStock( pNum, amount );
     }
 
@@ -110,9 +97,7 @@ public class      R_StockRW
      * @param product The product to be modified
      * @throws middle.StockException if underlying error
      */
-    public synchronized void modifyStock( Product product )
-            throws StockException
-    {
+    public synchronized void modifyStock( Product product ) throws StockException {
         aStockRW.modifyStock( product );
     }
 }

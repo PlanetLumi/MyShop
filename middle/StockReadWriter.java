@@ -8,8 +8,7 @@ import catalogue.Product;
  * @version 2.0
  */
 
-public interface StockReadWriter extends StockReader
-{
+public interface StockReadWriter extends StockReader {
     /**
      * Customer buys stock,
      * stock level is thus decremented by amount bought.
@@ -35,5 +34,4 @@ public interface StockReadWriter extends StockReader
      * @throws middle.StockException if issue
      */
     void modifyStock(Product detail) throws StockException;
-
 }

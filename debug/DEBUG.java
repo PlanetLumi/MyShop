@@ -5,8 +5,7 @@ package debug;
  * @author Mike Smith University of Brighton
  * @version 1.0
  */
-public class DEBUG
-{
+public class DEBUG {
     private static boolean debug    = false;
     private static boolean oldState = false;
 
@@ -15,10 +14,8 @@ public class DEBUG
      * @param state Debugging messages displayed true false
      * @return Old value of debug state
      */
-    public static boolean set( boolean state )
-    {
-        synchronized( DEBUG.class )
-        {
+    public static boolean set( boolean state ) {
+        synchronized( DEBUG.class ) {
             oldState = debug;
             debug = state;
             return oldState;
@@ -28,10 +25,8 @@ public class DEBUG
     /**
      * Revert to previous debuging state (Not nested)
      */
-    public static void revert()
-    {
-        synchronized( DEBUG.class )
-        {
+    public static void revert() {
+        synchronized( DEBUG.class ) {
             debug = oldState;
         }
     }
@@ -41,12 +36,9 @@ public class DEBUG
      * @param fmt  The same as printf
      * @param params Arguments
      */
-    public static void trace(String fmt, Object... params )
-    {
-        if ( debug )
-        {
-            synchronized( DEBUG.class )
-            {
+    public static void trace(String fmt, Object... params ) {
+        if ( debug ) {
+            synchronized( DEBUG.class ) {
                 System.out.printf( fmt, params );
                 System.out.println();
             }
@@ -58,10 +50,8 @@ public class DEBUG
      * @param fmt  The same as printf etc
      * @param params arguments
      */
-    public static void traceA(String fmt, Object... params )
-    {
-        synchronized( DEBUG.class )
-        {
+    public static void traceA(String fmt, Object... params ) {
+        synchronized( DEBUG.class ) {
             System.out.printf( fmt, params );
             System.out.println();
         }
@@ -73,10 +63,8 @@ public class DEBUG
      * @param fmt The same as printf etc
      * @param params arguments
      */
-    public static void assertTrue( boolean ok, String fmt, Object... params )
-    {
-        if ( !ok )
-        {
+    public static void assertTrue( boolean ok, String fmt, Object... params ) {
+        if ( !ok ) {
             error( "Assert - " + fmt, params );
         }
     }
@@ -86,10 +74,8 @@ public class DEBUG
      * @param fmt The same as printf etc
      * @param params arguments
      */
-    public static void error(String fmt, Object... params )
-    {
-        synchronized( DEBUG.class )
-        {
+    public static void error(String fmt, Object... params ) {
+        synchronized( DEBUG.class ) {
             System.out.printf( "FATAL ERROR: " + fmt, params );
             System.out.println();
             System.exit(-1);

@@ -14,8 +14,7 @@ import java.util.Map;
  * @version 2.0
  */
 
-public interface RemoteOrder_I extends Remote
-{
+public interface RemoteOrder_I extends Remote {
     public void newOrder(Basket order)
             throws RemoteException, OrderException;
     public int  uniqueNumber()
