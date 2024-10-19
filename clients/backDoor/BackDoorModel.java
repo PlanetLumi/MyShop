@@ -8,12 +8,15 @@ import middle.MiddleFactory;
 import middle.StockException;
 import middle.StockReadWriter;
 
-import java.util.Observable;
+import javax.swing.event.SwingPropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements the Model of the back door client
  */
-public class BackDoorModel extends Observable {
+public class BackDoorModel {
+    private final SwingPropertyChangeSupport pcs = new SwingPropertyChangeSupport(this);
+
     private Basket      theBasket  = null;            // Bought items
     private String      pn = "";                      // Product being processed
 
@@ -32,6 +35,10 @@ public class BackDoorModel extends Observable {
         }
 
         theBasket = makeBasket();                     // Initial Basket
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
     }
 
     /**
@@ -73,7 +80,7 @@ public class BackDoorModel extends Observable {
         } catch( StockException e ) {
             theAction = e.getMessage();
         }
-        setChanged(); notifyObservers(theAction);
+        this.pcs.firePropertyChange("action", null, theAction);
     }
 
     /**
@@ -97,7 +104,7 @@ public class BackDoorModel extends Observable {
             }
             catch ( Exception err) {
                 theAction = "Invalid quantity";
-                setChanged(); notifyObservers(theAction);
+                this.pcs.firePropertyChange("action", null, theAction);
                 return;
             }
 
@@ -114,7 +121,7 @@ public class BackDoorModel extends Observable {
         } catch( StockException e ) {
             theAction = e.getMessage();
         }
-        setChanged(); notifyObservers(theAction);
+        this.pcs.firePropertyChange("action", null, theAction);
     }
 
     /**
@@ -124,7 +131,7 @@ public class BackDoorModel extends Observable {
         String theAction = "";
         theBasket.clear();                        // Clear s. list
         theAction = "Enter Product Number";       // Set display
-        setChanged(); notifyObservers(theAction);  // inform the observer view that model changed
+        this.pcs.firePropertyChange("action", null, theAction); // inform the listener view that model changed
     }
 
     /**

@@ -120,7 +120,7 @@ class Main {
         BackDoorController cont  = new BackDoorController( model, view );
         view.setController( cont );
 
-        model.addObserver( view );       // Add observer to the model
+        model.addPropertyChangeListener(view); // Add listener to the model
         window.setVisible(true);         // Make window visible
     }
 }

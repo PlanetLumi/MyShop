@@ -14,11 +14,11 @@ import javax.swing.*;
 public class BackDoorClient {
     public static void main (String[] args) {
         String stockURL = args.length < 1     // URL of stock RW
-                     ? Names.STOCK_RW      //  default  location
-                     : args[0];            //  supplied location
+                ? Names.STOCK_RW      //  default  location
+                : args[0];            //  supplied location
         String orderURL = args.length < 2     // URL of order
-                     ? Names.ORDER         //  default  location
-                     : args[1];            //  supplied location
+                ? Names.ORDER         //  default  location
+                : args[1];            //  supplied location
 
         RemoteMiddleFactory mrf = new RemoteMiddleFactory();
         mrf.setStockRWInfo( stockURL );
@@ -37,7 +37,8 @@ public class BackDoorClient {
         BackDoorController cont  = new BackDoorController( model, view );
         view.setController( cont );
 
-        model.addObserver( view );       // Add observer to the model - view is observer, model is Observable
+        // Add listener to the model - view is listener, model has PropertyChangeSupport
+        model.addPropertyChangeListener(view);
         window.setVisible(true);         // Display Screen
     }
 }
