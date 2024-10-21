@@ -101,7 +101,7 @@ class Main {
         PackingController cont  = new PackingController( model, view );
         view.setController( cont );
 
-        model.addObserver( view );       // Add observer to the model
+        model.addPropertyChangeListener(view); // Add observer to the model
         window.setVisible(true);         // Make window visible
     }
 
