@@ -27,7 +27,7 @@ public class StockRW extends StockR implements StockReadWriter {
      * Connects to database
      */
     public StockRW() throws StockException {
-        super();        // Connection done in StockR's constructor
+        super(); // Connection done in StockR's constructor
     }
 
     /**
@@ -36,7 +36,7 @@ public class StockRW extends StockR implements StockReadWriter {
      * @param amount Amount of stock bought
      * @return true if succeeds else false
      */
-    public synchronized boolean buyStock( String pNum, int amount ) throws StockException {
+    public synchronized boolean buyStock(String pNum, int amount) throws StockException {
         DEBUG.trace("DB StockRW: buyStock(%s,%d)", pNum, amount);
         int updates = 0;
         try {
@@ -46,11 +46,11 @@ public class StockRW extends StockR implements StockReadWriter {
                             "             stockLevel >= " + amount + ""
             );
             updates = 1; // getStatementObject().getUpdateCount();
-        } catch ( SQLException e ) {
-            throw new StockException( "SQL buyStock: " + e.getMessage() );
+        } catch (SQLException e) {
+            throw new StockException("SQL buyStock: " + e.getMessage());
         }
-        DEBUG.trace( "buyStock() updates -> %n", updates );
-        return updates > 0;   // sucess ?
+        DEBUG.trace("buyStock() updates -> %n", updates);
+        return updates > 0; // sucess ?
     }
 
     /**
@@ -59,16 +59,16 @@ public class StockRW extends StockR implements StockReadWriter {
      * @param pNum Product number
      * @param amount Amount of stock to add
      */
-    public synchronized void addStock( String pNum, int amount ) throws StockException {
+    public synchronized void addStock(String pNum, int amount) throws StockException {
         try {
             getStatementObject().executeUpdate(
                     "update StockTable set stockLevel = stockLevel + " + amount +
                             "         where productNo = '" + pNum + "'"
             );
             //getConnectionObject().commit();
-            DEBUG.trace( "DB StockRW: addStock(%s,%d)" , pNum, amount );
-        } catch ( SQLException e ) {
-            throw new StockException( "SQL addStock: " + e.getMessage() );
+            DEBUG.trace( "DB StockRW: addStock(%s,%d)" , pNum, amount);
+        } catch (SQLException e) {
+            throw new StockException("SQL addStock: " + e.getMessage());
         }
     }
 
@@ -79,11 +79,11 @@ public class StockRW extends StockR implements StockReadWriter {
      * Information modified: Description, Price
      * @param detail Product details to change stocklist to
      */
-    public synchronized void modifyStock( Product detail ) throws StockException {
+    public synchronized void modifyStock(Product detail) throws StockException {
         DEBUG.trace( "DB StockRW: modifyStock(%s)",
                 detail.getProductNum() );
         try {
-            if ( ! exists( detail.getProductNum() ) ) {
+            if (!exists(detail.getProductNum())) {
                 getStatementObject().executeUpdate(
                         "insert into ProductTable values ('" +
                                 detail.getProductNum() + "', " +
@@ -111,8 +111,8 @@ public class StockRW extends StockR implements StockReadWriter {
             }
             //getConnectionObject().commit();
 
-        } catch ( SQLException e ) {
-            throw new StockException( "SQL modifyStock: " + e.getMessage() );
+        } catch (SQLException e) {
+            throw new StockException("SQL modifyStock: " + e.getMessage());
         }
     }
 }
