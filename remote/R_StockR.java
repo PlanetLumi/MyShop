@@ -17,13 +17,11 @@ import java.rmi.RemoteException;
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-public class      R_StockR
-        extends    java.rmi.server.UnicastRemoteObject
-        implements RemoteStockR_I {
+public class R_StockR extends java.rmi.server.UnicastRemoteObject implements RemoteStockR_I {
     private static final long serialVersionUID = 1;
     private StockR aStockR = null;
 
-    public R_StockR( String url ) throws RemoteException, StockException {
+    public R_StockR(String url) throws RemoteException, StockException {
         aStockR = new StockR();
     }
 
@@ -32,8 +30,8 @@ public class      R_StockR
      * @param pNum The product number
      * @return true if exists otherwise false
      */
-    public synchronized boolean exists( String pNum ) throws RemoteException, StockException {
-        return aStockR.exists( pNum );
+    public synchronized boolean exists(String pNum) throws RemoteException, StockException {
+        return aStockR.exists(pNum);
     }
 
     /**
@@ -41,8 +39,8 @@ public class      R_StockR
      * @param pNum The product number
      * @return StockNumber, Description, Price, Quantity
      */
-    public synchronized Product getDetails( String pNum ) throws RemoteException, StockException {
-        return aStockR.getDetails( pNum );
+    public synchronized Product getDetails(String pNum) throws RemoteException, StockException {
+        return aStockR.getDetails(pNum);
     }
 
     /**
@@ -52,7 +50,7 @@ public class      R_StockR
      * @param pNum The product number
      * @return Image
      */
-    public synchronized ImageIcon getImage( String pNum ) throws RemoteException, StockException {
-        return aStockR.getImage( pNum );
+    public synchronized ImageIcon getImage(String pNum) throws RemoteException, StockException {
+        return aStockR.getImage(pNum);
     }
 }
