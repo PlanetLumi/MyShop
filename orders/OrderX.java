@@ -31,32 +31,30 @@ import java.util.Formatter;
  * @author  Michael Alexander Smith
  * @version 2.0
  */
-
 public class OrderX implements OrderProcessing {
-    private static int theNextNumber = 1;          // Start at 1
+    private static int theNextNumber = 1; // Start at 1
     // Orders entered but waiting to be processed (picked)
-    private ArrayList<Basket>  theWaitingTray = new ArrayList<Basket>();
+    private ArrayList<Basket> theWaitingTray = new ArrayList<Basket>();
 
     // Orders being processed (currently being picked)
-    private ArrayList<Basket>  theBeingPickedTray = new ArrayList<Basket>();
+    private ArrayList<Basket> theBeingPickedTray = new ArrayList<Basket>();
 
     // Orders waiting to be collected by the customer
-    private ArrayList<Basket>  theToBeCollectedTray = new ArrayList<Basket>();
+    private ArrayList<Basket> theToBeCollectedTray = new ArrayList<Basket>();
 
     /**
      * Used to generate debug information
      * @Param  basket an instance of a basket
      * @Return Description of contents
      */
-    private String asString( Basket basket ) {
+    private String asString(Basket basket) {
         StringBuilder sb = new StringBuilder(1024);
-        Formatter     fr = new Formatter(sb);
-        fr.format( "#%d (", basket.getOrderNum() );
-        for ( Product pr: basket )
-        {
-            fr.format( "%-15.15s: %3d ", pr.getDescription(), pr.getQuantity() );
+        Formatter fr = new Formatter(sb);
+        fr.format("#%d (", basket.getOrderNum());
+        for (Product pr: basket) {
+            fr.format("%-15.15s: %3d ", pr.getDescription(), pr.getQuantity());
         }
-        fr.format( ")" );
+        fr.format(")");
         fr.close();
         return sb.toString();
     }
@@ -74,12 +72,12 @@ public class OrderX implements OrderProcessing {
      * Add a new order to the order processing system
      * @param bought a new order that is to be processed
      */
-    public synchronized void newOrder( Basket bought ) throws OrderException {
+    public synchronized void newOrder(Basket bought) throws OrderException {
         // You need to modify and fill in the correct code
-        DEBUG.trace( "DEBUG: New order" );
-        theWaitingTray.add( bought );
-        for ( Basket bl : theWaitingTray ) {
-            DEBUG.trace( "Order: " + asString( bl ) );
+        DEBUG.trace("DEBUG: New order");
+        theWaitingTray.add(bought);
+        for (Basket bl: theWaitingTray) {
+            DEBUG.trace("Order: " + asString(bl));
         }
     }
 
@@ -88,13 +86,12 @@ public class OrderX implements OrderProcessing {
      *  However if there is no order avilable then return null.
      * @return An order to pick.
      */
-
     public synchronized Basket getOrderToPack() throws OrderException {
         // You need to modify and fill in the correct code
-        DEBUG.trace( "DEBUG: Get order to pack" );
-        if ( theWaitingTray.size() > 0 ) {
+        DEBUG.trace("DEBUG: Get order to pack");
+        if (theWaitingTray.size() > 0) {
             Basket process = theWaitingTray.remove(0);
-            theBeingPickedTray.add( process );
+            theBeingPickedTray.add(process);
             return process;
         }
         return null;
@@ -107,14 +104,13 @@ public class OrderX implements OrderProcessing {
      * @param  orderNum the order that has been picked
      * @return true :: Order in system, false -:: no such order
      */
-
-    public synchronized boolean informOrderPacked( int orderNum ) throws OrderException {
+    public synchronized boolean informOrderPacked(int orderNum) throws OrderException {
         // You need to modify and fill in the correct code
-        DEBUG.trace( "DEBUG: Order picked [%d]", orderNum );
-        for ( int i=0; i<theBeingPickedTray.size(); i++) {
-            if ( theBeingPickedTray.get(i).getOrderNum() == orderNum ) {
+        DEBUG.trace("DEBUG: Order picked [%d]", orderNum);
+        for (int i = 0; i < theBeingPickedTray.size(); i++) {
+            if (theBeingPickedTray.get(i).getOrderNum() == orderNum) {
                 Basket picked = theBeingPickedTray.remove(i);
-                theToBeCollectedTray.add( picked );
+                theToBeCollectedTray.add(picked);
                 return true;
             }
         }
@@ -126,12 +122,11 @@ public class OrderX implements OrderProcessing {
      * collected by the customer
      * @return true :: Order in system, false -:: no such order
      */
-
-    public synchronized boolean informOrderCollected( int orderNum ) throws OrderException {
+    public synchronized boolean informOrderCollected(int orderNum) throws OrderException {
         // You need to modify and fill in the correct code
-        DEBUG.trace( "DEBUG: Order collected [%d]", orderNum );
-        for ( int i=0; i<theToBeCollectedTray.size(); i++ ) {
-            if ( theToBeCollectedTray.get(i).getOrderNum() == orderNum ) {
+        DEBUG.trace("DEBUG: Order collected [%d]", orderNum);
+        for (int i = 0; i < theToBeCollectedTray.size(); i++) {
+            if (theToBeCollectedTray.get(i).getOrderNum() == orderNum) {
                 theToBeCollectedTray.remove(i);
                 return true;
             }
@@ -150,22 +145,20 @@ public class OrderX implements OrderProcessing {
      * </PRE>
      * @return a Map with the keys: Waiting, BeingPicked, ToBeCollected
      */
-
-    public synchronized Map<String, List<Integer> > getOrderState() throws OrderException {
-        DEBUG.trace( "DEBUG: get state of order system" );
-        Map < String, List<Integer> > res =
-                new HashMap< String, List<Integer> >();
-        res.put( "Waiting",       orderNos(theWaitingTray) );
-        res.put( "BeingPicked",   orderNos(theBeingPickedTray) );
-        res.put( "ToBeCollected", orderNos(theToBeCollectedTray) );
+    public synchronized Map<String, List<Integer>> getOrderState() throws OrderException {
+        DEBUG.trace("DEBUG: get state of order system");
+        Map<String, List<Integer>> res = new HashMap< String, List<Integer> >();
+        res.put("Waiting", orderNos(theWaitingTray));
+        res.put("BeingPicked", orderNos(theBeingPickedTray));
+        res.put("ToBeCollected", orderNos(theToBeCollectedTray));
 
         return res;
     }
 
-    private List< Integer > orderNos( ArrayList<Basket> queue ) {
-        List <Integer> res = new ArrayList<Integer>();
-        for ( Basket sb: queue ) {
-            res.add( sb.getOrderNum() );
+    private List< Integer > orderNos(ArrayList<Basket> queue) {
+        List<Integer> res = new ArrayList<Integer>();
+        for (Basket sb: queue) {
+            res.add(sb.getOrderNum());
         }
         return res;
     }
