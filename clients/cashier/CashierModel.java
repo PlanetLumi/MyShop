@@ -5,12 +5,15 @@ import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
 
-import java.util.Observable;
+import javax.swing.event.SwingPropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements the Model of the cashier client
  */
-public class CashierModel extends Observable {
+public class CashierModel {
+    private final SwingPropertyChangeSupport pcs = new SwingPropertyChangeSupport(this);
+
     private enum State { process, checked }
 
     private State       theState   = State.process;   // Current state
@@ -35,6 +38,10 @@ public class CashierModel extends Observable {
             DEBUG.error("CashierModel.constructor\n%s", e.getMessage() );
         }
         theState   = State.process;                  // Current state
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
     }
 
     /**
@@ -81,7 +88,7 @@ public class CashierModel extends Observable {
                     "CashierModel.doCheck", e.getMessage() );
             theAction = e.getMessage();
         }
-        setChanged(); notifyObservers(theAction);
+        this.pcs.firePropertyChange("action", null, theAction);
     }
 
     /**
@@ -115,7 +122,7 @@ public class CashierModel extends Observable {
             theAction = e.getMessage();
         }
         theState = State.process;                   // All Done
-        setChanged(); notifyObservers(theAction);
+        this.pcs.firePropertyChange("action", null, theAction);
     }
 
     /**
@@ -139,7 +146,7 @@ public class CashierModel extends Observable {
             theAction = e.getMessage();
         }
         theBasket = null;
-        setChanged(); notifyObservers(theAction); // Notify
+        this.pcs.firePropertyChange("action", null, theAction); // Notify
     }
 
     /**
@@ -147,7 +154,7 @@ public class CashierModel extends Observable {
      * or after system reset
      */
     public void askForUpdate() {
-        setChanged(); notifyObservers("Welcome");
+        this.pcs.firePropertyChange("action", null, "Welcome");
     }
 
     /**
