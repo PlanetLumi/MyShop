@@ -11,8 +11,8 @@ class PosOnScrn {
     private final static int clientW = 400;
     private final static int clientH = 300;
 
-    private static final int maxX;  // Width of screen
-    private static final int maxY;  // Height of screen
+    private static final int maxX; // Width of screen
+    private static final int maxY; // Height of screen
 
     private static int cX = 0; // Initial window pos on screen
     private static int cY = 0; // Initial window pos on screen
@@ -29,8 +29,8 @@ class PosOnScrn {
      * Calculate position of next window
      */
     private static void next() {
-        if ( cX + 2 * clientW > maxX ) {
-            if ( cY + 2 * clientH < maxY ) {
+        if (cX + 2 * clientW > maxX) {
+            if (cY + 2 * clientH < maxY) {
                 cX = 0; cY += clientH;
             }
         } else {
@@ -47,7 +47,7 @@ class PosOnScrn {
      * @return position for new window
      */
     public static Dimension getPos() {
-        Dimension pos = new Dimension( cX, cY );
+        Dimension pos = new Dimension(cX, cY);
         next();
         return pos;
     }
