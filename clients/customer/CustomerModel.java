@@ -15,14 +15,14 @@ import java.util.Observable;
  * Implements the Model of the customer client
  */
 public class CustomerModel extends Observable {
-    private Product     theProduct = null;          // Current product
-    private Basket      theBasket  = null;          // Bought items
+    private Product theProduct = null; // Current product
+    private Basket theBasket = null; // Bought items
 
-    private String      pn = "";                    // Product being processed
+    private String pn = ""; // Product being processed
 
-    private StockReader     theStock     = null;
-    private OrderProcessing theOrder     = null;
-    private ImageIcon       thePic       = null;
+    private StockReader theStock = null;
+    private OrderProcessing theOrder = null;
+    private ImageIcon thePic = null;
 
     /*
      * Construct the model of the Customer
@@ -30,12 +30,11 @@ public class CustomerModel extends Observable {
      */
     public CustomerModel(MiddleFactory mf) {
         try {
-            theStock = mf.makeStockReader();           // Database access
-        } catch ( Exception e ) {
-            DEBUG.error("CustomerModel.constructor\n" +
-                    "Database not created?\n%s\n", e.getMessage() );
+            theStock = mf.makeStockReader(); // Database access
+        } catch (Exception e) {
+            DEBUG.error("CustomerModel.constructor\n" + "Database not created?\n%s\n", e.getMessage());
         }
-        theBasket = makeBasket();                    // Initial Basket
+        theBasket = makeBasket(); // Initial Basket
     }
 
     /**
@@ -50,37 +49,38 @@ public class CustomerModel extends Observable {
      * Check if the product is in Stock
      * @param productNum The product number
      */
-    public void doCheck(String productNum ) {
-        theBasket.clear();                          // Clear s. list
+    public void doCheck(String productNum) {
+        theBasket.clear(); // Clear s. list
         String theAction = "";
-        pn  = productNum.trim();                    // Product no.
-        int    amount  = 1;                         //  & quantity
+        pn  = productNum.trim(); // Product no.
+        int amount  = 1; // & quantity
         try {
-            if ( theStock.exists( pn ) ) {            // Stock Exists?
-                                                      // T
-                Product pr = theStock.getDetails( pn ); //  Product
-                if ( pr.getQuantity() >= amount ) {     //  In stock?
-
-                    theAction =                           //   Display
-                            String.format( "%s : %7.2f (%2d) ", //
-                                    pr.getDescription(),              //    description
-                                    pr.getPrice(),                    //    price
-                                    pr.getQuantity() );               //    quantity
-                    pr.setQuantity( amount );             //   Require 1
-                    theBasket.add( pr );                  //   Add to basket
-                    thePic = theStock.getImage( pn );     //    product
-                } else {                                //  F
-                    theAction =                           //   Inform
-                            pr.getDescription() +               //    product not
-                                    " not in stock" ;                   //    in stock
+            if (theStock.exists(pn)) { // Stock Exists?
+                // T
+                Product pr = theStock.getDetails(pn); // Product
+                if (pr.getQuantity() >= amount) { // In stock?
+                    theAction = // Display
+                            String.format("%s : %7.2f (%2d) ",
+                                    pr.getDescription(), // description
+                                    pr.getPrice(), // price
+                                    pr.getQuantity() // quantity
+                            );
+                    pr.setQuantity(amount); // Require 1
+                    theBasket.add(pr); // Add to basket
+                    thePic = theStock.getImage(pn); // product
+                } else {
+                    // F
+                    theAction = // Inform
+                            pr.getDescription() + // product not
+                                    " not in stock" ; // in stock
                 }
-            } else {                                  // F
-                theAction =                             //  Inform Unknown
-                        "Unknown product number " + pn;       //  product number
+            } else {
+                // F
+                theAction = // Inform Unknown
+                        "Unknown product number " + pn; // product number
             }
-        } catch( StockException e ) {
-            DEBUG.error("CustomerClient.doCheck()\n%s",
-                    e.getMessage() );
+        } catch (StockException e) {
+            DEBUG.error("CustomerClient.doCheck()\n%s", e.getMessage());
         }
         setChanged(); notifyObservers(theAction);
     }
@@ -90,9 +90,9 @@ public class CustomerModel extends Observable {
      */
     public void doClear() {
         String theAction = "";
-        theBasket.clear();                        // Clear s. list
-        theAction = "Enter Product Number";       // Set display
-        thePic = null;                            // No picture
+        theBasket.clear(); // Clear s. list
+        theAction = "Enter Product Number"; // Set display
+        thePic = null; // No picture
         setChanged(); notifyObservers(theAction);
     }
 
@@ -119,4 +119,3 @@ public class CustomerModel extends Observable {
         return new Basket();
     }
 }
-

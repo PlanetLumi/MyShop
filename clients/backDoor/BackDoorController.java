@@ -6,6 +6,7 @@ package clients.backDoor;
 public class BackDoorController {
     private BackDoorModel model = null;
     private BackDoorView view = null;
+
     /**
      * Constructor
      * @param model The model
@@ -40,4 +41,3 @@ public class BackDoorController {
         model.doClear();
     }
 }
-
