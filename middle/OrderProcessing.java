@@ -13,16 +13,16 @@ import java.util.Map;
 
 public interface OrderProcessing {
     // Used by
-    public void newOrder(Basket bought)              // Cashier
+    public void newOrder(Basket bought) // Cashier
             throws OrderException;
 
-    public int  uniqueNumber()                       // Cashier
+    public int uniqueNumber() // Cashier
             throws OrderException;
 
-    public Basket getOrderToPack()                   // Packer
+    public Basket getOrderToPack() // Packer
             throws OrderException;
 
-    public boolean informOrderPacked(int orderNum)   // Packer
+    public boolean informOrderPacked(int orderNum) // Packer
             throws OrderException;
 
     // not being used in this version
