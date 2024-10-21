@@ -8,14 +8,14 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements the Customer view.
  */
 
-public class CustomerView implements Observer {
+public class CustomerView implements PropertyChangeListener {
     class Name {                            // Names of buttons
         public static final String CHECK  = "Check";
         public static final String CLEAR  = "Clear";
@@ -105,13 +105,11 @@ public class CustomerView implements Observer {
 
     /**
      * Update the view
-     * @param modelC   The observed model
-     * @param arg      Specific args
+     * @param evt The event source and property that has changed
      */
-
-    public void update( Observable modelC, Object arg ) {
-        CustomerModel model  = (CustomerModel) modelC;
-        String        message = (String) arg;
+    public void propertyChange(PropertyChangeEvent evt) {
+        CustomerModel model  = (CustomerModel) evt.getSource();
+        String        message = (String) evt.getNewValue();
         theAction.setText( message );
         ImageIcon image = model.getPicture();  // Image of product
         if ( image == null ) {

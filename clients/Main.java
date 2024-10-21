@@ -59,7 +59,8 @@ class Main {
         CustomerController cont  = new CustomerController( model, view );
         view.setController( cont );
 
-        model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
+        // Add listener to the model - view is listener, model has PropertyChangeSupport
+        model.addPropertyChangeListener(view);
         window.setVisible(true);         // start Screen
     }
 
