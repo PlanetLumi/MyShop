@@ -52,8 +52,8 @@ public class CustomerModel extends Observable {
     public void doCheck(String productNum) {
         theBasket.clear(); // Clear s. list
         String theAction = "";
-        pn  = productNum.trim(); // Product no.
-        int amount  = 1; // & quantity
+        pn = productNum.trim(); // Product no.
+        int amount = 1; // & quantity
         try {
             if (theStock.exists(pn)) { // Stock Exists?
                 // T
