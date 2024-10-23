@@ -7,14 +7,14 @@ import middle.StockReadWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 /**
  * View of the model 
  */
-public class CashierView implements Observer {
+public class CashierView implements PropertyChangeListener {
     private static final int H = 300; // Height of window pixels
     private static final int W = 400; // Width of window pixels
 
@@ -106,13 +106,12 @@ public class CashierView implements Observer {
 
     /**
      * Update the view
-     * @param modelC The observed model
-     * @param arg Specific args
+     * @param evt The event source and property that has changed
      */
     @Override
-    public void update(Observable modelC, Object arg) {
-        CashierModel model = (CashierModel) modelC;
-        String message = (String) arg;
+    public void propertyChange(PropertyChangeEvent evt) {
+        CashierModel model = (CashierModel) evt.getSource();
+        String message = (String) evt.getNewValue();
         theAction.setText(message);
         Basket basket = model.getBasket();
         if (basket == null) {

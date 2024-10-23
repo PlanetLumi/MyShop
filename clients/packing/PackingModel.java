@@ -7,13 +7,16 @@ import middle.OrderException;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
 
-import java.util.Observable;
+import javax.swing.event.SwingPropertyChangeSupport;
+import java.beans.PropertyChangeListener;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Implements the Model of the warehouse packing client
  */
-public class PackingModel extends Observable {
+public class PackingModel {
+    private final SwingPropertyChangeSupport pcs = new SwingPropertyChangeSupport(this);
+
     private AtomicReference<Basket> theBasket = new AtomicReference<>();
 
     private StockReadWriter theStock = null;
@@ -38,6 +41,11 @@ public class PackingModel extends Observable {
         // Start a background check to see when a new order can be packed
         new Thread(() -> checkForNewOrder()).start();
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
 
     /**
      * Semaphore used to only allow 1 order
@@ -84,7 +92,7 @@ public class PackingModel extends Observable {
                         worker.free(); // Free
                         theAction = "";
                     }
-                    setChanged(); notifyObservers(theAction);
+                    this.pcs.firePropertyChange("action", null, theAction);
                 }
                 Thread.sleep(2000); // idle
             } catch (Exception e) {
@@ -121,12 +129,12 @@ public class PackingModel extends Observable {
                 // F
                 theAction = "No order"; // Not packed order
             }
-            setChanged(); notifyObservers(theAction);
+            this.pcs.firePropertyChange("action", null, theAction);
         } catch (OrderException e) { // Error
             // Of course
-            DEBUG.error("ReceiptModel.doOk()\n%s\n", // should not
+            DEBUG.error("ReceiptModel.doOk()\n%s\n",// should not
                     e.getMessage()); //  happen
         }
-        setChanged(); notifyObservers(theAction);
+        this.pcs.firePropertyChange("action", null, theAction);
     }
 }

@@ -58,7 +58,8 @@ class Main {
         CustomerController cont = new CustomerController(model, view);
         view.setController(cont);
 
-        model.addObserver(view); // Add observer to the model, ---view is observer, model is Observable
+        // Add listener to the model - view is listener, model has PropertyChangeSupport
+        model.addPropertyChangeListener(view);
         window.setVisible(true); // start Screen
     }
 
@@ -77,7 +78,7 @@ class Main {
         CashierController cont = new CashierController(model, view);
         view.setController(cont);
 
-        model.addObserver(view); // Add observer to the model
+        model.addPropertyChangeListener(view); // Add listener to the model
         window.setVisible(true); // Make window visible
         model.askForUpdate(); // Initial display
     }
@@ -98,7 +99,7 @@ class Main {
         PackingController cont = new PackingController(model, view);
         view.setController(cont);
 
-        model.addObserver(view); // Add observer to the model
+        model.addPropertyChangeListener(view); // Add observer to the model
         window.setVisible(true); // Make window visible
     }
 
@@ -118,7 +119,7 @@ class Main {
         BackDoorController cont = new BackDoorController(model, view);
         view.setController(cont);
 
-        model.addObserver(view); // Add observer to the model
+        model.addPropertyChangeListener(view); // Add listener to the model
         window.setVisible(true); // Make window visible
     }
 }

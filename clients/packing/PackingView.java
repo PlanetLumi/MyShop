@@ -6,13 +6,14 @@ import middle.OrderProcessing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements the Packing view.
  */
-public class PackingView implements Observer {
+
+public class PackingView implements PropertyChangeListener {
     private static final String PACKED = "Packed";
 
     private static final int H = 300; // Height of window pixels
@@ -77,13 +78,12 @@ public class PackingView implements Observer {
 
     /**
      * Update the view
-     * @param modelC   The observed model
-     * @param arg      Specific args
+     * @param evt The event source and property that has changed
      */
     @Override
-    public void update(Observable modelC, Object arg) {
-        PackingModel model = (PackingModel) modelC;
-        String message = (String) arg;
+    public void propertyChange(PropertyChangeEvent evt) {
+        PackingModel model = (PackingModel) evt.getSource();
+        String message = (String) evt.getNewValue();
         theAction.setText(message);
 
         Basket basket = model.getBasket();
