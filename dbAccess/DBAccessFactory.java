@@ -18,24 +18,24 @@ import java.io.IOException;
  */
 
 // Pattern: Abstract Factory
-//          Fix to be 
+//          Fix to be
 
 public class DBAccessFactory {
-    private static String theAction   = "";
+    private static String theAction = "";
     private static String theDataBase = "";
-    private static String theOS       = "";
+    private static String theOS = "";
 
-    public static void setAction( String name ) {
+    public static void setAction(String name) {
         theAction = name;
     }
 
     private static String setEnvironment() {
-        theDataBase  = fileToString( "DataBase.txt" ) + theAction;
-        String os    = System.getProperties().getProperty( "os.name" );
-        String arch  = System.getProperties().getProperty( "os.arch" );
-        String osVer = System.getProperties().getProperty( "os.version" );
-        theOS = String.format("%s %s %s",  os, osVer, arch );
-        System.out.println( theOS );
+        theDataBase = fileToString("DataBase.txt") + theAction;
+        String os = System.getProperties().getProperty("os.name");
+        String arch = System.getProperties().getProperty("os.arch");
+        String osVer = System.getProperties().getProperty("os.version");
+        theOS = String.format("%s %s %s",  os, osVer, arch);
+        System.out.println(theOS);
         return theOS;
     }
 
@@ -45,27 +45,27 @@ public class DBAccessFactory {
      */
     public DBAccess getNewDBAccess() {
         setEnvironment();
-        DEBUG.traceA("Using [%s] as database type\n", theDataBase );
-        switch ( theDataBase ) {
-            case "Derby" :
-                return new DerbyAccess();       // Derby
+        DEBUG.traceA("Using [%s] as database type\n", theDataBase);
+        switch (theDataBase) {
+            case "Derby":
+                return new DerbyAccess(); // Derby
 
-            case "DerbyCreate" :
+            case "DerbyCreate":
                 return new DerbyCreateAccess(); // Derby & create database
 
-            case "Access" :
-            case "AccessCreate" :
-                return new WindowsAccess();     // Access Windows
+            case "Access":
+            case "AccessCreate":
+                return new WindowsAccess(); // Access Windows
 
-            case "mySQL" :
-            case "mySQLCreate" :
-                return new LinuxAccess();       // MySQL Linux
+            case "mySQL":
+            case "mySQLCreate":
+                return new LinuxAccess(); // MySQL Linux
 
             default:
-                DEBUG.error("DataBase [%s] not known\n", theDataBase );
+                DEBUG.error("DataBase [%s] not known\n", theDataBase);
                 System.exit(0);
         }
-        return new DBAccess();               // Unknown
+        return new DBAccess(); // Unknown
     }
 
     /**
@@ -74,9 +74,9 @@ public class DBAccessFactory {
      * @param file File name
      * @return contents of a file as a string
      */
-    private static String fileToString( String file ) {
-        byte[] vec = fileToBytes( file );
-        return new String( vec ).replaceAll("\n","").replaceAll("\r","");
+    private static String fileToString(String file) {
+        byte[] vec = fileToBytes(file);
+        return new String(vec).replaceAll("\n","").replaceAll("\r","");
     }
 
     /**
@@ -84,26 +84,26 @@ public class DBAccessFactory {
      * @param file File name
      * @return contents as byte array
      */
-    private static byte[] fileToBytes( String file ) {
+    private static byte[] fileToBytes(String file) {
         byte[] vec = new byte[0];
         try {
-            final int len = (int) length( file );
-            if ( len < 1000 ) {
-                vec = new byte[ len ];
-                FileInputStream istream = new FileInputStream( file );
+            final int len = (int) length(file);
+            if (len < 1000) {
+                vec = new byte[len];
+                FileInputStream istream = new FileInputStream(file);
                 final int read = istream.read(vec, 0, len);
                 istream.close();
                 return vec;
             } else {
-                DEBUG.error("File %s length %d bytes too long", file, len );
+                DEBUG.error("File %s length %d bytes too long", file, len);
             }
         }
-        catch ( FileNotFoundException  err ) {
-            DEBUG.error("File does not exist: fileToBytes [%s]\n", file );
+        catch (FileNotFoundException  err) {
+            DEBUG.error("File does not exist: fileToBytes [%s]\n", file);
             System.exit(0);
         }
         catch ( IOException err ) {
-            DEBUG.error("IO error: fileToBytes [%s]\n", file );
+            DEBUG.error("IO error: fileToBytes [%s]\n", file);
             System.exit(0);
         }
         return vec;
@@ -114,11 +114,11 @@ public class DBAccessFactory {
      * @param path File name
      * @return Number of characters in file
      */
-    private static long length( String path ) {
+    private static long length(String path) {
         try {
-            File in = new File( path );
+            File in = new File(path);
             return in.length();
-        } catch (SecurityException err ) {
+        } catch (SecurityException err) {
             DEBUG.error("Security error: length of file [%s]\n", path);
             System.exit(0);
         }

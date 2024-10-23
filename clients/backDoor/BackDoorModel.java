@@ -17,24 +17,23 @@ import java.beans.PropertyChangeListener;
 public class BackDoorModel {
     private final SwingPropertyChangeSupport pcs = new SwingPropertyChangeSupport(this);
 
-    private Basket      theBasket  = null;            // Bought items
-    private String      pn = "";                      // Product being processed
+    private Basket theBasket = null; // Bought items
+    private String pn = ""; // Product being processed
 
-    private StockReadWriter theStock     = null;
+    private StockReadWriter theStock = null;
 
     /*
      * Construct the model of the back door client
      * @param mf The factory to create the connection objects
      */
-
     public BackDoorModel(MiddleFactory mf) {
         try {
-            theStock = mf.makeStockReadWriter();        // Database access
-        } catch ( Exception e ) {
-            DEBUG.error("CustomerModel.constructor\n%s", e.getMessage() );
+            theStock = mf.makeStockReadWriter(); // Database access
+        } catch (Exception e) {
+            DEBUG.error("CustomerModel.constructor\n%s", e.getMessage());
         }
 
-        theBasket = makeBasket();                     // Initial Basket
+        theBasket = makeBasket(); // Initial Basket
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -53,31 +52,33 @@ public class BackDoorModel {
      * Check The current stock level
      * @param productNum The product number
      */
-    public void doCheck(String productNum ) {
-        pn  = productNum.trim();                    // Product no.
+    public void doCheck(String productNum) {
+        pn = productNum.trim(); // Product no.
     }
 
     /**
      * Query
      * @param productNum The product number of the item
      */
-    public void doQuery(String productNum ) {
+    public void doQuery(String productNum) {
         String theAction = "";
-        pn  = productNum.trim();                    // Product no.
-        try {                 //  & quantity
-            if ( theStock.exists( pn ) ) {            // Stock Exists?
-                                                      // T
-                Product pr = theStock.getDetails( pn ); //  Product
-                theAction =                             //   Display
-                        String.format( "%s : %7.2f (%2d) ",   //
-                                pr.getDescription(),                  //    description
-                                pr.getPrice(),                        //    price
-                                pr.getQuantity() );                   //    quantity
-            } else {                                  //  F
-                theAction =                             //   Inform
-                        "Unknown product number " + pn;       //  product number
+        pn = productNum.trim(); // Product no.
+        try { // & quantity
+            if (theStock.exists(pn)) { // Stock Exists?
+                // T
+                Product pr = theStock.getDetails(pn); // Product
+                theAction = // Display
+                        String.format( "%s : %7.2f (%2d) ",
+                                pr.getDescription(), // description
+                                pr.getPrice(), // price
+                                pr.getQuantity() // quantity
+                        );
+            } else {
+                // F
+                theAction = // Inform
+                        "Unknown product number " + pn; // product number
             }
-        } catch( StockException e ) {
+        } catch (StockException e) {
             theAction = e.getMessage();
         }
         this.pcs.firePropertyChange("action", null, theAction);
@@ -88,37 +89,37 @@ public class BackDoorModel {
      * @param productNum The product number of the item
      * @param quantity How many to be added
      */
-    public void doRStock(String productNum, String quantity ) {
+    public void doRStock(String productNum, String quantity) {
         String theAction = "";
         theBasket = makeBasket();
-        pn  = productNum.trim();                    // Product no.
-        String pn  = productNum.trim();             // Product no.
+        pn = productNum.trim(); // Product no.
+        String pn = productNum.trim(); // Product no.
         int amount = 0;
         try {
             String aQuantity = quantity.trim();
             try {
-                amount = Integer.parseInt(aQuantity);   // Convert
-                if ( amount < 0 ) {
+                amount = Integer.parseInt(aQuantity); // Convert
+                if (amount < 0) {
                     throw new NumberFormatException("-ve");
                 }
-            }
-            catch ( Exception err) {
+            } catch (Exception err) {
                 theAction = "Invalid quantity";
                 this.pcs.firePropertyChange("action", null, theAction);
                 return;
             }
 
-            if ( theStock.exists( pn ) ) {            // Stock Exists?
-                                                      // T
-                theStock.addStock(pn, amount);          //  Re stock
-                Product pr = theStock.getDetails(pn);   //  Get details
-                theBasket.add(pr);                      //
-                theAction = "";                         // Display
-            } else {                                  // F
-                theAction =                             //  Inform Unknown
-                        "Unknown product number " + pn;       //  product number
+            if (theStock.exists(pn)) { // Stock Exists?
+                // T
+                theStock.addStock(pn, amount); // Re stock
+                Product pr = theStock.getDetails(pn); // Get details
+                theBasket.add(pr);
+                theAction = ""; // Display
+            } else {
+                // F
+                theAction = // Inform Unknown
+                        "Unknown product number " + pn; // product number
             }
-        } catch( StockException e ) {
+        } catch (StockException e) {
             theAction = e.getMessage();
         }
         this.pcs.firePropertyChange("action", null, theAction);
@@ -129,8 +130,8 @@ public class BackDoorModel {
      */
     public void doClear() {
         String theAction = "";
-        theBasket.clear();                        // Clear s. list
-        theAction = "Enter Product Number";       // Set display
+        theBasket.clear(); // Clear s. list
+        theAction = "Enter Product Number"; // Set display
         this.pcs.firePropertyChange("action", null, theAction); // inform the listener view that model changed
     }
 

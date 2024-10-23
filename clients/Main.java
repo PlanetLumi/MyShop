@@ -25,7 +25,6 @@ import java.awt.*;
  * @author  Shine University of Brighton
  * @version year-2024
  */
-
 class Main {
     public static void main (String[] args) {
         new Main().begin();
@@ -36,32 +35,32 @@ class Main {
      */
     public void begin() {
         //DEBUG.set(true); /* Lots of debug info */
-        MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
-        startCustomerGUI_MVC( mlf );
-        startCashierGUI_MVC( mlf );
-        startCashierGUI_MVC( mlf ); // you can create multiple clients
-        startPackingGUI_MVC( mlf );
-        startBackDoorGUI_MVC( mlf );
+        MiddleFactory mlf = new LocalMiddleFactory(); // Direct access
+        startCustomerGUI_MVC(mlf);
+        startCashierGUI_MVC(mlf);
+        startCashierGUI_MVC(mlf); // you can create multiple clients
+        startPackingGUI_MVC(mlf);
+        startBackDoorGUI_MVC(mlf);
     }
 
     /**
      * start the Customer client, -search product
      * @param mlf A factory to create objects to access the stock list
      */
-    public void startCustomerGUI_MVC(MiddleFactory mlf ) {
-        JFrame  window = new JFrame();
-        window.setTitle( "Customer Client MVC");
-        window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    public void startCustomerGUI_MVC(MiddleFactory mlf) {
+        JFrame window = new JFrame();
+        window.setTitle("Customer Client MVC");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension pos = PosOnScrn.getPos();
 
-        CustomerModel model      = new CustomerModel(mlf);
-        CustomerView view        = new CustomerView( window, mlf, pos.width, pos.height );
-        CustomerController cont  = new CustomerController( model, view );
-        view.setController( cont );
+        CustomerModel model = new CustomerModel(mlf);
+        CustomerView view = new CustomerView(window, mlf, pos.width, pos.height);
+        CustomerController cont = new CustomerController(model, view);
+        view.setController(cont);
 
         // Add listener to the model - view is listener, model has PropertyChangeSupport
         model.addPropertyChangeListener(view);
-        window.setVisible(true);         // start Screen
+        window.setVisible(true); // start Screen
     }
 
     /**
@@ -69,59 +68,58 @@ class Main {
      * @param mlf A factory to create objects to access the stock list
      */
     public void startCashierGUI_MVC(MiddleFactory mlf ) {
-        JFrame  window = new JFrame();
-        window.setTitle( "Cashier Client MVC");
-        window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        JFrame window = new JFrame();
+        window.setTitle("Cashier Client MVC");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension pos = PosOnScrn.getPos();
 
-        CashierModel model      = new CashierModel(mlf);
-        CashierView view        = new CashierView( window, mlf, pos.width, pos.height );
-        CashierController cont  = new CashierController( model, view );
-        view.setController( cont );
+        CashierModel model = new CashierModel(mlf);
+        CashierView view = new CashierView(window, mlf, pos.width, pos.height);
+        CashierController cont = new CashierController(model, view);
+        view.setController(cont);
 
         model.addPropertyChangeListener(view); // Add listener to the model
-        window.setVisible(true);         // Make window visible
-        model.askForUpdate();            // Initial display
+        window.setVisible(true); // Make window visible
+        model.askForUpdate(); // Initial display
     }
 
     /**
      * start the Packing client - for warehouse staff to pack the bought order for customer, one order at a time
      * @param mlf A factory to create objects to access the stock list
      */
-
     public void startPackingGUI_MVC(MiddleFactory mlf) {
-        JFrame  window = new JFrame();
+        JFrame window = new JFrame();
 
-        window.setTitle( "Packing Client MVC");
-        window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        window.setTitle("Packing Client MVC");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension pos = PosOnScrn.getPos();
 
-        PackingModel model      = new PackingModel(mlf);
-        PackingView view        = new PackingView( window, mlf, pos.width, pos.height );
-        PackingController cont  = new PackingController( model, view );
-        view.setController( cont );
+        PackingModel model = new PackingModel(mlf);
+        PackingView view = new PackingView(window, mlf, pos.width, pos.height);
+        PackingController cont = new PackingController(model, view);
+        view.setController(cont);
 
         model.addPropertyChangeListener(view); // Add observer to the model
-        window.setVisible(true);         // Make window visible
+        window.setVisible(true); // Make window visible
     }
 
     /**
      * start the BackDoor client - store staff to check and update stock
      * @param mlf A factory to create objects to access the stock list
      */
-    public void startBackDoorGUI_MVC(MiddleFactory mlf ) {
+    public void startBackDoorGUI_MVC(MiddleFactory mlf) {
         JFrame  window = new JFrame();
 
-        window.setTitle( "BackDoor Client MVC");
-        window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        window.setTitle("BackDoor Client MVC");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension pos = PosOnScrn.getPos();
 
-        BackDoorModel model      = new BackDoorModel(mlf);
-        BackDoorView view        = new BackDoorView( window, mlf, pos.width, pos.height );
-        BackDoorController cont  = new BackDoorController( model, view );
-        view.setController( cont );
+        BackDoorModel model = new BackDoorModel(mlf);
+        BackDoorView view = new BackDoorView(window, mlf, pos.width, pos.height);
+        BackDoorController cont = new BackDoorController(model, view);
+        view.setController(cont);
 
         model.addPropertyChangeListener(view); // Add listener to the model
-        window.setVisible(true);         // Make window visible
+        window.setVisible(true); // Make window visible
     }
 }

@@ -21,46 +21,50 @@ import java.util.*;
  * @author  Mike Smith University of Brighton
  * @version 3.0
  */
-
 public class Order implements OrderProcessing {
-    private enum State {Waiting, BeingPacked, ToBeCollected };
+    private enum State {Waiting, BeingPacked, ToBeCollected};
     /**
      * Wraps a Basket and it state into a folder
      */
     private class Folder {
-        private State  stateIs;       // Order state
-        private Basket basket;        // For this basket
+        private State stateIs; // Order state
+        private Basket basket; // For this basket
 
-        public Folder( Basket anOrder ) {
+        public Folder(Basket anOrder) {
             stateIs = State.Waiting;
-            basket  = anOrder;
+            basket = anOrder;
         }
 
-        public State getState()                { return this.stateIs; }
+        public State getState() {
+            return this.stateIs;
+        }
 
-        public Basket getBasket()              { return this.basket; }
+        public Basket getBasket() {
+            return this.basket;
+        }
 
-        public void newState( State newState ) { stateIs = newState; }
+        public void newState(State newState) {
+            stateIs = newState;
+        }
     }
 
     // Active orders in the Catshop system
-    private final ArrayList<Folder>  folders = new ArrayList<>();
-    private static int theNextNumber = 1;          // Start at order 1
+    private final ArrayList<Folder> folders = new ArrayList<>();
+    private static int theNextNumber = 1; // Start at order 1
 
     /**
      * Used to generate debug information
      * @param  basket an instance of a basket
      * @return Description of contents
      */
-    private String asString( Basket basket ) {
+    private String asString(Basket basket) {
         StringBuilder sb = new StringBuilder(1024);
-        Formatter     fr = new Formatter(sb);
-        fr.format( "#%d (", basket.getOrderNum() );
-        for ( Product pr: basket )
-        {
-            fr.format( "%-15.15s: %3d ", pr.getDescription(), pr.getQuantity() );
+        Formatter fr = new Formatter(sb);
+        fr.format("#%d (", basket.getOrderNum());
+        for (Product pr: basket) {
+            fr.format("%-15.15s: %3d ", pr.getDescription(), pr.getQuantity());
         }
-        fr.format( ")" );
+        fr.format(")");
         fr.close();
         return sb.toString();
     }
@@ -78,11 +82,11 @@ public class Order implements OrderProcessing {
      * Add a new order to the order processing system
      * @param bought A new order that is to be processed
      */
-    public synchronized void newOrder( Basket bought ) throws OrderException {
-        DEBUG.trace( "DEBUG: New order" );
-        folders.add( new Folder( bought ) );
-        for ( Folder bws : folders ) {
-            DEBUG.trace( "Order: " + asString( bws.getBasket() ) );
+    public synchronized void newOrder(Basket bought) throws OrderException {
+        DEBUG.trace("DEBUG: New order");
+        folders.add(new Folder(bought));
+        for (Folder bws: folders) {
+            DEBUG.trace("Order: " + asString(bws.getBasket()));
         }
     }
 
@@ -91,12 +95,12 @@ public class Order implements OrderProcessing {
      * @return An order to pack or null if no order
      */
     public synchronized Basket getOrderToPack() throws OrderException {
-        DEBUG.trace( "DEBUG: Get order to pack" );
+        DEBUG.trace("DEBUG: Get order to pack");
         Basket foundWaiting = null;
-        for ( Folder bws : folders ) {
-            if ( bws.getState() == State.Waiting ) {
+        for (Folder bws: folders) {
+            if (bws.getState() == State.Waiting) {
                 foundWaiting = bws.getBasket();
-                bws.newState( State.BeingPacked );
+                bws.newState(State.BeingPacked);
                 break;
             }
         }
@@ -110,12 +114,12 @@ public class Order implements OrderProcessing {
      * @param  orderNum The order that has been packed
      * @return true Order in system, false no such order
      */
-    public synchronized boolean informOrderPacked( int orderNum ) throws OrderException {
-        DEBUG.trace( "DEBUG: Order packed [%d]", orderNum );
-        for ( int i=0; i < folders.size(); i++) {
-            if ( folders.get(i).getBasket().getOrderNum() == orderNum &&
-                    folders.get(i).getState()                == State.BeingPacked ) {
-                folders.get(i).newState( State.ToBeCollected );
+    public synchronized boolean informOrderPacked(int orderNum) throws OrderException {
+        DEBUG.trace("DEBUG: Order packed [%d]", orderNum);
+        for (int i = 0; i < folders.size(); i++) {
+            if (folders.get(i).getBasket().getOrderNum() == orderNum
+                    && folders.get(i).getState() == State.BeingPacked) {
+                folders.get(i).newState(State.ToBeCollected);
                 return true;
             }
         }
@@ -127,11 +131,11 @@ public class Order implements OrderProcessing {
      * collected by the customer
      * @return true If order is in the system, otherwise false
      */
-    public synchronized boolean informOrderCollected( int orderNum ) throws OrderException {
-        DEBUG.trace( "DEBUG: Order collected [%d]", orderNum );
-        for ( int i=0; i < folders.size(); i++) {
-            if ( folders.get(i).getBasket().getOrderNum() == orderNum &&
-                    folders.get(i).getState()                == State.ToBeCollected ) {
+    public synchronized boolean informOrderCollected(int orderNum) throws OrderException {
+        DEBUG.trace("DEBUG: Order collected [%d]", orderNum);
+        for (int i = 0; i < folders.size(); i++) {
+            if (folders.get(i).getBasket().getOrderNum() == orderNum
+                    && folders.get(i).getState() == State.ToBeCollected) {
                 folders.remove(i);
                 return true;
             }
@@ -152,13 +156,13 @@ public class Order implements OrderProcessing {
      * </PRE>
      * @return a Map with the keys: "Waiting", "BeingPacked", "ToBeCollected"
      */
-    public synchronized Map<String, List<Integer> > getOrderState() throws OrderException {
+    public synchronized Map<String, List<Integer>> getOrderState() throws OrderException {
         //DEBUG.trace( "DEBUG: get state of order system" );
-        Map < String, List<Integer> > res = new HashMap<>();
+        Map<String, List<Integer>> res = new HashMap<>();
 
-        res.put( "Waiting",       orderNums(State.Waiting) );
-        res.put( "BeingPacked",   orderNums(State.BeingPacked) );
-        res.put( "ToBeCollected", orderNums(State.ToBeCollected) );
+        res.put("Waiting", orderNums(State.Waiting));
+        res.put("BeingPacked", orderNums(State.BeingPacked));
+        res.put("ToBeCollected", orderNums(State.ToBeCollected));
 
         return res;
     }
@@ -168,11 +172,11 @@ public class Order implements OrderProcessing {
      * @param inState The state to find order numbers in
      * @return A list of order numbers
      */
-    private List<Integer> orderNumsOldWay( State inState ) {
+    private List<Integer> orderNumsOldWay(State inState) {
         List <Integer> res = new ArrayList<>();
-        for ( Folder folder : folders ) {
-            if ( folder.getState() == inState ) {
-                res.add( folder.getBasket().getOrderNum() );
+        for (Folder folder: folders) {
+            if (folder.getState() == inState) {
+                res.add(folder.getBasket().getOrderNum());
             }
         }
         return res;
@@ -183,10 +187,10 @@ public class Order implements OrderProcessing {
      * @param inState The state to find order numbers in
      * @return A list of order numbers
      */
-    private List<Integer> orderNums( State inState ) {
+    private List<Integer> orderNums(State inState) {
         return folders.stream()
-                .filter( folder -> folder.getState() == inState )
-                .map( folder -> folder.getBasket().getOrderNum() )
-                .collect( Collectors.toList() );
+                .filter(folder -> folder.getState() == inState)
+                .map(folder -> folder.getBasket().getOrderNum())
+                .collect(Collectors.toList());
     }
 }

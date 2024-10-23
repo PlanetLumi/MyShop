@@ -16,25 +16,25 @@ import java.beans.PropertyChangeListener;
  */
 
 public class CustomerView implements PropertyChangeListener {
-    class Name {                            // Names of buttons
-        public static final String CHECK  = "Check";
-        public static final String CLEAR  = "Clear";
+    class Name { // Names of buttons
+        public static final String CHECK = "Check";
+        public static final String CLEAR = "Clear";
     }
 
-    private static final int H = 300;       // Height of window pixels
-    private static final int W = 400;       // Width  of window pixels
+    private static final int H = 300; // Height of window pixels
+    private static final int W = 400; // Width  of window pixels
 
-    private final JLabel      pageTitle  = new JLabel();
-    private final JLabel      theAction  = new JLabel();
-    private final JTextField  theInput   = new JTextField();
-    private final JTextArea   theOutput  = new JTextArea();
-    private final JScrollPane theSP      = new JScrollPane();
-    private final JButton     theBtCheck = new JButton( Name.CHECK );
-    private final JButton     theBtClear = new JButton( Name.CLEAR );
+    private final JLabel pageTitle = new JLabel();
+    private final JLabel theAction = new JLabel();
+    private final JTextField theInput = new JTextField();
+    private final JTextArea theOutput = new JTextArea();
+    private final JScrollPane theSP = new JScrollPane();
+    private final JButton theBtCheck = new JButton(Name.CHECK);
+    private final JButton theBtClear = new JButton(Name.CLEAR);
 
     private Picture thePicture = new Picture(80,80);
-    private StockReader theStock   = null;
-    private CustomerController cont= null;
+    private StockReader theStock = null;
+    private CustomerController cont = null;
 
     /**
      * Construct the view
@@ -43,63 +43,63 @@ public class CustomerView implements PropertyChangeListener {
      * @param x     x-cordinate of position of window on screen
      * @param y     y-cordinate of position of window on screen
      */
-
-    public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y ) {
+    public CustomerView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
         try {
-            theStock  = mf.makeStockReader();             // Database Access
-        } catch ( Exception e ) {
-            System.out.println("Exception: " + e.getMessage() );
+            theStock = mf.makeStockReader(); // Database Access
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
         }
-        Container cp         = rpc.getContentPane();    // Content Pane
-        Container rootWindow = (Container) rpc;         // Root Window
-        cp.setLayout(null);                             // No layout manager
-        rootWindow.setSize( W, H );                     // Size of Window
-        rootWindow.setLocation( x, y );
+        Container cp = rpc.getContentPane(); // Content Pane
+        Container rootWindow = (Container) rpc; // Root Window
+        cp.setLayout(null); // No layout manager
+        rootWindow.setSize(W, H); // Size of Window
+        rootWindow.setLocation(x, y);
 
-        Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+        Font f = new Font("Monospaced", Font.PLAIN, 12); // Font f is
 
-        pageTitle.setBounds( 110, 0 , 270, 20 );
-        pageTitle.setText( "Search products" );
-        cp.add( pageTitle );
+        pageTitle.setBounds(110, 0 , 270, 20);
+        pageTitle.setText("Search products");
+        cp.add(pageTitle);
 
-        theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
-        theBtCheck.addActionListener(                   // Call back code
-                e -> cont.doCheck( theInput.getText() ) );
-        cp.add( theBtCheck );                           //  Add to canvas
+        theBtCheck.setBounds(16, 25 + 60 * 0, 80, 40); // Check button
+        theBtCheck.addActionListener( // Call back code
+                e -> cont.doCheck(theInput.getText())
+        );
+        cp.add(theBtCheck); // Add to canvas
 
-        theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
-        theBtClear.addActionListener(                   // Call back code
-                e -> cont.doClear() );
-        cp.add( theBtClear );                           //  Add to canvas
+        theBtClear.setBounds(16, 25 + 60 * 1, 80, 40); // Clear button
+        theBtClear.addActionListener( // Call back code
+                e -> cont.doClear()
+        );
+        cp.add(theBtClear); // Add to canvas
 
-        theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-        theAction.setText( " " );                       // blank
-        cp.add( theAction );                            //  Add to canvas
+        theAction.setBounds(110, 25 , 270, 20); // Message area
+        theAction.setText(" "); // blank
+        cp.add(theAction); // Add to canvas
 
-        theInput.setBounds( 110, 50, 270, 40 );         // Product no area
-        theInput.setText("");                           // Blank
-        cp.add( theInput );                             //  Add to canvas
+        theInput.setBounds(110, 50, 270, 40); // Product no area
+        theInput.setText(""); // Blank
+        cp.add(theInput); // Add to canvas
 
-        theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
-        theOutput.setText( "" );                        //  Blank
-        theOutput.setFont( f );                         //  Uses font
-        cp.add( theSP );                                //  Add to canvas
-        theSP.getViewport().add( theOutput );           //  In TextArea
+        theSP.setBounds(110, 100, 270, 160); // Scrolling pane
+        theOutput.setText(""); // Blank
+        theOutput.setFont(f); // Uses font
+        cp.add(theSP); // Add to canvas
+        theSP.getViewport().add(theOutput); // In TextArea
 
-        thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
-        cp.add( thePicture );                           //  Add to canvas
+        thePicture.setBounds(16, 25 + 60 * 2, 80, 80); // Picture area
+        cp.add(thePicture); // Add to canvas
         thePicture.clear();
 
-        rootWindow.setVisible( true );                  // Make visible);
-        theInput.requestFocus();                        // Focus is here
+        rootWindow.setVisible(true); // Make visible);
+        theInput.requestFocus(); // Focus is here
     }
 
     /**
      * The controller object, used so that an interaction can be passed to the controller
      * @param c   The controller
      */
-
-    public void setController( CustomerController c ) {
+    public void setController(CustomerController c) {
         cont = c;
     }
 
@@ -108,16 +108,16 @@ public class CustomerView implements PropertyChangeListener {
      * @param evt The event source and property that has changed
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        CustomerModel model  = (CustomerModel) evt.getSource();
-        String        message = (String) evt.getNewValue();
-        theAction.setText( message );
-        ImageIcon image = model.getPicture();  // Image of product
-        if ( image == null ) {
-            thePicture.clear();                  // Clear picture
+        CustomerModel model = (CustomerModel) evt.getSource();
+        String message = (String) evt.getNewValue();
+        theAction.setText(message);
+        ImageIcon image = model.getPicture(); // Image of product
+        if (image == null) {
+            thePicture.clear(); // Clear picture
         } else {
-            thePicture.set( image );             // Display picture
+            thePicture.set(image); // Display picture
         }
-        theOutput.setText( model.getBasket().getDetails() );
-        theInput.requestFocus();               // Focus is here
+        theOutput.setText(model.getBasket().getDetails());
+        theInput.requestFocus(); // Focus is here
     }
 }
