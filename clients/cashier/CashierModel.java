@@ -1,6 +1,7 @@
 package clients.cashier;
 
 import catalogue.Basket;
+import catalogue.BetterBasket;
 import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
@@ -178,7 +179,7 @@ public class CashierModel {
      * @return an instance of a new Basket
      */
     protected Basket makeBasket() {
-        return new Basket();
+        return new BetterBasket();
     }
 }
   
