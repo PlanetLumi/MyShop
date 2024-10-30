@@ -2,7 +2,6 @@ package catalogue;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -33,10 +32,14 @@ public class BetterBasket extends Basket implements Serializable {
             Product productInBasket = duplicate.get();
             int newQuantity = productInBasket.getQuantity() + product.getQuantity();
             productInBasket.setQuantity(newQuantity);
-            return true; // Duplicates were merged, so return early.
+            return true; // Duplicates were merged and no sorting needed, so return early.
         }
 
-        return super.add(product); // Add the product to this list normally.
+        boolean success = super.add(product); // Add the product to this list normally.
+
+        // Sort products after adding
+        this.sort(Product.sortByNumber);
+        return success;
     }
 
     // You need to add code here

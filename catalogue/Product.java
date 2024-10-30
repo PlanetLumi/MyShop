@@ -1,6 +1,7 @@
 package catalogue;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Used to hold the following information about
@@ -14,6 +15,8 @@ public class Product implements Serializable {
     private String theDescription; // Description of product
     private double thePrice; // Price of product
     private int theQuantity; // Quantity involved
+
+    public static final Comparator<Product> sortByNumber = Comparator.comparing(Product::getProductNum);
 
     /**
      * Construct a product details
