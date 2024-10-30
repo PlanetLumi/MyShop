@@ -140,7 +140,7 @@ public class BackDoorModel {
      * @return a new instance of a Basket
      */
     protected Basket makeBasket() {
-        return new Basket();
+        return new BetterBasket();
     }
 }
 
