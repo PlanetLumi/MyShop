@@ -18,8 +18,8 @@ public class PackingView implements Observer
 {
   private static final String PACKED = "Packed";
 
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 375;       // Height of window pixels
+  private static final int W = 500;       // Width  of window pixels
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -51,7 +51,8 @@ public class PackingView implements Observer
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
+    rootWindow.setLocation( (x), (y+80) );          // location of window
+    cp.setBackground(new Color(37, 113, 128));      // Colour (Teal)
     
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
     
@@ -63,14 +64,16 @@ public class PackingView implements Observer
     theBtPack.addActionListener(                   // Call back code
       e -> cont.doPacked() );
     cp.add( theBtPack );                          //  Add to canvas
-
+    theBtPack.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas
 
     theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
+    theOutput.setFont( f );                         //  Uses font
+    theOutput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible

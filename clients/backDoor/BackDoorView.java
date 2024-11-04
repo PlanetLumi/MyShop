@@ -18,8 +18,8 @@ public class BackDoorView implements Observer
   private static final String CLEAR    = "Clear";
   private static final String QUERY    = "Query";
  
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 375;       // Height of window pixels
+  private static final int W = 500;       // Width  of window pixels
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -54,7 +54,8 @@ public class BackDoorView implements Observer
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
+    rootWindow.setLocation( (x+100), (y+80) );
+    cp.setBackground(new Color(37, 113, 128));      // Colour (Teal)
     
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
@@ -66,18 +67,21 @@ public class BackDoorView implements Observer
     theBtQuery.addActionListener(                   // Call back code
       e -> cont.doQuery( theInput.getText() ) );
     cp.add( theBtQuery );                           //  Add to canvas
-
+    theBtQuery.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theBtRStock.setBounds( 16, 25+60*1, 80, 40 );   // Check Button
     theBtRStock.addActionListener(                  // Call back code
       e -> cont.doRStock( theInput.getText(),
                           theInputNo.getText() ) );
     cp.add( theBtRStock );                          //  Add to canvas
-
+    theBtRStock.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Buy button 
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
-
+    theBtClear.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
  
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
@@ -86,14 +90,17 @@ public class BackDoorView implements Observer
     theInput.setBounds( 110, 50, 120, 40 );         // Input Area
     theInput.setText("");                           // Blank
     cp.add( theInput );                             //  Add to canvas
+    theInput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
     
     theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
     theInputNo.setText("0");                        // 0
     cp.add( theInputNo );                           //  Add to canvas
-
+    theInputNo.setBackground(new Color(242, 229, 191)); // Colour (Beige)
+    
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
+    theOutput.setFont( f );                         //  Uses font 
+    theOutput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible

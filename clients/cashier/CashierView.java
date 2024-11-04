@@ -16,8 +16,8 @@ import java.util.Observer;
  */
 public class CashierView implements Observer
 {
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 375;       // Height of window pixels
+  private static final int W = 500;       // Width  of window pixels
   
   private static final String CHECK  = "Check";
   private static final String BUY    = "Buy";
@@ -58,8 +58,9 @@ public class CashierView implements Observer
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
-
+    rootWindow.setLocation( (x+100), y );
+    cp.setBackground(new Color(37, 113, 128));      // Colour (Teal)
+    
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
     pageTitle.setBounds( 110, 0 , 270, 20 );       
@@ -70,17 +71,20 @@ public class CashierView implements Observer
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
-
+    theBtCheck.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
       e -> cont.doBuy() );
     cp.add( theBtBuy );                             //  Add to canvas
-
+    theBtBuy.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
     theBtBought.addActionListener(                  // Call back code
       e -> cont.doBought() );
     cp.add( theBtBought );                          //  Add to canvas
-
+    theBtBought.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas
@@ -88,10 +92,12 @@ public class CashierView implements Observer
     theInput.setBounds( 110, 50, 270, 40 );         // Input Area
     theInput.setText("");                           // Blank
     cp.add( theInput );                             //  Add to canvas
-
+    theInput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
+    
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
+    theOutput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible

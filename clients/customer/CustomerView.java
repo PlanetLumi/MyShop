@@ -1,3 +1,6 @@
+// UI
+
+
 package clients.customer;
 
 import catalogue.Basket;
@@ -23,8 +26,8 @@ public class CustomerView implements Observer
     public static final String CLEAR  = "Clear";
   }
 
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 375;       // Height of window pixels # originally 300
+  private static final int W = 500;       // Width  of window pixels # originally 400
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -60,6 +63,7 @@ public class CustomerView implements Observer
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
+    cp.setBackground(new Color(37, 113, 128));      // Colour (Teal)
 
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
     
@@ -71,12 +75,14 @@ public class CustomerView implements Observer
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
+    theBtCheck.setBackground(new Color(253, 139, 81)); // Colour (Orange)
 
     theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
-
+    theBtClear.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( " " );                       // blank
     cp.add( theAction );                            //  Add to canvas
@@ -84,13 +90,15 @@ public class CustomerView implements Observer
     theInput.setBounds( 110, 50, 270, 40 );         // Product no area
     theInput.setText("");                           // Blank
     cp.add( theInput );                             //  Add to canvas
+    theInput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
     
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
-
+    theOutput.setBackground(new Color(242, 229, 191)); // Colour (Beige)
+    
     thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
     cp.add( thePicture );                           //  Add to canvas
     thePicture.clear();
