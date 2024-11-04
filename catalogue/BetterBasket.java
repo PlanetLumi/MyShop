@@ -41,8 +41,4 @@ public class BetterBasket extends Basket implements Serializable {
         this.sort(Product.sortByNumber);
         return success;
     }
-
-    // You need to add code here
-    // merge the items for same product,
-    // or sort the item based on the product number
 }
