@@ -4,6 +4,7 @@ import catalogue.Basket;
 import middle.OrderException;
 import orders.Order;
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @version 2.0
  */
 public class R_Order extends UnicastRemoteObject implements RemoteOrder_I {
+    @Serial
     private static final long serialVersionUID = 1;
     private Order aOrder = null;
 

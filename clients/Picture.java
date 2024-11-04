@@ -3,6 +3,7 @@ package clients;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.Serial;
 
 /**
  * A class to display a picture in a client
@@ -10,6 +11,7 @@ import java.awt.geom.Rectangle2D;
  * @version 1.0
  */
 public class Picture extends Canvas {
+    @Serial
     private static final long serialVersionUID = 1;
     private int width = 260;
     private int height = 260;

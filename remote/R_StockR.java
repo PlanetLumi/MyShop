@@ -5,6 +5,7 @@ import dbAccess.StockR;
 import middle.StockException;
 
 import javax.swing.*;
+import java.io.Serial;
 import java.rmi.RemoteException;
 
 // There can only be 1 ResultSet opened per statement
@@ -18,6 +19,7 @@ import java.rmi.RemoteException;
  * @version 2.0
  */
 public class R_StockR extends java.rmi.server.UnicastRemoteObject implements RemoteStockR_I {
+    @Serial
     private static final long serialVersionUID = 1;
     private StockR aStockR = null;
 
