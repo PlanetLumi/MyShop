@@ -53,6 +53,7 @@ public class BackDoorView implements Observer
     Container cp         = rpc.getContentPane();    // Content Pane
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
+    cp.setBackground(new java.awt.Color(145, 92, 150));
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
     
@@ -85,15 +86,18 @@ public class BackDoorView implements Observer
 
     theInput.setBounds( 110, 50, 120, 40 );         // Input Area
     theInput.setText("");                           // Blank
+    theInput.setBackground(new java.awt.Color(219, 212, 255));
     cp.add( theInput );                             //  Add to canvas
     
     theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
     theInputNo.setText("0");                        // 0
+    theInputNo.setBackground(new java.awt.Color(219, 212, 255));
     cp.add( theInputNo );                           //  Add to canvas
 
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
+    theOutput.setFont( f );                         //  Uses font 
+    theOutput.setBackground(new java.awt.Color(219, 212, 255));
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible

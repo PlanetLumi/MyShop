@@ -43,6 +43,7 @@ public class Picture extends Canvas
   public void paint( Graphics g )       // When 'Window' is first
   {                                     //  shown or damaged
     drawImage( (Graphics2D) g );
+
   }
   
   public void update( Graphics g )      // Called by repaint
@@ -54,7 +55,7 @@ public class Picture extends Canvas
    * Draw the picture
    * First set the area to white and then 
    *  draw the image 
-   * @param g Grapics context
+   * @param g Graphics context
    */
 
   public void drawImage( Graphics2D g )

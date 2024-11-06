@@ -58,7 +58,8 @@ public class CustomerView implements Observer
     Container cp         = rpc.getContentPane();    // Content Pane
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
+    cp.setBackground(new java.awt.Color(255, 204, 234));
+    rootWindow.setSize( W, H );                    // Size of Window
     rootWindow.setLocation( x, y );
 
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
@@ -66,15 +67,22 @@ public class CustomerView implements Observer
     pageTitle.setBounds( 110, 0 , 270, 20 );       
     pageTitle.setText( "Search products" );                        
     cp.add( pageTitle );
-
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
+  
+    theBtCheck.setBounds( 16, 25+60*0, 85, 40 );    // Check button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
+    theBtCheck.setBackground(new java.awt.Color(255, 246, 227));
+    theBtCheck.setOpaque(true);
+    theBtCheck.setBorderPainted(false);
     cp.add( theBtCheck );                           //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
+    theBtClear.setBounds( 16, 25+60*1, 85, 40 );    // Clear button
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
+    theBtClear.setBackground(new java.awt.Color(255, 246, 227));
+    theBtClear.setOpaque(true);
+    theBtClear.setBorderPainted(false);
+
     cp.add( theBtClear );                           //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
@@ -83,11 +91,13 @@ public class CustomerView implements Observer
 
     theInput.setBounds( 110, 50, 270, 40 );         // Product no area
     theInput.setText("");                           // Blank
+    theInput.setBackground(new java.awt.Color(255, 246, 227));
     cp.add( theInput );                             //  Add to canvas
     
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
+    theOutput.setFont( f );                         //  Uses font 
+    theOutput.setBackground(new java.awt.Color(255, 246, 227));
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
 

@@ -50,13 +50,14 @@ public class PackingView implements Observer
     Container cp         = rpc.getContentPane();    // Content Pane
     Container rootWindow = (Container) rpc;         // Root Window
     cp.setLayout(null);                             // No layout manager
+    cp.setBackground(new java.awt.Color(253, 219, 187));
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
     
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
     
     pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Packing Bought Order" );                        
+    pageTitle.setText( "Packing Bought Order" );
     cp.add( pageTitle );
 
     theBtPack.setBounds( 16, 25+60*0, 80, 40 );   // Check Button
@@ -70,7 +71,8 @@ public class PackingView implements Observer
 
     theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
+    theOutput.setFont( f );                         //  Uses font 
+    theOutput.setBackground(new java.awt.Color(255, 249, 191));
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
