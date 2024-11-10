@@ -20,6 +20,7 @@ public class CustomerView implements Observer
   class Name                              // Names of buttons
   {
     public static final String CHECK  = "Check";
+    public static final String SEARCH = "Search";
     public static final String CLEAR  = "Clear";
   }
 
@@ -32,6 +33,7 @@ public class CustomerView implements Observer
   private final JTextArea   theOutput  = new JTextArea();
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( Name.CHECK );
+  private final JButton		theBtSearch = new JButton( Name.SEARCH );
   private final JButton     theBtClear = new JButton( Name.CLEAR );
 
   private Picture thePicture = new Picture(80,80);
@@ -68,21 +70,29 @@ public class CustomerView implements Observer
     pageTitle.setText( "Search products" );                        
     cp.add( pageTitle );
   
-    theBtCheck.setBounds( 16, 25+60*0, 85, 40 );    // Check button
+    theBtCheck.setBounds( 16, 10+50*0, 85, 40 );    // Check button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
     theBtCheck.setBackground(new java.awt.Color(255, 246, 227));
     theBtCheck.setOpaque(true);
     theBtCheck.setBorderPainted(false);
-    cp.add( theBtCheck );                           //  Add to canvas
+    cp.add( theBtCheck );                        //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*1, 85, 40 );    // Clear button
-    theBtClear.addActionListener(                   // Call back code
-      e -> cont.doClear() );
+    theBtSearch.setBounds( 16, 10+50*1, 85, 40 );    // Check button
+    theBtSearch.setBackground(new java.awt.Color(255, 246, 227));
+    theBtSearch.setOpaque(true);
+    theBtSearch.setBorderPainted(false);
+    theBtSearch.setForeground(Color.red);
+    theBtSearch.addActionListener(                   // Call back code
+      e -> cont.doCheckByName( theInput.getText() ) );
+    cp.add( theBtSearch );
+    
+    theBtClear.setBounds( 16, 10+50*2, 85, 40 );    // Clear button
     theBtClear.setBackground(new java.awt.Color(255, 246, 227));
     theBtClear.setOpaque(true);
     theBtClear.setBorderPainted(false);
-
+    theBtClear.addActionListener(                   // Call back code
+      e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
@@ -101,7 +111,7 @@ public class CustomerView implements Observer
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
 
-    thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
+    thePicture.setBounds( 16, 10+50*3, 80, 80 );   // Picture area
     cp.add( thePicture );                           //  Add to canvas
     thePicture.clear();
     
