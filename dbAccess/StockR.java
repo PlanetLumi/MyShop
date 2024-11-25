@@ -1,12 +1,5 @@
 package dbAccess;
 
-/**
- * Implements Read access to the stock list
- * The stock list is held in a relational DataBase
- * @author  Mike Smith University of Brighton
- * @version 2.0
- */
-
 import catalogue.Product;
 import debug.DEBUG;
 import middle.StockException;
@@ -23,15 +16,18 @@ import java.sql.*;
 //    no spaces after SQL statement ;
 
 /**
- * Implements read only access to the stock database.
+ * Implements read access to the stock list
+ * The stock list is held in a relational database
+ * @author  Mike Smith University of Brighton
+ * @version 2.0
  */
 public class StockR implements StockReader {
-    private Connection theCon = null; // Connection to database
-    private Statement theStmt = null; // Statement object
+    final private Connection theCon; // Connection to database
+    final private Statement theStmt; // Statement object
 
     /**
      * Connects to database
-     * Uses a factory method to help setup the connection
+     * Uses a factory method to help set up the connection
      * @throws StockException if problem
      */
     public StockR() throws StockException {
@@ -39,10 +35,11 @@ public class StockR implements StockReader {
             DBAccess dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
 
-            theCon = DriverManager.getConnection
-                    (dbDriver.urlOfDatabase(),
-                            dbDriver.username(),
-                            dbDriver.password());
+            theCon = DriverManager.getConnection(
+                    dbDriver.urlOfDatabase(),
+                    dbDriver.username(),
+                    dbDriver.password()
+            );
 
             theStmt = theCon.createStatement();
             theCon.setAutoCommit(true);
@@ -77,11 +74,12 @@ public class StockR implements StockReader {
      * @return true if exists otherwise false
      */
     public synchronized boolean exists(String pNum) throws StockException {
-        try {
-            ResultSet rs = getStatementObject().executeQuery(
-                    "select price from ProductTable " +
-                            "  where  ProductTable.productNo = '" + pNum + "'"
-            );
+        final String query = "SELECT price FROM ProductTable WHERE ProductTable.productNo = ?";
+
+        try (PreparedStatement statement = getConnectionObject().prepareStatement(query)) {
+            statement.setString(1, pNum);
+            ResultSet rs = statement.executeQuery();
+
             boolean res = rs.next();
             DEBUG.trace("DB StockR: exists(%s) -> %s", pNum, ( res ? "T" : "F" ));
             return res;
@@ -97,21 +95,24 @@ public class StockR implements StockReader {
      * @return Details in an instance of a Product
      */
     public synchronized Product getDetails(String pNum) throws StockException {
-        try {
+        final String query = """
+                SELECT description, price, stockLevel
+                FROM ProductTable, StockTable
+                WHERE ProductTable.productNo = ?
+                AND StockTable.productNo = ?
+                """;
+        try (PreparedStatement statement = getConnectionObject().prepareStatement(query)) {
             Product dt = new Product("0", "", 0.00, 0);
-            ResultSet rs = getStatementObject().executeQuery(
-                    "select description, price, stockLevel " +
-                            "  from ProductTable, StockTable " +
-                            "  where  ProductTable.productNo = '" + pNum + "' " +
-                            "  and    StockTable.productNo   = '" + pNum + "'"
-            );
+            statement.setString(1, pNum);
+            statement.setString(2, pNum);
+            ResultSet rs = statement.executeQuery();
+
             if (rs.next()) {
                 dt.setProductNum(pNum);
                 dt.setDescription(rs.getString("description"));
                 dt.setPrice(rs.getDouble("price"));
                 dt.setQuantity(rs.getInt("stockLevel"));
             }
-            rs.close();
             return dt;
         } catch (SQLException e) {
             throw new StockException("SQL getDetails: " + e.getMessage());
@@ -125,18 +126,17 @@ public class StockR implements StockReader {
      * @return ImageIcon representing the image
      */
     public synchronized ImageIcon getImage(String pNum) throws StockException {
+        final String query = "SELECT picture FROM ProductTable WHERE ProductTable.productNo = ?";
+
         String filename = "default.jpg";
-        try {
-            ResultSet rs = getStatementObject().executeQuery(
-                    "select picture from ProductTable " +
-                            "  where  ProductTable.productNo = '" + pNum + "'"
-            );
+        try (PreparedStatement statement = getConnectionObject().prepareStatement(query)) {
+            statement.setString(1, pNum);
+            ResultSet rs = statement.executeQuery();
 
             boolean res = rs.next();
             if (res) {
                 filename = rs.getString("picture");
             }
-            rs.close();
         } catch (SQLException e) {
             DEBUG.error("getImage()\n%s\n", e.getMessage());
             throw new StockException("SQL getImage: " + e.getMessage());
