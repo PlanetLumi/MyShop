@@ -1,4 +1,5 @@
 package clients;
+
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 import clients.backDoor.BackDoorController;
@@ -13,6 +14,7 @@ import clients.customer.CustomerView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -54,7 +56,7 @@ public class Main {
 
         // Panel for buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1, 10, 10));
+        buttonPanel.setLayout(new GridLayout(5, 1, 10, 10)); // 5 rows (4 clients + 1 exit button)
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         // Add buttons for each client
@@ -62,18 +64,21 @@ public class Main {
         JButton cashierButton = new JButton("Start Cashier Client");
         JButton packingButton = new JButton("Start Packing Client");
         JButton backDoorButton = new JButton("Start BackDoor Client");
+        JButton exitButton = new JButton("Exit Menu");
 
         // Add action listeners for each button
         customerButton.addActionListener(_ -> startCustomerClient());
         cashierButton.addActionListener(_ -> startCashierClient());
         packingButton.addActionListener(_ -> startPackingClient());
         backDoorButton.addActionListener(_ -> startBackDoorClient());
+        exitButton.addActionListener(_ -> exitApplication(menuFrame));
 
         // Add buttons to panel
         buttonPanel.add(customerButton);
         buttonPanel.add(cashierButton);
         buttonPanel.add(packingButton);
         buttonPanel.add(backDoorButton);
+        buttonPanel.add(exitButton); // Exit button at the bottom
 
         // Add components to frame
         menuFrame.add(headerLabel, BorderLayout.NORTH);
@@ -154,5 +159,23 @@ public class Main {
 
         model.addObserver(view);
         window.setVisible(true);
+    }
+
+    /**
+     * Exit the application when the "Exit" button is clicked.
+     *
+     * @param menuFrame The main menu frame to close.
+     */
+    private void exitApplication(JFrame menuFrame) {
+        int confirm = JOptionPane.showConfirmDialog(
+                menuFrame,
+                "Are you sure you want to exit the application?",
+                "Exit Confirmation",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.exit(0); // Terminate the program
+        }
     }
 }
