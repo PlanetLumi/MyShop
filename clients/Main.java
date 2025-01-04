@@ -1,5 +1,6 @@
 package clients;
-
+import middle.LocalMiddleFactory;
+import middle.MiddleFactory;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
@@ -12,123 +13,146 @@ import clients.customer.CustomerView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
-import middle.LocalMiddleFactory;
-import middle.MiddleFactory;
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Starts all the clients (user interface)  as a single application.
- * Good for testing the system using a single application.
- * @author  Mike Smith University of Brighton
- * @version 2.0
- * @author  Shine University of Brighton
- * @version year-2024
+ * Main Menu Client to pick and run a specific client (Customer, Cashier, Packing, BackDoor).
  */
+public class Main {
 
-class Main
-{
-  public static void main (String args[])
-  {
-    new Main().begin();
-  }
+    private final MiddleFactory mlf; // Factory object for shared logic
 
-  /**
-   * Starts the system (Non distributed)
-   */
-  public void begin()
-  {
-    //DEBUG.set(true); /* Lots of debug info */
-    MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
-    startCustomerGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf ); // you can create multiple clients
-    startPackingGUI_MVC( mlf );
-    startBackDoorGUI_MVC( mlf );
-  }
-  
-  /**
-  * start the Customer client, -search product
-  * @param mlf A factory to create objects to access the stock list
-  */
-  public void startCustomerGUI_MVC(MiddleFactory mlf )
-  {
-    JFrame  window = new JFrame();
-    window.setTitle( "Customer Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    CustomerModel model      = new CustomerModel(mlf);
-    CustomerView view        = new CustomerView( window, mlf, pos.width, pos.height );
-    CustomerController cont  = new CustomerController( model, view );
-    view.setController( cont );
+    /**
+     * Constructor - Initializes the MiddleFactory
+     */
+    public Main() {
+        this.mlf = new LocalMiddleFactory(); // Shared factory instance
+    }
 
-    model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
-    window.setVisible(true);         // start Screen
-  }
+    /**
+     * Entry point to display the menu.
+     */
+    public static void main(String[] args) {
+        new Main().showMenu();
+    }
 
-  /**
-   * start the cashier client - customer check stock, buy product
-   * @param mlf A factory to create objects to access the stock list
-   */
-  public void startCashierGUI_MVC(MiddleFactory mlf )
-  {
-    JFrame  window = new JFrame();
-    window.setTitle( "Cashier Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    CashierModel model      = new CashierModel(mlf);
-    CashierView view        = new CashierView( window, mlf, pos.width, pos.height );
-    CashierController cont  = new CashierController( model, view );
-    view.setController( cont );
+    /**
+     * Display the main GUI menu to choose a client.
+     */
+    public void showMenu() {
+        // Create menu frame
+        JFrame menuFrame = new JFrame("Client Menu");
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setSize(400, 300);
+        menuFrame.setLayout(new BorderLayout());
+        menuFrame.setLocationRelativeTo(null); // Center the frame on the screen
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
-    model.askForUpdate();            // Initial display
-  }
+        // Create header
+        JLabel headerLabel = new JLabel("Choose a Client to Start", SwingConstants.CENTER);
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
-  /**
-   * start the Packing client - for warehouse staff to pack the bought order for customer, one order at a time
-   * @param mlf A factory to create objects to access the stock list
-   */
-  
-  public void startPackingGUI_MVC(MiddleFactory mlf)
-  {
-    JFrame  window = new JFrame();
+        // Panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(4, 1, 10, 10));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-    window.setTitle( "Packing Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    PackingModel model      = new PackingModel(mlf);
-    PackingView view        = new PackingView( window, mlf, pos.width, pos.height );
-    PackingController cont  = new PackingController( model, view );
-    view.setController( cont );
+        // Add buttons for each client
+        JButton customerButton = new JButton("Start Customer Client");
+        JButton cashierButton = new JButton("Start Cashier Client");
+        JButton packingButton = new JButton("Start Packing Client");
+        JButton backDoorButton = new JButton("Start BackDoor Client");
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
-  }
-  
-  /**
-   * start the BackDoor client - store staff to check and update stock
-   * @param mlf A factory to create objects to access the stock list
-   */
-  public void startBackDoorGUI_MVC(MiddleFactory mlf )
-  {
-    JFrame  window = new JFrame();
+        // Add action listeners for each button
+        customerButton.addActionListener(_ -> startCustomerClient());
+        cashierButton.addActionListener(_ -> startCashierClient());
+        packingButton.addActionListener(_ -> startPackingClient());
+        backDoorButton.addActionListener(_ -> startBackDoorClient());
 
-    window.setTitle( "BackDoor Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    BackDoorModel model      = new BackDoorModel(mlf);
-    BackDoorView view        = new BackDoorView( window, mlf, pos.width, pos.height );
-    BackDoorController cont  = new BackDoorController( model, view );
-    view.setController( cont );
+        // Add buttons to panel
+        buttonPanel.add(customerButton);
+        buttonPanel.add(cashierButton);
+        buttonPanel.add(packingButton);
+        buttonPanel.add(backDoorButton);
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
-  }
-  
+        // Add components to frame
+        menuFrame.add(headerLabel, BorderLayout.NORTH);
+        menuFrame.add(buttonPanel, BorderLayout.CENTER);
+
+        // Show the frame
+        menuFrame.setVisible(true);
+    }
+
+    /**
+     * Start the Customer Client.
+     */
+    private void startCustomerClient() {
+        JFrame window = new JFrame();
+        window.setTitle("Customer Client MVC");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this window
+        Dimension pos = PosOnScrn.getPos();
+
+        CustomerModel model = new CustomerModel(mlf);
+        CustomerView view = new CustomerView(window, mlf, pos.width, pos.height);
+        CustomerController controller = new CustomerController(model, view);
+        view.setController(controller);
+
+        model.addObserver(view);
+        window.setVisible(true);
+    }
+
+    /**
+     * Start the Cashier Client.
+     */
+    private void startCashierClient() {
+        JFrame window = new JFrame();
+        window.setTitle("Cashier Client MVC");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Dimension pos = PosOnScrn.getPos();
+
+        CashierModel model = new CashierModel(mlf);
+        CashierView view = new CashierView(window, mlf, pos.width, pos.height);
+        CashierController controller = new CashierController(model, view);
+        view.setController(controller);
+
+        model.addObserver(view);
+        window.setVisible(true);
+        model.askForUpdate();
+    }
+
+    /**
+     * Start the Packing Client.
+     */
+    private void startPackingClient() {
+        JFrame window = new JFrame();
+        window.setTitle("Packing Client MVC");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Dimension pos = PosOnScrn.getPos();
+
+        PackingModel model = new PackingModel(mlf);
+        PackingView view = new PackingView(window, mlf, pos.width, pos.height);
+        PackingController controller = new PackingController(model, view);
+        view.setController(controller);
+
+        model.addObserver(view);
+        window.setVisible(true);
+    }
+
+    /**
+     * Start the BackDoor Client.
+     */
+    private void startBackDoorClient() {
+        JFrame window = new JFrame();
+        window.setTitle("BackDoor Client MVC");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Dimension pos = PosOnScrn.getPos();
+
+        BackDoorModel model = new BackDoorModel(mlf);
+        BackDoorView view = new BackDoorView(window, mlf, pos.width, pos.height);
+        BackDoorController controller = new BackDoorController(model, view);
+        view.setController(controller);
+
+        model.addObserver(view);
+        window.setVisible(true);
+    }
 }
