@@ -1,7 +1,5 @@
 package clients;
 
-import middle.LocalMiddleFactory;
-import middle.MiddleFactory;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
@@ -14,6 +12,10 @@ import clients.customer.CustomerView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
+import clients.productlist.ProductsListModel;
+import clients.productlist.ProductsListView;
+import middle.LocalMiddleFactory;
+import middle.MiddleFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +58,7 @@ public class Main {
 
         // Panel for buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(5, 1, 10, 10)); // 5 rows (4 clients + 1 exit button)
+        buttonPanel.setLayout(new GridLayout(6, 1, 10, 10)); // 6 rows (5 clients + 1 exit button)
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         // Add buttons for each client
@@ -64,6 +66,7 @@ public class Main {
         JButton cashierButton = new JButton("Start Cashier Client");
         JButton packingButton = new JButton("Start Packing Client");
         JButton backDoorButton = new JButton("Start BackDoor Client");
+        JButton productsListButton = new JButton("Start Products List Client");
         JButton exitButton = new JButton("Exit Menu");
 
         // Add action listeners for each button
@@ -71,6 +74,7 @@ public class Main {
         cashierButton.addActionListener(_ -> startCashierClient());
         packingButton.addActionListener(_ -> startPackingClient());
         backDoorButton.addActionListener(_ -> startBackDoorClient());
+        productsListButton.addActionListener(_ -> startProductsListClient());
         exitButton.addActionListener(_ -> exitApplication(menuFrame));
 
         // Add buttons to panel
@@ -78,6 +82,7 @@ public class Main {
         buttonPanel.add(cashierButton);
         buttonPanel.add(packingButton);
         buttonPanel.add(backDoorButton);
+        buttonPanel.add(productsListButton);
         buttonPanel.add(exitButton); // Exit button at the bottom
 
         // Add components to frame
@@ -140,6 +145,24 @@ public class Main {
         view.setController(controller);
 
         model.addObserver(view);
+        window.setVisible(true);
+    }
+    
+    /**
+     * Start the Products List Client.
+     */
+    private void startProductsListClient() {
+        JFrame window = new JFrame();
+        window.setTitle("Products List Client MVC");
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        Dimension pos = PosOnScrn.getPos();
+    
+        ProductsListModel model = new ProductsListModel(mlf);
+        ProductsListView view = new ProductsListView(window, model , pos.width, pos.height);
+
+
+        model.addPropertyChangeListener(view);
+        model.loadProducts();
         window.setVisible(true);
     }
 
