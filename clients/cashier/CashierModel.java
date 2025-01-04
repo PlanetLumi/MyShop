@@ -128,33 +128,40 @@ public class CashierModel extends Observable
     theState = State.process;                   // All Done
     setChanged(); notifyObservers(theAction);
   }
-  
+
   /**
    * Customer pays for the contents of the basket
    */
-  public void doBought()
-  {
+  public void doBought() {
     String theAction = "";
-    int    amount  = 1;                       //  & quantity
-    try
-    {
-      if ( theBasket != null &&
-           theBasket.size() >= 1 )            // items > 1
-      {                                       // T
-        theOrder.newOrder( theBasket );       //  Process order
-        theBasket = null;                     //  reset
-      }                                       //
-      theAction = "Start New Order";            // New order
-      theState = State.process;               // All Done
-       theBasket = null;
-    } catch( OrderException e )
-    {
-      DEBUG.error( "%s\n%s", 
-            "CashierModel.doCancel", e.getMessage() );
+    try {
+      if (theBasket != null && theBasket.size() >= 1) {  // items > 1
+        boolean allInStock = true;
+        for (Product pr : theBasket) {
+          if (!theStock.exists(pr.getProductNum()) ||
+                  theStock.getDetails(pr.getProductNum()).getQuantity() < pr.getQuantity()) {
+            allInStock = false;
+            theAction = "!!! Not in stock or insufficient quantity: " + pr.getDescription();
+            break;
+          }
+        }
+        if (allInStock) {
+          theOrder.newOrder(theBasket);       // Process order
+          theBasket = null;                     // Reset
+          theAction = "Order placed successfully. Start New Order"; // Success message
+        }
+      } else {
+        theAction = "Basket is empty";          // Basket check
+      }
+      theState = State.process;                 // All Done
+    } catch (OrderException | StockException e) {
+      DEBUG.error("%s\n%s",
+              "CashierModel.doBought", e.getMessage());
       theAction = e.getMessage();
     }
     theBasket = null;
-    setChanged(); notifyObservers(theAction); // Notify
+    setChanged();
+    notifyObservers(theAction);    // Notify
   }
 
   /**
