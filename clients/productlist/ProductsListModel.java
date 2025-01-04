@@ -57,7 +57,7 @@ public class ProductsListModel {
                     System.out.println("Product not found");
                     continue;
                 }
-            
+
                 productList.add(product); // Add product to list
             }
 
