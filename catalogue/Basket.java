@@ -78,7 +78,7 @@ public class Basket extends ArrayList<Product> implements Serializable
     {
       for ( Product pr: this )
       {
-        int number = pr.getQuantity();
+        int number = pr.getQuantity(); // 0001 4INCH TV  (1) £ 10.00
         fr.format("%-7s",       pr.getProductNum() );
         fr.format("%-14.14s ",  pr.getDescription() );
         fr.format("(%3d) ",     number );
@@ -86,7 +86,9 @@ public class Basket extends ArrayList<Product> implements Serializable
         fr.format("\n");
         total += pr.getPrice() * number;
       }
-      fr.format("----------------------------\n");
+      fr.format("-------------------------------------\n");
+      fr.format(" 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒 🛒\n");
+      fr.format("-------------------------------------\n");
       fr.format("Total                       ");
       fr.format("%s%7.2f\n",    csign, total );
       fr.close();

@@ -24,6 +24,7 @@ public class CustomerView implements Observer
   {
     public static final String CHECK  = "Check";
     public static final String CLEAR  = "Clear";
+    public static final String CHECKNAME  = "Search";
   }
 
   private static final int H = 375;       // Height of window pixels # originally 300
@@ -36,6 +37,7 @@ public class CustomerView implements Observer
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( Name.CHECK );
   private final JButton     theBtClear = new JButton( Name.CLEAR );
+  private final JButton     theBtCheckName = new JButton( Name.CHECKNAME );
 
   private Picture thePicture = new Picture(80,80);
   private StockReader theStock   = null;
@@ -76,6 +78,16 @@ public class CustomerView implements Observer
       e -> cont.doCheck( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
     theBtCheck.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
+    
+    //###########################
+    theBtCheckName.setBounds( 16, 25+60*1, 80, 40 );    // Check Name button
+    theBtCheckName.addActionListener(                   // Call back code
+      e -> cont.doCheckByName( theInput.getText() ) );
+    cp.add( theBtCheckName );                           //  Add to canvas
+    theBtCheckName.setBackground(new Color(253, 139, 81)); // Colour (Orange)
+    
+    
 
     theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
     theBtClear.addActionListener(                   // Call back code

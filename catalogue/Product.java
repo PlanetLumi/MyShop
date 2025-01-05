@@ -9,9 +9,9 @@ import java.io.Serializable;
  * @version 2.0
  */
 
-public class Product implements Serializable
+public class Product implements Comparable<Product> // was Serializable
 {
-  private static final long serialVersionUID = 20092506;
+  private static final long serialVersionUID = 20092506; // can delete line
   private String theProductNum;       // Product number
   private String theDescription;      // Description of product
   private double thePrice;            // Price of product
@@ -57,5 +57,11 @@ public class Product implements Serializable
   { 
     theQuantity = aQuantity;
   }
+  
+@Override
+public int compareTo(Product p1) {  // to order by num
+	//
+	return this.getProductNum().compareTo(p1.getProductNum());
+}
 
 }
