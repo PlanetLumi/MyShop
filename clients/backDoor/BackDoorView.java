@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
-
 /**
  * Implements the Customer view.
  */
@@ -17,6 +16,7 @@ public class BackDoorView implements Observer
   private static final String RESTOCK  = "Add";
   private static final String CLEAR    = "Clear";
   private static final String QUERY    = "Query";
+  private static final String EDIT_PRICE = "Edit Price";
  
   private static final int H = 300;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
@@ -30,6 +30,7 @@ public class BackDoorView implements Observer
   private final JButton     theBtClear = new JButton( CLEAR );
   private final JButton     theBtRStock = new JButton( RESTOCK );
   private final JButton     theBtQuery = new JButton( QUERY );
+  private final JButton     theBtEditPrice = new JButton( EDIT_PRICE );
   
   private StockReadWriter theStock     = null;
   private BackDoorController cont= null;
@@ -73,10 +74,16 @@ public class BackDoorView implements Observer
                           theInputNo.getText() ) );
     cp.add( theBtRStock );                          //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Buy button 
+    theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Clear button 
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
+    
+    theBtEditPrice.setBounds( 16, 25+60*3, 80, 40 );   // Edit Price button
+    theBtEditPrice.addActionListener(                 // Call back code
+      e -> cont.doEditPrice(theInput.getText(),
+                            theInputNo.getText()) ); 
+    cp.add( theBtEditPrice );                         //  Add to canvas
 
  
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area

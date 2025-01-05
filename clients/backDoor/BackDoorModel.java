@@ -9,7 +9,11 @@ import middle.StockException;
 import middle.StockReadWriter;
 
 import java.util.Observable;
-
+/**
+ * Edit the price of a product
+ * @param productNum The product number of the item
+ * @param newPrice The new price to be set
+ */
 /**
  * Implements the Model of the back door client
  */
@@ -128,6 +132,28 @@ public class BackDoorModel extends Observable
       theAction = e.getMessage();
     }
     setChanged(); notifyObservers(theAction);
+  }
+  public void doEditPrice(String productNum, double newPrice) {
+    String theAction = "";
+    pn = productNum.trim();                    // Product number
+
+    try {
+      if (newPrice < 0) {                    // Validate new price
+        theAction = "Invalid price: Price cannot be negative.";
+      } else if (theStock.exists(pn)) {      // Check if product exists
+        Product pr = theStock.getDetails(pn);
+        pr.setPrice(newPrice);             // Update product price
+        theStock.editPrice(pn, newPrice); // Update database
+        theAction = String.format("Price updated: %s is now %.2f", pr.getDescription(), newPrice);
+      } else {
+        theAction = "Unknown product number " + pn;   // Product does not exist
+      }
+    } catch (StockException e) {
+      theAction = e.getMessage();
+    }
+
+    setChanged();
+    notifyObservers(theAction);                // Notify observers
   }
 
   /**

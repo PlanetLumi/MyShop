@@ -47,6 +47,16 @@ public class BackDoorController
     model.doClear();
   }
 
+    /**
+     * Edit Price interaction from view
+     * @param pn    The product number to be re-stocked
+     * @param price The new price to be set
+     */
+    public void doEditPrice( String pn, String price )
+    {
+      model.doEditPrice(pn, Double.parseDouble(price));
+    }
+
   
 }
 

@@ -35,5 +35,12 @@ public interface StockReadWriter extends StockReader
    * @throws middle.StockException if issue
    */
   void modifyStock(Product detail) throws StockException;
-
+  
+  /**
+   * Edits the price of a product for a given product number.
+   * @param pNum Product number
+   * @param price New price of the product
+   * @throws middle.StockException if issue
+   */
+  void editPrice(String pNum, double price) throws StockException;
 }

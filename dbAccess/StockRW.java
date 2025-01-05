@@ -130,4 +130,25 @@ public class StockRW extends StockR implements StockReadWriter
       throw new StockException( "SQL modifyStock: " + e.getMessage() );
     }
   }
+  
+   /**
+    * Edits the price of a product in the database.
+    * Assumes the product exists in the database.
+    * @param productNumber Product number
+    * @param newPrice New price of the product
+    * @throws StockException If an SQL error occurs
+    */
+   public synchronized void editPrice(String productNumber, double newPrice)
+          throws StockException {
+       DEBUG.trace("DB StockRW: editProductPrice(%s, %.2f)", productNumber, newPrice);
+       try {
+           getStatementObject().executeUpdate(
+               "UPDATE ProductTable " +
+               "SET price = " + newPrice + " " +
+               "WHERE productNo = '" + productNumber + "'"
+           );
+       } catch (SQLException e) {
+           throw new StockException("SQL editProductPrice: " + e.getMessage());
+       }
+   }
 }

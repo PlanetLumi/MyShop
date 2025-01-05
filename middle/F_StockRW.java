@@ -114,4 +114,26 @@ public class F_StockRW extends F_StockR
     }
   }
 
+    /**
+     * Edits the price of a product for a given product number.
+     * @param number Stock number
+     * @param price New price of the product
+     * @throws StockException if remote exception
+     */
+
+    public void editPrice( String number, double price )
+             throws StockException
+    {
+        DEBUG.trace("F_StockRW:editPrice()" );
+        try
+        {
+            if ( aR_StockRW == null ) connect();
+            aR_StockRW.editPrice( number, price );
+        } catch ( RemoteException e )
+        {
+            aR_StockRW = null;
+            throw new StockException( "Net: " + e.getMessage() );
+        }
+    }
+
 }

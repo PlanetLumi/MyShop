@@ -115,4 +115,17 @@ public class      R_StockRW
   {
     aStockRW.modifyStock( product );
   }
+
+    /**
+     * Edits the price of a product for a given product number.
+     * @param pNum Product number
+     * @param price New price of the product
+     * @throws middle.StockException if issue
+     */
+    public synchronized void editPrice(String pNum, double price)
+            throws StockException
+    {
+        aStockRW.editPrice(pNum, price);
+
+    }
 }
