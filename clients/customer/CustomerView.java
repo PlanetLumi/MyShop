@@ -23,7 +23,7 @@ public class CustomerView implements Observer
     public static final String CLEAR  = "Clear";
   }
 
-  private static final int H = 300;       // Height of window pixels
+  private static final int H = 400;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
 
   private final JLabel      pageTitle  = new JLabel();
@@ -60,38 +60,48 @@ public class CustomerView implements Observer
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
+    
+    cp.setBackground(new Color(240, 248, 255)); //set background colour
 
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    Font boldf = new Font("Monospaced", Font.BOLD, 12); //Bold font
     
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Search products" );                        
-    cp.add( pageTitle );
+    pageTitle.setOpaque(true);
+    pageTitle.setHorizontalAlignment(SwingConstants.CENTER); // Centre align the text
+    pageTitle.setBounds(0, 0, W, 20);     // Centre horizontally within the window
+    pageTitle.setFont(boldf);  //Bold font
+    pageTitle.setForeground(Color.BLACK); //text colour
+    pageTitle.setBackground(new Color(255, 223, 186)); //background colour
+    pageTitle.setText( "Search products" ); //title
+    
+    cp.add( pageTitle, BorderLayout.NORTH);
 
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
+    theBtCheck.setBounds( W/2-100, 88, 80, 40 );    // Check button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
+    theBtClear.setBounds( W/2+20, 88, 80, 40 );    // Clear button
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( " " );                       // blank
+    theAction.setBounds( 33, 25 , 270, 20 );       // Message area
+    theAction.setText( "Enter Product Number" );    
     cp.add( theAction );                            //  Add to canvas
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Product no area
+    theInput.setBounds( 30, 50, W-60, 40 );         // Product no area
     theInput.setText("");                           // Blank
+    theInput.setBackground(new Color(255, 223, 186)); //set colour
     cp.add( theInput );                             //  Add to canvas
     
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
+    theSP.setBounds( W/2-135, 130, 270, 130 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
 
-    thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
+    thePicture.setBounds( W/2-40, 270, 80, 80 );   // Picture area
     cp.add( thePicture );                           //  Add to canvas
     thePicture.clear();
     
