@@ -1,4 +1,5 @@
 package clients.customer;
+import java.util.Map;
 
 /**
  * The Customer Controller
@@ -26,9 +27,23 @@ public class CustomerController
    */
   public void doCheck( String pn )
   {
-    model.doCheck(pn);
+	try {
+		Integer.parseInt(pn);
+	} catch(NumberFormatException e){
+		  SearchName nameSearch = new SearchName();
+		  pn = nameSearch.getNumFromName(nameSearch,pn);
+	}
+    if (pn != null) {
+    	model.doCheck(pn);
+    }
   }
 
+  //public void doCheckByName(String name) {
+//	  SearchName nameSearch = new SearchName();
+//	  String pn = nameSearch.getNumFromName(nameSearch,name);
+//	  model.doCheck(pn);
+//  }
+  
   /**
    * Clear interaction from view
    */
