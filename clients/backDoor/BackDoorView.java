@@ -15,8 +15,9 @@ import java.util.Observer;
 public class BackDoorView implements Observer
 {
   private static final String RESTOCK  = "Add";
+  private static final String REMOVE    = "Remove";
   private static final String CLEAR    = "Clear";
-  private static final String QUERY    = "Query";
+  private static final String CHECK    = "Check";
  
   private static final int H = 300;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
@@ -29,7 +30,8 @@ public class BackDoorView implements Observer
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtClear = new JButton( CLEAR );
   private final JButton     theBtRStock = new JButton( RESTOCK );
-  private final JButton     theBtQuery = new JButton( QUERY );
+  private final JButton     theBtRemStock = new JButton( REMOVE );
+  private final JButton     theBtQuery = new JButton( CHECK );
   
   private StockReadWriter theStock     = null;
   private BackDoorController cont= null;
@@ -56,24 +58,39 @@ public class BackDoorView implements Observer
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
     
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    cp.setBackground(Color.GRAY); //set background colour
 
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Staff check and manage stock" );                        
-    cp.add( pageTitle );
+    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    Font boldf = new Font("Monospaced", Font.BOLD, 12); //Bold font
+
+    pageTitle.setOpaque(true);
+    pageTitle.setHorizontalAlignment(SwingConstants.CENTER); // Centre align the text
+    pageTitle.setBounds(0, 0, W, 20);     // Centre horizontally within the window
+    pageTitle.setFont(boldf);  //Bold font
+    pageTitle.setForeground(Color.BLACK); //text colour
+    pageTitle.setBackground(Color.LIGHT_GRAY); //background colour
+    pageTitle.setText( "Search products" ); //title
     
-    theBtQuery.setBounds( 16, 25+60*0, 80, 40 );    // Buy button 
+    cp.add( pageTitle, BorderLayout.NORTH);
+    
+    theBtQuery.setBounds( 16, 50, 80, 40 );    // Check button 
     theBtQuery.addActionListener(                   // Call back code
       e -> cont.doQuery( theInput.getText() ) );
     cp.add( theBtQuery );                           //  Add to canvas
 
-    theBtRStock.setBounds( 16, 25+60*1, 80, 40 );   // Check Button
+    theBtRStock.setBounds( 16, 100, 80, 40 );   // Add Button
     theBtRStock.addActionListener(                  // Call back code
       e -> cont.doRStock( theInput.getText(),
                           theInputNo.getText() ) );
     cp.add( theBtRStock );                          //  Add to canvas
+    
+    theBtRemStock.setBounds( 16, 100+60*1, 80, 40 );   // Add Button
+    theBtRemStock.addActionListener(                  // Call back code
+      e -> cont.doRStock( theInput.getText(),
+                          theInputNo.getText() ) );
+    cp.add( theBtRemStock );                          //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Buy button 
+    theBtClear.setBounds( 16, 100+60*2, 80, 40 );    // Clear button 
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas

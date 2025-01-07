@@ -18,7 +18,7 @@ public class PackingView implements Observer
 {
   private static final String PACKED = "Packed";
 
-  private static final int H = 300;       // Height of window pixels
+  private static final int H = 400;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
 
   private final JLabel      pageTitle  = new JLabel();
@@ -53,13 +53,22 @@ public class PackingView implements Observer
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
     
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
-    
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Packing Bought Order" );                        
-    cp.add( pageTitle );
+    cp.setBackground(new Color(240, 248, 255)); //set background colour
 
-    theBtPack.setBounds( 16, 25+60*0, 80, 40 );   // Check Button
+    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    Font boldf = new Font("Monospaced", Font.BOLD, 12); //Bold font
+    
+    pageTitle.setOpaque(true);
+    pageTitle.setHorizontalAlignment(SwingConstants.CENTER); // Centre align the text
+    pageTitle.setBounds(0, 0, W, 20);     // Centre horizontally within the window
+    pageTitle.setFont(boldf);  //Bold font
+    pageTitle.setForeground(Color.BLACK); //text colour
+    pageTitle.setBackground(new Color(255, 223, 186)); //background colour
+    pageTitle.setText( "Packing Brought Orders" ); //title
+    
+    cp.add( pageTitle, BorderLayout.NORTH);
+
+    theBtPack.setBounds( 16, 55, 80, 40 );   // packed Button
     theBtPack.addActionListener(                   // Call back code
       e -> cont.doPacked() );
     cp.add( theBtPack );                          //  Add to canvas
@@ -68,7 +77,7 @@ public class PackingView implements Observer
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas
 
-    theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
+    theSP.setBounds( 110, 55, 270, 270 );           // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
     cp.add( theSP );                                //  Add to canvas

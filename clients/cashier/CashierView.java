@@ -16,12 +16,14 @@ import java.util.Observer;
  */
 public class CashierView implements Observer
 {
-  private static final int H = 300;       // Height of window pixels
+  private static final int H = 400;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
   
   private static final String CHECK  = "Check";
-  private static final String BUY    = "Buy";
-  private static final String BOUGHT = "Bought/Pay";
+  private static final String ADD    = "Add";
+  private static final String REMOVE    = "Remove";
+  private static final String CLEAR    = "Clear";
+  private static final String BOUGHT = "PAY";
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -29,7 +31,9 @@ public class CashierView implements Observer
   private final JTextArea   theOutput  = new JTextArea();
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( CHECK );
-  private final JButton     theBtBuy   = new JButton( BUY );
+  private final JButton     theBtadd   = new JButton( ADD );
+  private final JButton     theBtremove   = new JButton( REMOVE );
+  private final JButton     theBtclear   = new JButton( CLEAR );
   private final JButton     theBtBought= new JButton( BOUGHT );
 
   private StockReadWriter theStock     = null;
@@ -59,24 +63,43 @@ public class CashierView implements Observer
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
+    
+    cp.setBackground(new Color(240, 248, 255)); //set background colour
 
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    Font boldf = new Font("Monospaced", Font.BOLD, 12); //Bold font
 
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Thank You for Shopping at MiniStrore" );                        
-    cp.add( pageTitle );  
+    pageTitle.setOpaque(true);
+    pageTitle.setHorizontalAlignment(SwingConstants.CENTER); // Centre align the text
+    pageTitle.setBounds(0, 0, W, 20);     // Centre horizontally within the window
+    pageTitle.setFont(boldf);  //Bold font
+    pageTitle.setForeground(Color.BLACK); //text colour
+    pageTitle.setBackground(new Color(255, 223, 186)); //background colour
+    pageTitle.setText( "Thank You for Shopping at Mini Store" ); //title
     
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
+    cp.add( pageTitle, BorderLayout.NORTH);
+    
+    theBtCheck.setBounds( 16, 50, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
     cp.add( theBtCheck );                           //  Add to canvas
 
-    theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
-    theBtBuy.addActionListener(                     // Call back code
+    theBtadd.setBounds( 16, 100, 80, 40 );      // Add button 
+    theBtadd.addActionListener(                     // Call back code
       e -> cont.doBuy() );
-    cp.add( theBtBuy );                             //  Add to canvas
+    cp.add( theBtadd );                             //  Add to canvas
+    
+    theBtremove.setBounds( 16, 100+60*1, 80, 40 );      // Remove button 
+    theBtremove.addActionListener(                     // Call back code
+      e -> cont.doRem() );
+    cp.add( theBtremove );                             //  Add to canvas
+    
+    theBtclear.setBounds( 16, 100+60*2, 80, 40 );      // Clear button 
+    theBtclear.addActionListener(                     // Call back code
+      e -> cont.doCle() );
+    cp.add( theBtclear );                             //  Add to canvas
 
-    theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
+    theBtBought.setBounds( 300, 320, 80, 40 );   // Pay Button
     theBtBought.addActionListener(                  // Call back code
       e -> cont.doBought() );
     cp.add( theBtBought );                          //  Add to canvas
@@ -87,9 +110,10 @@ public class CashierView implements Observer
 
     theInput.setBounds( 110, 50, 270, 40 );         // Input Area
     theInput.setText("");                           // Blank
+    theInput.setBackground(new Color(255, 223, 186)); //set colour
     cp.add( theInput );                             //  Add to canvas
 
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
+    theSP.setBounds( 110, 100, 270, 220 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
     cp.add( theSP );                                //  Add to canvas

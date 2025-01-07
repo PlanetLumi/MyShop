@@ -1,6 +1,7 @@
 package clients.cashier;
 
 import catalogue.Basket;
+import catalogue.BetterBasket;
 import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
@@ -95,6 +96,7 @@ public class CashierModel extends Observable
   /**
    * Buy the product
    */
+  
   public void doBuy()
   {
     String theAction = "";
@@ -127,6 +129,47 @@ public class CashierModel extends Observable
     }
     theState = State.process;                   // All Done
     setChanged(); notifyObservers(theAction);
+  }
+  
+  public void doRem() {
+	  String theAction = "";
+	    try {
+	        if (theBasket == null) {  // No basket exists
+	            theAction = "No basket exists";
+	        } else if (!theBasket.rem(theProduct)) {  // Product not in basket
+	            theAction = "Product not in basket";
+	        } else {  // Product successfully removed
+	            theStock.addStock(theProduct.getProductNum(), 1);  // Increase stock by 1
+	            theAction = "Removed " + theProduct.getDescription();
+	        }
+	    } catch (StockException e) {  // Handle stock-related errors
+	        DEBUG.error("%s\n%s", 
+	              "CashierModel.doRem", e.getMessage());
+	        theAction = e.getMessage();
+	    }
+	    theState = State.process;  // All done
+	    setChanged(); notifyObservers(theAction);
+  }
+  
+  public void doCle() {
+	  String theAction = "";
+	    try {
+	        if (theBasket == null || theBasket.isEmpty()) {  // No basket or already empty
+	            theAction = "Basket is already empty";
+	        } else {
+	            for (Product pr : theBasket) {  // Iterate over all products in the basket
+	                theStock.addStock(pr.getProductNum(), pr.getQuantity());  // Return stock
+	            }
+	            theBasket.clear();  // Clear the basket
+	            theAction = "Basket cleared";
+	        }
+	    } catch (StockException e) {  // Handle stock-related errors
+	        DEBUG.error("%s\n%s", 
+	              "CashierModel.doCle", e.getMessage());
+	        theAction = e.getMessage();
+	    }
+	    theState = State.process;  // All done
+	    setChanged(); notifyObservers(theAction);
   }
   
   /**
@@ -190,9 +233,9 @@ public class CashierModel extends Observable
    * return an instance of a new Basket
    * @return an instance of a new Basket
    */
-  protected Basket makeBasket()
+  protected BetterBasket makeBasket()
   {
-    return new Basket();
+    return new BetterBasket();
   }
 }
   
