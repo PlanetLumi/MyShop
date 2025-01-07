@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class SearchName extends HashMap<String,String>{
 	
-	SearchName(){
+	public SearchName(){
 		put("0001","40 inch LED HD TV");
 		put("0002","DAB Radio");
 		put("0003","Toaster");

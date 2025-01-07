@@ -1,5 +1,6 @@
 package clients.cashier;
 
+import clients.customer.SearchName;
 
 /**
  * The Cashier Controller
@@ -27,8 +28,16 @@ public class CashierController
    */
   public void doCheck( String pn )
   {
-    model.doCheck(pn);
-  }
+	try {
+		Integer.parseInt(pn);
+	} catch(NumberFormatException e){
+		  SearchName nameSearch = new SearchName();
+		  pn = nameSearch.getNumFromName(nameSearch,pn);
+	}
+    if (pn != null) {
+    	model.doCheck(pn);
+    }
+ }
 
    /**
    * Buy interaction from view
