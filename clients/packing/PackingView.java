@@ -2,10 +2,14 @@ package clients.packing;
 
 import catalogue.Basket;
 import middle.MiddleFactory;
+import middle.OrderException;
 import middle.OrderProcessing;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,6 +30,9 @@ public class PackingView implements Observer
   private final JTextArea   theOutput  = new JTextArea();
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtPack= new JButton( PACKED );
+  private final JScrollPane ordersScroll      = new JScrollPane();
+  private final JPanel   	ordersContainer  = new 	JPanel();
+  
  
   private OrderProcessing theOrder     = null;
   
@@ -68,11 +75,18 @@ public class PackingView implements Observer
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas
 
-    theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
+    theSP.setBounds( 140, 80, 230, 180 );           // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
+    rootWindow.setVisible( true );                  // Make visible
+    
+    ordersScroll.setBounds( 16, 80, 100, 180 );           // Scrolling pane
+    //ordersContainer.setText( "" );                        //  Blank
+    //ordersContainer.setFont( f );                         //  Uses font  
+    cp.add( ordersScroll );                                //  Add to canvas
+    ordersScroll.getViewport().add( ordersContainer );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
   }
   
@@ -94,6 +108,26 @@ public class PackingView implements Observer
     theAction.setText( message );
     
     Basket basket =  model.getBasket();
+    try {
+    	ordersContainer.removeAll();
+		for (Integer entry : model.getWaiting()){
+			
+			if (entry != null)
+			System.out.println(entry);
+			JButton orderButton = new JButton();
+			orderButton.setText(entry.toString());
+			orderButton.addActionListener(e -> {
+				
+			});
+			ordersContainer.add(orderButton);
+			ordersContainer.revalidate();
+		    ordersContainer.repaint();
+		}
+		
+    } catch (OrderException e) {
+		e.printStackTrace();
+	}
+    
     if ( basket != null )
     {
       theOutput.setText( basket.getDetails() );

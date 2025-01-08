@@ -33,4 +33,11 @@ public interface OrderProcessing
   // not being used in this version
   public Map<String,List<Integer>> getOrderState() // Display
          throws OrderException;
+
+  public List<Integer> getWaitingOrders() // Display
+	         throws OrderException;
+
+  public Basket getSpecificOrder(int orderNum) throws OrderException;
+
 }
+

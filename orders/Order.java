@@ -185,6 +185,15 @@ public class Order implements OrderProcessing
 
     return res;
   }
+  
+  public synchronized List<Integer> getWaitingOrders()
+		  throws OrderException
+  {
+	  List<Integer> toRet = new ArrayList<>();
+	  toRet.addAll(orderNums(State.Waiting));
+	  toRet.addAll(orderNums(State.BeingPacked));
+	  return toRet;
+  }
 
   /**
    * Return the list of order numbers in selected state
@@ -216,4 +225,24 @@ public class Order implements OrderProcessing
             .map( folder -> folder.getBasket().getOrderNum() )
             .collect( Collectors.toList() );
   }
+
+
+@Override
+public Basket getSpecificOrder(int orderNum) throws OrderException {
+	DEBUG.trace( "DEBUG: Get specific order to pack" );
+	   Basket foundWaiting = null;
+	   for ( int i=0; i < folders.size();)
+	    {
+	      if ( folders.get(i).getBasket().getOrderNum() == orderNum);
+	     {
+	    	 foundWaiting = folders.get(i).getBasket();
+	    	 folders.get(i).newState( State.BeingPacked );
+		     break;
+	     }
+	   }
+	   return foundWaiting;
 }
+
+}
+
+

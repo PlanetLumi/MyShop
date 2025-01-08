@@ -8,6 +8,8 @@ import middle.OrderException;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -107,6 +109,12 @@ public class PackingModel extends Observable
            e.getMessage() );
       }
     }
+  }
+  
+  
+  public List<Integer> getWaiting() throws OrderException {
+	  // Gets all the orders currently waiting
+	  return theOrder.getWaitingOrders();
   }
   
   

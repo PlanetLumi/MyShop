@@ -67,4 +67,16 @@ public class      R_Order
     return aOrder.getOrderState();
   }
 
+@Override
+public List<Integer> getWaitingOrders() throws RemoteException, OrderException {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public Basket getSpecificOrder() throws RemoteException, OrderException {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }

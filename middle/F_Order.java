@@ -156,4 +156,33 @@ public class F_Order implements OrderProcessing
       throw new OrderException( "Net: " + e.getMessage() );
     }
   }
+    public synchronized List<Integer> getWaitingOrders()
+            throws OrderException
+     {
+       DEBUG.trace("F_Order:GetWaitingOrders()" );
+       try
+       {
+         if ( aR_Order == null ) connect();
+         return aR_Order.getWaitingOrders();
+       } catch ( Exception e )
+       {
+         aR_Order = null;
+         throw new OrderException( "Net: " + e.getMessage() );
+       }
+       
+  }
+
+    public Basket getSpecificOrder(int orderNum) throws OrderException {
+		try
+	   {
+	    if ( aR_Order == null ) connect();
+	    	return aR_Order.getSpecificOrder();
+	    } catch ( Exception e )
+	    {
+	      aR_Order = null;
+	      throw new OrderException( "Net: " + e.getMessage() );
+	    }
+	}
+
+	
 }
