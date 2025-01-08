@@ -4,6 +4,7 @@ import catalogue.Basket;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
+import utils.SoundPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public class CashierView implements Observer
   /**
    * Construct the view
    * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
+   * @param mf    Factor to deliver order and stock objects 
    * @param x     x-coordinate of position of window on screen 
    * @param y     y-coordinate of position of window on screen  
    */
@@ -68,17 +69,23 @@ public class CashierView implements Observer
     
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+      e -> { cont.doCheck( theInput.getText() ); 
+    	 SoundPlayer.playSound("assets/button.wav"); // HL604 Plays sound
+      });
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
-      e -> cont.doBuy() );
+      e -> { cont.doBuy(); 
+      SoundPlayer.playSound("assets/button.wav");
+      });
     cp.add( theBtBuy );                             //  Add to canvas
 
     theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
     theBtBought.addActionListener(                  // Call back code
-      e -> cont.doBought() );
+      e -> { cont.doBought(); 
+      SoundPlayer.playSound("assets/button.wav");
+      });
     cp.add( theBtBought );                          //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
