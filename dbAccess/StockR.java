@@ -186,18 +186,15 @@ public static Connection getConnectionObject() {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        return result;  // Return empty list if no keyword
 	    }
-	    
-	    // SQL query string
+	
 	    String sql = "SELECT ProductTable.productNo, ProductTable.description, ProductTable.price, " +
 	                 "StockTable.stockLevel " +
 	                 "FROM ProductTable " +
 	                 "JOIN StockTable ON ProductTable.productNo = StockTable.productNo " +
 	                 "WHERE LOWER(ProductTable.description) LIKE ?";
-	    
-	    // Use try-with-resources to ensure resources are properly closed
+	
 	    try (PreparedStatement pstatement = getConnectionObject().prepareStatement(sql)) {
 	        
-	        // Set the keyword parameter with wildcards for LIKE search
 	        pstatement.setString(1, "%" + keyword.toLowerCase() + "%");
 
 	        // Execute the query and retrieve the result
@@ -209,18 +206,18 @@ public static Connection getConnectionObject() {
 	                        rs.getString("description"),
 	                        rs.getDouble("price"),
 	                        rs.getInt("stockLevel"),
-	                        0 // Assuming the 0 represents an additional property, you can replace or modify it accordingly
+	                        0 
 	                );
 	                result.add(product);  // Add the product to the result list
 	            }
 	        }
 	        
 	    } catch (SQLException e) {
-	        // Throw a custom exception in case of SQL errors
+	        
 	        throw new StockException("SQL searchByKeyword: " + e.getMessage());
 	    }
 	    
-	    return result;  // Return the list of products
+	    return result; 
 	}
 }
 
