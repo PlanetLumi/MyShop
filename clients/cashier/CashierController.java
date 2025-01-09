@@ -45,4 +45,12 @@ public class CashierController
   {
     model.doBought();
   }
+  public void doClear()
+  {
+    model.doClear();
+  }
+  public void doDiscount()
+  {
+	model.doDiscount();
+  }
 }

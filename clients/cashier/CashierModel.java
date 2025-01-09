@@ -128,6 +128,29 @@ public class CashierModel extends Observable
     theState = State.process;                   // All Done
     setChanged(); notifyObservers(theAction);
   }
+  public void doDiscount()
+  {
+	  String theAction = "";
+	  
+	  try {
+		  if (theBasket != null && !theBasket.isEmpty()) {
+			  for (Product product : theBasket) {
+				  double StorePrice = product.getPrice();
+				  double discountPrice = StorePrice * 0.90;
+				  product.setPrice(discountPrice);
+			  }
+			  theAction += String.format("Discount applied");
+		  } else {
+			  theAction = "No products to apply discount to.";
+		}
+	  } catch (Exception e) {
+		  DEBUG.error("%s\n%s","Cashier.model.doDiscount", e.getMessage());
+		  theAction = "Error applying discount: " + e.getMessage();
+	  }
+	  theState = State.process;
+	  setChanged();
+	  notifyObservers(theAction);
+  }
   
   /**
    * Customer pays for the contents of the basket
@@ -156,9 +179,27 @@ public class CashierModel extends Observable
     theBasket = null;
     setChanged(); notifyObservers(theAction); // Notify
   }
+ 
+  public void doRemove(Product product) {
+	    if (theBasket != null && product != null) {
+	        theBasket.remove(product);  // Remove the chosen product
+	        setChanged();
+	        notifyObservers("Product removed from basket.");
+	    }
+	}
+
+
+  public void doClear()
+  {
+    String theAction = "";
+    theBasket.clear();                        // Clear s. list
+    theAction = "Enter Product Number";       // Set display                        
+    
+    setChanged(); notifyObservers(theAction);
+  }
 
   /**
-   * ask for update of view callled at start of day
+   * ask for update of view called at start of day
    * or after system reset
    */
   public void askForUpdate()

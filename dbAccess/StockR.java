@@ -11,9 +11,13 @@ import catalogue.Product;
 import debug.DEBUG;
 import middle.StockException;
 import middle.StockReader;
-
 import javax.swing.*;
 import java.sql.*;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import dbAccess.StockR;
+
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -35,6 +39,8 @@ public class StockR implements StockReader
    * Uses a factory method to help setup the connection
    * @throws StockException if problem
    */
+  
+  
   public StockR()
          throws StockException
   {
@@ -59,6 +65,7 @@ public class StockR implements StockReader
     {
       throw new StockException("Can not load database driver.");
     }
+    
   }
 
 
@@ -78,10 +85,11 @@ public class StockR implements StockReader
    * @return a connection object
    */
 
-  protected Connection getConnectionObject()
-  {
-    return theCon;
-  }
+//Change getConnectionObject() to static
+public static Connection getConnectionObject() {
+   return null;
+}
+
 
   /**
    * Checks if the product exits in the stock list
@@ -171,5 +179,48 @@ public class StockR implements StockReader
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
   }
+  public synchronized static ArrayList<Product> searchByKeyword(String keyword) throws StockException {
+	    ArrayList<Product> result = new ArrayList<>();
+	    
+	    // Check if the keyword is null or empty, and return an empty result
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        return result;  // Return empty list if no keyword
+	    }
+	    
+	    // SQL query string
+	    String sql = "SELECT ProductTable.productNo, ProductTable.description, ProductTable.price, " +
+	                 "StockTable.stockLevel " +
+	                 "FROM ProductTable " +
+	                 "JOIN StockTable ON ProductTable.productNo = StockTable.productNo " +
+	                 "WHERE LOWER(ProductTable.description) LIKE ?";
+	    
+	    // Use try-with-resources to ensure resources are properly closed
+	    try (PreparedStatement pstatement = getConnectionObject().prepareStatement(sql)) {
+	        
+	        // Set the keyword parameter with wildcards for LIKE search
+	        pstatement.setString(1, "%" + keyword.toLowerCase() + "%");
 
+	        // Execute the query and retrieve the result
+	        try (ResultSet rs = pstatement.executeQuery()) {
+	            while (rs.next()) {
+	                // Create a Product object from the result set
+	                Product product = new Product(
+	                        rs.getString("productNo"),
+	                        rs.getString("description"),
+	                        rs.getDouble("price"),
+	                        rs.getInt("stockLevel"),
+	                        0 // Assuming the 0 represents an additional property, you can replace or modify it accordingly
+	                );
+	                result.add(product);  // Add the product to the result list
+	            }
+	        }
+	        
+	    } catch (SQLException e) {
+	        // Throw a custom exception in case of SQL errors
+	        throw new StockException("SQL searchByKeyword: " + e.getMessage());
+	    }
+	    
+	    return result;  // Return the list of products
+	}
 }
+

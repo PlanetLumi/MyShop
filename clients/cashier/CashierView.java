@@ -22,6 +22,9 @@ public class CashierView implements Observer
   private static final String CHECK  = "Check";
   private static final String BUY    = "Buy";
   private static final String BOUGHT = "Bought/Pay";
+  public static final String CLEAR  = "Clear";
+  public static final String DISCOUNT = "10% off";
+
 
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
@@ -31,10 +34,12 @@ public class CashierView implements Observer
   private final JButton     theBtCheck = new JButton( CHECK );
   private final JButton     theBtBuy   = new JButton( BUY );
   private final JButton     theBtBought= new JButton( BOUGHT );
+  private final JButton     theBtClear = new JButton( CLEAR );
+  private final JButton 	theBtDiscount = new JButton( DISCOUNT );
 
-  private StockReadWriter theStock     = null;
-  private OrderProcessing theOrder     = null;
-  private CashierController cont       = null;
+  private StockReadWriter theStock    = null;
+  private OrderProcessing theOrder    = null;
+  private CashierController cont      = null;
   
   /**
    * Construct the view
@@ -66,21 +71,31 @@ public class CashierView implements Observer
     pageTitle.setText( "Thank You for Shopping at MiniStrore" );                        
     cp.add( pageTitle );  
     
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
+    theBtCheck.setBounds( 10, 10, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
-    cp.add( theBtCheck );                           //  Add to canvas
-
-    theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
+    cp.add( theBtCheck );    
+    
+    theBtBuy.setBounds( 10, 60, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
       e -> cont.doBuy() );
     cp.add( theBtBuy );                             //  Add to canvas
 
-    theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
+    theBtClear.setBounds( 10, 110, 80, 40 );    // Clear button
+    theBtClear.addActionListener(                   // Call back code
+      e -> cont.doClear() );
+    cp.add( theBtClear );     
+
+    theBtBought.setBounds( 5, 210, 100, 40 );   // Bought Button
     theBtBought.addActionListener(                  // Call back code
       e -> cont.doBought() );
     cp.add( theBtBought );                          //  Add to canvas
 
+    theBtDiscount.setBounds( 10, 160, 80, 40);   // Discount Button
+    theBtDiscount.addActionListener(                  // Call back code
+      e -> cont.doDiscount() );
+    cp.add( theBtDiscount );  
+    
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
     cp.add( theAction );                            //  Add to canvas

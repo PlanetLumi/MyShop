@@ -1,6 +1,7 @@
 package catalogue;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Formatter;
@@ -11,7 +12,6 @@ import java.util.Locale;
  * used to record the products that are to be wished to be purchased.
  * @author  Mike Smith University of Brighton
  * @version 2.2
- *
  */
 public class Basket extends ArrayList<Product> implements Serializable
 {
@@ -53,11 +53,43 @@ public class Basket extends ArrayList<Product> implements Serializable
    * @param pr A product to be added to the basket
    * @return true if successfully adds the product
    */
-  // Will be in the Java doc for Basket
   @Override
-  public boolean add( Product pr )
-  {                              
-    return super.add( pr );     // Call add in ArrayList
+  public boolean add(Product pr) {
+      boolean found = false;
+      for (Product existingProduct : this) {
+          if (existingProduct.getProductNum().equals(pr.getProductNum())) {
+              existingProduct.mergeProduct(pr);
+              found = true;
+              break;
+          }
+      }
+      if (!found) {
+          return super.add(pr);  
+      }
+      return true; 
+  }
+
+  /**
+   * Returns the total price of all items in the basket.
+   * @return total price of the items
+   */
+  public double getTotalPrice() {
+    double total = 0.0;
+    for (Product product : this) {  // Using 'this' to reference the products in the basket
+        total += product.getPrice() * product.getQuantity();
+    }
+    return total;
+  }
+
+  /**
+   * Applies a discount on the total price. Returns the discounted total.
+   * @param discountPercentage The percentage discount to apply (e.g., 10 for 10%)
+   * @return the total price after discount
+   */
+  public double applyDiscount(double discountPercentage) {
+    double total = getTotalPrice();
+    double discountAmount = total * (discountPercentage / 100);
+    return total - discountAmount;
   }
 
   /**
