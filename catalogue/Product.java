@@ -33,7 +33,11 @@ public class Product implements Serializable
     theQuantity    = aQuantity;       // Quantity involved
   }
   
-  public String getProductNum()  { return theProductNum; }
+  public Product(String string, String string2, double double1, int int1, int i) {
+	// TODO Auto-generated constructor stub
+}
+
+public String getProductNum()  { return theProductNum; }
   public String getDescription() { return theDescription; }
   public double getPrice()       { return thePrice; }
   public int    getQuantity()    { return theQuantity; }
@@ -56,6 +60,12 @@ public class Product implements Serializable
   public void setQuantity( int aQuantity )
   { 
     theQuantity = aQuantity;
+  }
+  public void mergeProduct(Product otherProduct) {
+      if (this.theProductNum.equals(otherProduct.getProductNum())) {
+          this.theQuantity += otherProduct.getQuantity();         
+          this.thePrice = (this.thePrice + otherProduct.getPrice()) / 2; 
+      }
   }
 
 }
