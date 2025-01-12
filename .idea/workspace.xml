@@ -4,27 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="sET UP">
-      <change afterPath="$PROJECT_DIR$/admin/AdminClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/AdminModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/AdminView.java" afterDir="false" />
+    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Setting up admin login">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/AdminCreateTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/SQLMyAdmin.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/security/Encryption.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/AdminModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/AdminModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/AdminView.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/AdminView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/db.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log.ctrl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/log/log1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c101.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c101.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c111.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c111.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c121.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c121.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c130.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c130.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c141.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c141.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c20.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c20.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c31.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c31.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c41.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c41.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c490.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c4a0.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c51.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c51.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c60.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c60.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c71.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c71.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c81.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c81.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c90.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c90.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/ca1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/ca1.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cb1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cb1.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c101.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c101.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c111.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c111.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c121.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c121.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c130.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c130.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c141.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c141.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c20.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c20.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c31.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c31.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c41.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c41.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c490.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c490.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c4a0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c4a0.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c490.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c4a0.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c51.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c51.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c60.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c60.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c71.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c71.dat" afterDir="false" />
@@ -32,6 +59,7 @@
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c90.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c90.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ca1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ca1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cb1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cb1.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf0.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/derby.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,11 +115,22 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "derby"
+    ]
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.AdminClient">
     <configuration name="AdminClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <classpathModifications>
+        <entry path="C:\Users\Lumie123\IdeaProjects\MyShop\lib\db-derby-10.14.2.0-lib\lib\derby.jar" />
+      </classpathModifications>
       <option name="MAIN_CLASS_NAME" value="admin.AdminClient" />
       <module name="MyShop" />
       <extension name="coverage">
@@ -143,9 +182,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.AdminClient" />
         <item itemvalue="Application.Setup" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -166,7 +205,7 @@
       <option name="presentableId" value="Default" />
       <updated>1736476356679</updated>
       <workItem from="1736476357816" duration="2553000" />
-      <workItem from="1736645620719" duration="5729000" />
+      <workItem from="1736645620719" duration="13837000" />
     </task>
     <task id="LOCAL-00001" summary="sET UP">
       <option name="closed" value="true" />
@@ -176,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736476557951</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Setting up admin login">
+      <option name="closed" value="true" />
+      <created>1736651452027</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1736651452027</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +242,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="sET UP" />
-    <option name="LAST_COMMIT_MESSAGE" value="sET UP" />
+    <MESSAGE value="Setting up admin login" />
+    <option name="LAST_COMMIT_MESSAGE" value="Setting up admin login" />
   </component>
 </project>

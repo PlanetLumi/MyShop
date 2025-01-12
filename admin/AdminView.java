@@ -6,6 +6,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,7 +35,7 @@ public class AdminView implements Observer
     private static final JLabel      pageTitle  = new JLabel();
     private static final JLabel      theAction  = new JLabel();
     private static final JTextField  usernameInput   = new JTextField();
-    private static final JPasswordField  passwordInput   = new JPasswordField();
+    private static JPasswordField  passwordInput   = new JPasswordField();
     private final JTextArea   theOutput  = new JTextArea();
     private final JScrollPane theSP      = new JScrollPane();
     private static final JButton     theBtCheck = new JButton( Name.CHECK );
@@ -68,14 +69,20 @@ public class AdminView implements Observer
         cp.add( pageTitle );
         theBtOpenPanel.setBounds(110, 120, 270, 40);
         theBtOpenPanel.setText( "Open Login Panel" );
-        theBtOpenPanel.addActionListener( e -> {AdminController.OpenAdminPanel();});
+        theBtOpenPanel.addActionListener( e -> {
+            try {
+                AdminController.OpenAdminPanel();
+            } catch (NoSuchAlgorithmException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         cp.add( theBtOpenPanel );
 
         //  Add to canvas
         rootWindow.setVisible( true );                  // Make visible);
 
     }
-    public static void OpenPanel(RootPaneContainer rpc, int x, int y){
+    public static void OpenPanel(RootPaneContainer rpc, int x, int y) throws NoSuchAlgorithmException {
         Container cp = rpc.getContentPane();
         Container rootWindow = (Container) rpc;
         cp.setLayout(null);
@@ -100,8 +107,10 @@ public class AdminView implements Observer
         theBtCheck.setBounds(40,80,40,40);
         theBtCheck.setText( "Check Admin Login" );
         theBtCheck.setFont(f);
-        theBtCheck.addActionListener( e -> { checkAdminDetails(usernameInput.getText(), passwordInput.getPassword());});
+        theBtCheck.addActionListener( e -> { checkAdminDetails(usernameInput.getText(), passwordInput.getPassword()); passwordInput.setText(""); } );
         cp.add(theBtCheck);
+        AdminController.CreateAdminTable();
+        AdminController.InjectAdmin();
     }
 
     /**
