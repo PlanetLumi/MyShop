@@ -1,10 +1,14 @@
 package clients;
 
+import clients.admin.AdminModel;
 import dbAccess.DBAccess;
 import dbAccess.DBAccessFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+
+import clients.admin.AdminController;
 
 /**
  * Repopulate the database with test data
@@ -60,103 +64,117 @@ class Setup
   "insert into StockTable values ( '0007',  01 )",
 
   "select * from StockTable, ProductTable " +
-          " where StockTable.productNo = ProductTable.productNo"
+          " where StockTable.productNo = ProductTable.productNo",
 
+
+  "drop table Accounts",
+  "create table Accounts (" +
+      "account_id BigInt Generated Always as Identity Primary Key," +
+      "username Varchar(50) Unique," +
+      "password Varchar(255)," +
+      "salt Varchar(255)," +
+      "role Varchar(50) )",
+
+  "drop table UserDetails",
+  "create table UserDetails (" +
+       "account_id BigInt Generated Always as Identity Primary Key," +
+       "first_name Varchar(20)," +
+       "second_name Varchar(20)," +
+       "gender Varchar(20)," +
+       "date_of_birth DATE," +
+       "address Varchar(50)," +
+       "postcode Varchar(7) )",
+
+  "drop table UserCardDetails",
+  "create table UserCardDetails (" +
+        "account_id BigInt Primary Key," +
+        "card_number Varchar(19)," +
+        "title Varchar(10)," +
+        "cardholder_name Varchar(20) )",
+
+  "drop table OrderHistory",
+  "create table OrderHistory (" +
+        "account_id BigInt Primary Key," +
+        "productNo Char(4)," +
+        "purchase_date DATE)",
  };
 
-  public static void main(String[] args)
-  {
-    Connection theCon    = null;      // Connection to database
-    DBAccess   dbDriver  = null;
+
+  public static void main(String[] args) throws NoSuchAlgorithmException, SQLException {
+    Connection theCon = null;      // Connection to database
+    DBAccess dbDriver = null;
     DBAccessFactory.setAction("Create");
-    System.out.println("Setup CatShop database of stock items");
-    try
-    {
+    System.out.println("Setup all databases");
+    try {
       dbDriver = (new DBAccessFactory()).getNewDBAccess();
       dbDriver.loadDriver();
-      theCon  = DriverManager.getConnection
-                  ( dbDriver.urlOfDatabase(), 
-                    dbDriver.username(), 
-                    dbDriver.password() );
-    }
-    catch ( SQLException e )
-    {
-      System.err.println( "Problem with connection to " + 
-                           dbDriver.urlOfDatabase() );
+      theCon = DriverManager.getConnection
+              (dbDriver.urlOfDatabase(),
+                      dbDriver.username(),
+                      dbDriver.password());
+    } catch (SQLException e) {
+      System.err.println("Problem with connection to " +
+              dbDriver.urlOfDatabase());
       System.out.println("SQLException: " + e.getMessage());
       System.out.println("SQLState:     " + e.getSQLState());
       System.out.println("VendorError:  " + e.getErrorCode());
-      System.exit( -1 );
-    }
-    catch ( Exception e )
-    {
-        System.err.println("Can not load JDBC/ODBC driver.");
-        System.exit( -1 );
+      System.exit(-1);
+    } catch (Exception e) {
+      System.err.println("Can not load JDBC/ODBC driver.");
+      System.exit(-1);
     }
 
     Statement stmt = null;
     try {
-        stmt = theCon.createStatement();
+      stmt = theCon.createStatement();
     } catch (Exception e) {
-        System.err.println("problems creating statement object" );
+      System.err.println("problems creating statement object");
     }
-
     // execute SQL commands to create table, insert data
-    for ( String sqlStatement : sqlStatements )
-    {
-      try
-      {
-        System.out.println( sqlStatement );
-        switch ( sqlStatement.charAt(0) )
-        {
-           case '/' :
-             System.out.println("------------------------------");
-             break;
-           case 's' :
-           case 'f' :
-             query( stmt, dbDriver.urlOfDatabase(), sqlStatement );
-             break;
-           case '*' :
-             if ( sqlStatement.length() >= 2 )
-               switch( sqlStatement.charAt(1)  )
-               {
-                 case 'c' :
-                   theCon.commit();
-                   break;
-                 case 'r' :
-                   theCon.rollback();
-                   break;
-                 case '+' :
-                   theCon.setAutoCommit( true );
-                   break;
-                 case '-' :
-                   theCon.setAutoCommit( false );
-                   break;
-                }
-              break;
-           default :
-            stmt.execute(sqlStatement);
+    for (String sqlStatement : sqlStatements) {
+      try {
+        System.out.println(sqlStatement);
+        switch (sqlStatement.charAt(0)) {
+          case '/':
+            System.out.println("------------------------------");
+            break;
+          case 's':
+          case 'f':
+            query(stmt, dbDriver.urlOfDatabase(), sqlStatement);
+            break;
+          case '*':
+            if (sqlStatement.length() >= 2)
+              switch (sqlStatement.charAt(1)) {
+                case 'c':
+                  theCon.commit();
+                  break;
+                case 'r':
+                  theCon.rollback();
+                  break;
+                case '+':
+                  theCon.setAutoCommit(true);
+                  break;
+                case '-':
+                  theCon.setAutoCommit(false);
+                  break;
+              }
+            break;
+          default:
+            try {
+              stmt.execute(sqlStatement);
+            } catch (SQLException e) {
+              throw new RuntimeException(e);
+            }
         }
         //System.out.println();
-      } catch (Exception e)
-      {
+      } catch (Exception e) {
         System.out.println("problems with SQL sent to " +
-                           dbDriver.urlOfDatabase() +
-                           "\n" + sqlStatement + "\n" + e.getMessage());
+                dbDriver.urlOfDatabase() +
+                "\n" + sqlStatement + "\n" + e.getMessage());
       }
     }
-
-    try {
-      theCon.close();
-    } catch (Exception e)
-    {
-      System.err.println("problems with close " +
-                         ": "+e.getMessage());
-    }
-
+    AdminModel.injectAdmin();
   }
-
-
   private static void query( Statement stmt, String url, String stm )
   {
     try

@@ -1,8 +1,5 @@
-package admin;
-
-import admin.AdminView;
+package clients.admin;
 import middle.MiddleFactory;
-import middle.Names;
 import middle.RemoteMiddleFactory;
 
 import javax.swing.*;
@@ -27,9 +24,9 @@ public class AdminClient
         window.setTitle("Admin Client");
         window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-        AdminModel model = new AdminModel();
+        AdminModel model = new AdminModel(mf);
         AdminView view  = new AdminView( window, mf, 0, 0 );
-        AdminController cont  = new AdminController();
+        AdminController cont  = new AdminController(model, view);
         view.setController( cont );
 
         model.addObserver(view);       // Add observer to the model - view is observer, model is Observable

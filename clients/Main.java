@@ -1,5 +1,8 @@
 package clients;
 
+import clients.admin.AdminController;
+import clients.admin.AdminModel;
+import clients.admin.AdminView;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
@@ -12,6 +15,9 @@ import clients.customer.CustomerView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
+import login.LoginController;
+import login.LoginModel;
+import login.LoginView;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 import javax.swing.*;
@@ -26,7 +32,7 @@ import java.awt.*;
  * @version year-2024
  */
 
-class Main
+public class Main
 {
   public static void main (String args[])
   {
@@ -36,17 +42,24 @@ class Main
   /**
    * Starts the system (Non distributed)
    */
-  public void begin()
-  {
+  public void begin() {
     //DEBUG.set(true); /* Lots of debug info */
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
-    startCustomerGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf ); // you can create multiple clients
-    startPackingGUI_MVC( mlf );
-    startBackDoorGUI_MVC( mlf );
+    startLoginGUI_MVC( mlf );
   }
-  
+  public void userOpen(){
+    MiddleFactory mlf = new LocalMiddleFactory();
+    startCustomerGUI_MVC( mlf );
+  }
+  public void cashierOpen(){
+    MiddleFactory mlf = new LocalMiddleFactory();
+    startCashierGUI_MVC( mlf );
+    startPackingGUI_MVC( mlf );
+  }
+  public void managerOpen(MiddleFactory mlf){
+    startBackDoorGUI_MVC( mlf );
+    startAdminGUI_MVC( mlf );
+  }
   /**
   * start the Customer client, -search product
   * @param mlf A factory to create objects to access the stock list
@@ -129,6 +142,30 @@ class Main
 
     model.addObserver( view );       // Add observer to the model
     window.setVisible(true);         // Make window visible
+  }
+  public void startLoginGUI_MVC(MiddleFactory mlf)  {
+    JFrame  window = new JFrame();
+    window.setTitle( "Login Client MVC");
+    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Dimension pos = PosOnScrn.getPos();
+    LoginModel model      = new LoginModel(mlf);
+    LoginView view        = new LoginView( window, mlf, pos.width, pos.height );
+    LoginController cont  = new LoginController( model, view );
+    view.setController(cont);
+    model.addObserver(view);
+    window.setVisible(true);
+  }
+  public void startAdminGUI_MVC(MiddleFactory mlf)  {
+    JFrame  window = new JFrame();
+    window.setTitle( "Admin Client MVC");
+    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Dimension pos = PosOnScrn.getPos();
+    AdminModel model      = new AdminModel(mlf);
+    AdminView view        = new AdminView( window, mlf, pos.width, pos.height );
+    AdminController cont  = new AdminController( model, view );
+    view.setController( cont );
+    model.addObserver( view );
+    window.setVisible(true);
   }
   
 }
