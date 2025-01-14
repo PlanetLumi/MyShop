@@ -5,6 +5,7 @@ import dbAccess.DBAccessFactory;
 import security.Encryption;
 
 import java.sql.*;
+import java.util.UUID;
 
 public class AccountCreation {
     public void createAccount(String username, String password, String salt, String role) throws SQLException {
@@ -101,7 +102,7 @@ public class AccountCreation {
         }
     }
 
-    public long loginAccount(String username, String password) {
+    public String loginAccount(String username, String password) {
         Connection theCon;
         DBAccess dbDriver;
         ResultSet rs;
@@ -128,21 +129,21 @@ public class AccountCreation {
                     storedPassword = null;
                     System.out.println("Login successful.");
                     String[] userData = getAll(storedID);
+                    String sessionId = UUID.randomUUID().toString();
                     Accounts user = new Accounts(storedID, userData[1] + userData[2], username);
                     SessionManager sessionManager = SessionManager.getInstance();
-                    String sessionId = "101";
                     sessionManager.login(sessionId, user);
-                    return storedID;
+                    return sessionId;
                 } else {
                     password = null;
                     storedPassword = null;
                     System.out.println("Login failed.");
-                    return -1;
+                    return "";
                 }
             } else {
                 password = null;
                 System.out.println("Username not found");
-                return -1;
+                return "";
             }
         } catch (Exception e) {
             e.printStackTrace();

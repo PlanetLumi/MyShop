@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Jan 14 05:40:51 GMT 2025:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0194-6354-3952-00000f19f528 
+Tue Jan 14 05:50:26 GMT 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0194-635c-ff2a-00000f24b1c0 
 on database directory C:\Users\Lumie123\IdeaProjects\MyShop\catshop.db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@5fd0d5ae 
 Loaded from file:/C:/Users/Lumie123/IdeaProjects/MyShop/lib/db-derby-10.14.2.0-lib/lib/derby.jar
 java.vendor=Eclipse Adoptium

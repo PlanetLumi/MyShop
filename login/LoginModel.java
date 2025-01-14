@@ -13,6 +13,7 @@ public class LoginModel extends Observable {
     private LoginController cont;
 
     public LoginModel(MiddleFactory mf) {
+        this.create = new AccountCreation();
     }
 
     public String findRole(long userID) throws SQLException {
@@ -36,5 +37,8 @@ public class LoginModel extends Observable {
         if(Objects.equals(role, "user")){
             cont.userLoginNext();
         }
+    }
+    public void setController(LoginController cont) {
+        this.cont = cont;
     }
 }

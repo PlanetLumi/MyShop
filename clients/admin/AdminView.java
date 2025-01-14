@@ -2,6 +2,8 @@ package clients.admin;
 
 import clients.Picture;
 import clients.accounts.AccountCreation;
+import clients.accounts.Session;
+import clients.accounts.SessionManager;
 import login.LoginController;
 import middle.MiddleFactory;
 import middle.StockReader;
@@ -106,7 +108,9 @@ public class AdminView implements Observer {
         theBtCheck.setFont(f);
         theBtCheck.addActionListener(e -> {
             AccountCreation creation = new AccountCreation();
-            long userID = creation.loginAccount(usernameInput.getText(), String.valueOf(passwordInput.getPassword()));
+            String sessionId = creation.loginAccount(usernameInput.getText(), String.valueOf(passwordInput.getPassword()));
+            SessionManager sm = SessionManager.getInstance();
+            Session s = sm.getSession(sessionId);
             passwordInput.setText("");
         });
         cp.add(theBtCheck);
