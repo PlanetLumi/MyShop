@@ -107,11 +107,6 @@ public class AdminView implements Observer {
         theBtCheck.setText("Check Admin Login");
         theBtCheck.setFont(f);
         theBtCheck.addActionListener(e -> {
-            AccountCreation creation = new AccountCreation();
-            String sessionId = creation.loginAccount(usernameInput.getText(), String.valueOf(passwordInput.getPassword()));
-            SessionManager sm = SessionManager.getInstance();
-            Session s = sm.getSession(sessionId);
-            passwordInput.setText("");
         });
         cp.add(theBtCheck);
     }

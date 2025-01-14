@@ -2,11 +2,11 @@ package clients.accounts;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SessionManager {
     private static SessionManager instance;
-    private final Map<String, Session> activeSessions;
-
+    private final Map<UUID, Session> activeSessions;
     private SessionManager() {
         activeSessions = new HashMap<>();
     }
@@ -20,7 +20,7 @@ public class SessionManager {
     }
 
     // Log in a user and create a session
-    public void login(String sessionId, Accounts account) {
+    public void login(UUID sessionId, Accounts account) {
         Session session = new Session(sessionId, account);
         activeSessions.put(sessionId, session);
     }
@@ -31,7 +31,7 @@ public class SessionManager {
     }
 
     // Fetch session details by session ID
-    public synchronized Session getSession(String sessionId) {
+    public synchronized Session getSession(UUID sessionId) {
         return activeSessions.get(sessionId);
     }
 

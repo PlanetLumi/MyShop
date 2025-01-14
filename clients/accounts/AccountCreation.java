@@ -102,10 +102,13 @@ public class AccountCreation {
         }
     }
 
-    public String loginAccount(String username, String password) {
+    public Object[] loginAccount(String username, String password) {
         Connection theCon;
         DBAccess dbDriver;
         ResultSet rs;
+        System.out.println(username);
+        System.out.println(password);
+        Object[] userData = new Object[2];
         PreparedStatement stmt;
         DBAccessFactory.setAction("Create");
         try {
@@ -128,28 +131,25 @@ public class AccountCreation {
                     password = null;
                     storedPassword = null;
                     System.out.println("Login successful.");
-                    String[] userData = getAll(storedID);
-                    String sessionId = UUID.randomUUID().toString();
-                    Accounts user = new Accounts(storedID, userData[1] + userData[2], username);
-                    SessionManager sessionManager = SessionManager.getInstance();
-                    sessionManager.login(sessionId, user);
-                    return sessionId;
+                    userData[0] = storedID;
+                    userData[1] = (UUID.randomUUID());
+                    return userData;
                 } else {
                     password = null;
                     storedPassword = null;
                     System.out.println("Login failed.");
-                    return "";
+                    return null;
                 }
             } else {
                 password = null;
                 System.out.println("Username not found");
-                return "";
+                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         password = null;
-        return -1;
+        return null;
     }
 
     public String getRole(long ID) throws SQLException {

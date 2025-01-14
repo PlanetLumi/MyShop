@@ -80,7 +80,7 @@ public class LoginView implements Observer{
         theBtCheck.setFont(f);
         theBtCheck.addActionListener(e -> {
             try {
-                cont.login(String.valueOf(usernameInput), String.valueOf(passwordInput));
+                cont.login(usernameInput.getText(), new String(passwordInput.getPassword()));
                 passwordInput.setText("");
             } catch (NoSuchAlgorithmException | SQLException ex) {
                 throw new RuntimeException(ex);

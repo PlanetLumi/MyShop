@@ -12,7 +12,7 @@ public class AdminController {
         this.model = model;
         this.view = adminView;
     }
-    public void InjectAdmin() throws NoSuchAlgorithmException, SQLException {
+    public static void injectAdmin() throws NoSuchAlgorithmException, SQLException {
         AdminModel.injectAdmin();
     }
 }

@@ -22,14 +22,7 @@ public class LoginController {
         model.setController(this);
     }
     public void login(String username, String password) throws NoSuchAlgorithmException, SQLException {
-        AccountCreation create = new AccountCreation();
-        SessionManager sm = SessionManager.getInstance();
-        Session s = sm.getSession(create.loginAccount(username, password));
-        s.getAccount();
-        model.decidePanel(model.findRole());
-        System.out.println(s.getSessionId());
-        System.out.println(s.getAccount());
-        System.out.println(s.getCreationTime());
+        model.login(username, password);
     }
     public void userLoginNext(){
         main.userOpen();

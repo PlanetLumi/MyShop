@@ -173,7 +173,7 @@ class Setup
                 "\n" + sqlStatement + "\n" + e.getMessage());
       }
     }
-    AdminModel.injectAdmin();
+    AdminController.injectAdmin();
   }
   private static void query( Statement stmt, String url, String stm )
   {

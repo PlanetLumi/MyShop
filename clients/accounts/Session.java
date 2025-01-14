@@ -1,25 +1,30 @@
 package clients.accounts;
 
-import clients.accounts.Accounts;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Session {
-    private final String sessionId;
+    private final UUID sessionId;
     private final Accounts account;
     private final LocalDateTime creationTime;
-
-    public Session(String sessionId, Accounts account) {
+    public Session(UUID sessionId, Accounts account) {
         this.sessionId = sessionId;
         this.account = account;
         this.creationTime = LocalDateTime.now();
     }
 
-    public String getSessionId() {
+    public UUID getSessionId() {
         return sessionId;
     }
 
     public Accounts getAccount() {
         return account;
+    }
+    public void setRole(String role) {
+        account.setRole(role);
+    }
+    public String getRole() {
+        return account.getRole();
     }
 
     public LocalDateTime getCreationTime() {
