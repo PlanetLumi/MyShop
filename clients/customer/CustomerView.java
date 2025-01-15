@@ -3,11 +3,16 @@ package clients.customer;
 import catalogue.Basket;
 import catalogue.BetterBasket;
 import clients.Picture;
+import clients.accounts.AccountCreation;
+import clients.accounts.Session;
+import clients.accounts.SessionManager;
 import middle.MiddleFactory;
 import middle.StockReader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -46,8 +51,7 @@ public class CustomerView implements Observer
    * @param y     y-cordinate of position of window on screen  
    */
   
-  public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
+  public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y ) throws SQLException {
     try                                             // 
     {      
       theStock  = mf.makeStockReader();             // Database Access
@@ -96,7 +100,16 @@ public class CustomerView implements Observer
     thePicture.clear();
     
     rootWindow.setVisible( true );                  // Make visible);
-    theInput.requestFocus();                        // Focus is here
+    theInput.requestFocus();
+    AccountCreation account = new AccountCreation();
+    SessionManager sessionManager = SessionManager.getInstance();
+    Session session = sessionManager.getCurrentSession();
+    String message = account.readData("UserDetails", new String[] {"message"}, session.getAccount().getAccount_id()).toString();
+    System.out.println(message);
+    if(!Objects.equals(message, "")){
+      System.out.println(message);
+      JOptionPane.showMessageDialog(rootWindow, message);
+    }// Focus is here
   }
 
    /**

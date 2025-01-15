@@ -24,9 +24,15 @@ class Setup
 
 //  "drop table ProductList",
 //  "drop table StockList",
-
-
-  "drop table ProductTable",
+    "drop trigger AutoPopulateUserDetails",
+    "drop trigger AutoPopulateUserCardDetails",
+    "drop trigger AutoPopulateOrderHistory",
+    "drop table UserCardDetails",
+    "drop table OrderHistory",
+    "drop table UserDetails",
+    "drop table Accounts",
+    "drop table StockTable",
+    "drop table ProductTable",
   "create table ProductTable ("+
       "productNo      Char(4)," +
       "description    Varchar(40)," +
@@ -50,7 +56,6 @@ class Setup
 //  "select * from ProductTable",
 
 
-  "drop table StockTable",
   "create table StockTable ("+
       "productNo      Char(4)," +
       "stockLevel     Integer)",
@@ -67,15 +72,14 @@ class Setup
           " where StockTable.productNo = ProductTable.productNo",
 
 
-  "drop table Accounts",
   "create table Accounts (" +
       "account_id BigInt Generated Always as Identity Primary Key," +
       "username Varchar(50) Unique," +
       "password Varchar(255)," +
       "salt Varchar(255)," +
-      "role Varchar(50) )",
+      "role Varchar(50) ," +
+      "locked BOOLEAN)",
 
-  "drop table UserDetails",
   "create table UserDetails (" +
        "account_id BigInt Generated Always as Identity Primary Key," +
        "first_name Varchar(20)," +
@@ -83,20 +87,26 @@ class Setup
        "gender Varchar(20)," +
        "date_of_birth DATE," +
        "address Varchar(50)," +
-       "postcode Varchar(7) )",
+       "postcode Varchar(7)," +
+       "message Varchar(100)," +
+       "foreign key (account_id) references Accounts(account_id))",
 
-  "drop table UserCardDetails",
+
   "create table UserCardDetails (" +
         "account_id BigInt Primary Key," +
         "card_number Varchar(19)," +
         "title Varchar(10)," +
-        "cardholder_name Varchar(20) )",
+        "cardholder_name Varchar(20)," +
+        "foreign key (account_id) references Accounts(account_id))",
 
-  "drop table OrderHistory",
   "create table OrderHistory (" +
         "account_id BigInt Primary Key," +
         "productNo Char(4)," +
-        "purchase_date DATE)",
+        "purchase_date DATE," +
+        "foreign key (account_id) references Accounts(account_id))",
+        "Create Trigger AutoPopulateUserDetails After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into UserDetails (account_id) Values (NewAccount.account_id)",
+        "Create Trigger AutoPopulateUserCardDetails After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into UserCardDetails (account_id) Values (NewAccount.account_id)",
+        "Create Trigger AutoPopulateOrderHistory After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into OrderHistory (account_id) Values (NewAccount.account_id)"
  };
 
 
@@ -174,6 +184,8 @@ class Setup
       }
     }
     AdminController.injectAdmin();
+    AdminController.injectEmployees();
+    AdminController.injectUsers();
   }
   private static void query( Statement stmt, String url, String stm )
   {

@@ -22,6 +22,7 @@ import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 /**
  * Starts all the clients (user interface)  as a single application.
@@ -47,7 +48,7 @@ public class Main
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
     startLoginGUI_MVC( mlf );
   }
-  public void userOpen(){
+  public void userOpen() throws SQLException {
     MiddleFactory mlf = new LocalMiddleFactory();
     startCustomerGUI_MVC( mlf );
   }
@@ -64,8 +65,7 @@ public class Main
   * start the Customer client, -search product
   * @param mlf A factory to create objects to access the stock list
   */
-  public void startCustomerGUI_MVC(MiddleFactory mlf )
-  {
+  public void startCustomerGUI_MVC(MiddleFactory mlf ) throws SQLException {
     JFrame  window = new JFrame();
     window.setTitle( "Customer Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );

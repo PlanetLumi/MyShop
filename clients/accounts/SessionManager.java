@@ -7,6 +7,7 @@ import java.util.UUID;
 public class SessionManager {
     private static SessionManager instance;
     private final Map<UUID, Session> activeSessions;
+    private final ThreadLocal<Session> threadLocalSession = new ThreadLocal<>();
     private SessionManager() {
         activeSessions = new HashMap<>();
     }
@@ -20,9 +21,10 @@ public class SessionManager {
     }
 
     // Log in a user and create a session
-    public void login(UUID sessionId, Accounts account) {
+    public synchronized void login(UUID sessionId, Accounts account) {
         Session session = new Session(sessionId, account);
         activeSessions.put(sessionId, session);
+        threadLocalSession.set(session); // Store the session in ThreadLocal
     }
 
     // Log out a user and remove their session
@@ -38,5 +40,14 @@ public class SessionManager {
     // Check if a session exists
     public synchronized boolean isLoggedIn(String sessionId) {
         return activeSessions.containsKey(sessionId);
+    }
+    // Get the session for the current thread
+    public Session getCurrentSession() {
+        return threadLocalSession.get();
+    }
+
+    // Set a session for the current thread manually (if needed)
+    public void setCurrentSession(Session session) {
+        threadLocalSession.set(session);
     }
 }

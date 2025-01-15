@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class LoginView implements Observer{
+public class RegisterView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
@@ -35,32 +35,25 @@ public class LoginView implements Observer{
     private static final JPasswordField passwordInputRe = new JPasswordField();
     private final JTextArea theOutput = new JTextArea();
     private final JScrollPane theSP = new JScrollPane();
-    private static final JButton theBtCheck = new JButton(Name.CHECK);
-    private static final JButton theBtClear = new JButton(Name.CLEAR);
+    private static final JButton theBtCheck = new JButton(LoginView.Name.CHECK);
+    private static final JButton theBtClear = new JButton(LoginView.Name.CLEAR);
     private static final JButton theBtOpenPanel = new JButton();
 
     private Picture thePicture = new Picture(80, 80);
     private StockReader theStock = null;
     private LoginController cont = null;
 
-        /**
-         * Construct the view
-         *
-         * @param rpc Window in which to construct
-         * @param mf  Factor to deliver order and stock objects
-         * @param x   x-cordinate of position of window on screen
-         * @param y   y-cordinate of position of window on screen
-         */
-
-    public LoginView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
-        Container cp = rpc.getContentPane();
-        Container rootWindow = (Container) rpc;
+    public RegisterView(JFrame window, MiddleFactory mf, int x, int y) {
+        Container cp = window.getContentPane();
         cp.setLayout(null);
-        rootWindow.setSize(W, H);
-        rootWindow.setLocation(x, y);
+
+        // Set the size and position of the frame
+        window.setSize(W, H);
+        window.setLocation(x, y);
+
         Font f = new Font("Monospaced", Font.PLAIN, 12);
         pageTitle.setBounds(110, 0, 270, 20);
-        pageTitle.setText("User Login");
+        pageTitle.setText("User Register");
         pageTitle.setFont(f);
         cp.add(pageTitle);
         usernameInput.setBounds(40, 30, 300, 20);
@@ -68,34 +61,30 @@ public class LoginView implements Observer{
         usernameInput.setFont(f);
         usernameInput.setEditable(true);
         cp.add(usernameInput);
-        passwordInput.setBounds(40, 60, 300, 20);
+        passwordInput.setBounds(40, 80, 400, 20);
         passwordInput.setText("Enter Password");
         passwordInput.setFont(f);
         passwordInput.setEditable(true);
         cp.add(passwordInput);
-        rootWindow.setVisible(true);
-        theBtCheck.setBounds(40, 80, 100, 40);
-        theBtCheck.setText("Login");
+        passwordInputRe.setBounds(40, 100, 400, 20);
+        passwordInputRe.setText("Please confirm password");
+        passwordInputRe.setFont(f);
+        passwordInputRe.setEditable(true);
+        cp.add(passwordInputRe);
+        cp.setVisible(true);
+        theBtCheck.setBounds(40, 120, 200, 40);
+        theBtCheck.setText("Create Account");
         theBtCheck.setFont(f);
         theBtCheck.addActionListener(e -> {
             try {
-                cont.login(usernameInput.getText(), new String(passwordInput.getPassword()));
+                cont.createAccount(usernameInput.getText(), new String(passwordInput.getPassword()), new String(passwordInputRe.getPassword()), "user");
                 passwordInput.setText("");
             } catch (NoSuchAlgorithmException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
         });
         cp.add(theBtCheck);
-        theBtOpenPanel.setBounds(40, 120, 200, 40);
-        theBtOpenPanel.setText("Register New Account");
-        theBtOpenPanel.setFont(f);
-        theBtOpenPanel.addActionListener(e -> {
-            cont.openRegisterPanel(x + 40, y);
-        });
-        cp.add(theBtOpenPanel);
     }
-
-
         /**
          * The controller object, used so that an interaction can be passed to the controller
          *
@@ -111,4 +100,4 @@ public class LoginView implements Observer{
          * @param modelA   The observed model
          * @param arg      Specific args
          */
-    }
+}

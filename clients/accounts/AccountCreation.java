@@ -5,13 +5,19 @@ import dbAccess.DBAccessFactory;
 import security.Encryption;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class AccountCreation {
-    public void createAccount(String username, String password, String salt, String role) throws SQLException {
-        Connection theCon;      // Connection to database
-        DBAccess dbDriver;
+    public static Connection theCon = null;
+    public static DBAccess dbDriver = null;
+    public static ResultSet rs = null;
+    public static PreparedStatement pstmt = null;
+
+    public void createAccount(String username, String password, String role) throws SQLException {
         DBAccessFactory.setAction("Create");
+        String salt = Encryption.generateSalt();
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
@@ -19,12 +25,16 @@ public class AccountCreation {
                     (dbDriver.urlOfDatabase(),
                             dbDriver.username(),
                             dbDriver.password());
-            String creationSQL = "INSERT INTO Accounts (username, password, salt, role) VALUES (?, ?, ?, ?)";
+            password = Encryption.hashPassword(password, salt);
+            String creationSQL = "INSERT INTO Accounts (username, password, salt, role, locked) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pstmt = theCon.prepareStatement(creationSQL);
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, salt);
-            pstmt.setString(4, role);
+            // Bind parameters
+            pstmt.setString(1, username); // Bind username
+            pstmt.setString(2, password); // Bind hashed password
+            pstmt.setString(3, salt);     // Bind salt
+            pstmt.setString(4, role);     // Bind role
+            pstmt.setBoolean(5, false);
+
             int rowInserted = pstmt.executeUpdate();
             if (rowInserted > 0) {
                 System.out.println("Account created successfully");
@@ -36,9 +46,116 @@ public class AccountCreation {
         }
     }
 
+    public void lockUser(long userID, boolean locked) {
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+            String updateSQL = "UPDATE Accounts SET locked = ? WHERE account_id = ?";
+            pstmt = theCon.prepareStatement(updateSQL);
+            pstmt.setBoolean(1, locked);
+            pstmt.setLong(2, userID);
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Account is locked?" + locked);
+            } else {
+                System.out.println("Account has not changed lock");
+            }
+            pstmt.close();
+            theCon.close();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean checkLock(long userID) {
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+            String checkTable = "SELECT locked FROM Accounts WHERE account_id = ?";
+            pstmt = theCon.prepareStatement(checkTable);
+            pstmt.setLong(1, userID);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean("locked");
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void newData(String tableName, String columnName, String[] values, long userID) {
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+
+            // Dynamically construct the SQL query with the column name
+            String updateSQL = "UPDATE " + tableName + " SET " + columnName + " = ? WHERE account_id = ?";
+            pstmt = theCon.prepareStatement(updateSQL);
+
+            for (String value : values) {
+                pstmt.setString(1, value);
+                pstmt.setLong(2, userID); // Bind the userID for the WHERE clause
+                int rowsUpdated = pstmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Updated column " + columnName + " to: " + value);
+                }
+            }
+
+            pstmt.close();
+            theCon.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean checkAccount(String username) throws SQLException {
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+            String checkTable = "SELECT * FROM Accounts WHERE username = ?";
+            pstmt = theCon.prepareStatement(checkTable);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                pstmt.close();
+                theCon.close();
+                return true;
+            } else {
+                rs.close();
+                pstmt.close();
+                theCon.close();
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String[] getAll(long ID) throws SQLException {
-        Connection theCon;
-        DBAccess dbDriver;
         DBAccessFactory.setAction("Create");
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
@@ -48,9 +165,9 @@ public class AccountCreation {
                             dbDriver.username(),
                             dbDriver.password());
             String readAccountSQL = "SELECT * FROM UserDetails WHERE account_id = ?";
-            PreparedStatement pstmt = theCon.prepareStatement(readAccountSQL);
+            pstmt = theCon.prepareStatement(readAccountSQL);
             pstmt.setLong(1, ID);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 int columnCount = rs.getMetaData().getColumnCount();
                 String[] accounts = new String[columnCount];
@@ -73,8 +190,6 @@ public class AccountCreation {
     }
 
     public long getID(String username) {
-        Connection theCon;      // Connection to database
-        DBAccess dbDriver;
         DBAccessFactory.setAction("Create");
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
@@ -84,12 +199,10 @@ public class AccountCreation {
                             dbDriver.username(),
                             dbDriver.password());
             String readIDSQL = "SELECT account_id FROM Accounts WHERE username = ?";
-            PreparedStatement pstmt = theCon.prepareStatement(readIDSQL);
+            pstmt = theCon.prepareStatement(readIDSQL);
             pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             if (rs.next()) {
-                pstmt.close();
-                theCon.close();
                 return rs.getLong("account_id");
             } else {
                 System.out.println("Account not found");
@@ -103,14 +216,10 @@ public class AccountCreation {
     }
 
     public Object[] loginAccount(String username, String password) {
-        Connection theCon;
-        DBAccess dbDriver;
-        ResultSet rs;
+        Object[] userData = new Object[2];
+        DBAccessFactory.setAction("Create");
         System.out.println(username);
         System.out.println(password);
-        Object[] userData = new Object[2];
-        PreparedStatement stmt;
-        DBAccessFactory.setAction("Create");
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
@@ -119,25 +228,34 @@ public class AccountCreation {
                             dbDriver.username(),
                             dbDriver.password());
             String sql = "SELECT account_id, password, salt FROM Accounts WHERE username = ?";
-            stmt = theCon.prepareStatement(sql);
-            stmt.setString(1, username);
-            rs = stmt.executeQuery();
+            pstmt = theCon.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 String storedPassword = rs.getString("password");
+                System.out.println("PASSWORD," + storedPassword);
                 String storedSalt = rs.getString("salt");
+                System.out.println(storedSalt);
                 long storedID = rs.getLong("account_id");
+                System.out.println(storedID);
                 String hashedPassword = Encryption.hashPassword(password, storedSalt);
-                if (hashedPassword.equals(storedPassword)) {
-                    password = null;
-                    storedPassword = null;
-                    System.out.println("Login successful.");
-                    userData[0] = storedID;
-                    userData[1] = (UUID.randomUUID());
-                    return userData;
+                System.out.println(hashedPassword);
+                if (!checkLock(storedID)) {
+                    if (hashedPassword.equals(storedPassword)) {
+                        password = null;
+                        storedPassword = null;
+                        System.out.println("Login successful.");
+                        userData[0] = storedID;
+                        userData[1] = (UUID.randomUUID());
+                        return userData;
+                    } else {
+                        password = null;
+                        storedPassword = null;
+                        System.out.println("Login failed.");
+                        return null;
+                    }
                 } else {
-                    password = null;
-                    storedPassword = null;
-                    System.out.println("Login failed.");
+                    System.out.println("Account locked.");
                     return null;
                 }
             } else {
@@ -153,8 +271,6 @@ public class AccountCreation {
     }
 
     public String getRole(long ID) throws SQLException {
-        Connection theCon;
-        DBAccess dbDriver;
         DBAccessFactory.setAction("Create");
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
@@ -164,9 +280,9 @@ public class AccountCreation {
                             dbDriver.username(),
                             dbDriver.password());
             String readAccountSQL = "SELECT role FROM Accounts WHERE account_id = ?";
-            PreparedStatement pstmt = theCon.prepareStatement(readAccountSQL);
+            pstmt = theCon.prepareStatement(readAccountSQL);
             pstmt.setLong(1, ID);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             String role = null;
             if (rs.next()) {
                 role = rs.getString("role");
@@ -181,5 +297,94 @@ public class AccountCreation {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public List<String> getUser(String query, String role, boolean showLockedOnly) {
+        List<String> employeelist = new ArrayList<>();
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+            // Base SQL query
+            String readAccountSQL = "SELECT username FROM Accounts WHERE username LIKE ? AND role = ? ";
+
+            // Add condition for locked accounts if necessary
+            if (showLockedOnly) {
+                readAccountSQL += "AND locked = true ";
+            }
+
+            // Append the order and limit clause
+            readAccountSQL += "ORDER BY username ASC FETCH FIRST 20 ROWS ONLY";
+            pstmt = theCon.prepareStatement(readAccountSQL);
+            pstmt.setString(1, "%" + query + "%");
+            pstmt.setString(2, role);
+            rs = pstmt.executeQuery();
+            role = null;
+            while (rs.next()) {
+                employeelist.add(rs.getString("username"));
+            }
+            rs.close();
+            pstmt.close();
+            theCon.close();
+            return employeelist;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public List<Object> readData(String tableName, String[] columnNames, long userID) throws SQLException {
+        DBAccessFactory.setAction("Create");
+        List<Object> userData = new ArrayList<>();
+
+        // Validate table name and column names to avoid SQL injection
+        if (tableName == null || tableName.isEmpty() || columnNames == null || columnNames.length == 0) {
+            throw new IllegalArgumentException("Invalid table name or column names.");
+        }
+
+        // Construct the SQL query dynamically
+        StringBuilder readSQL = new StringBuilder("SELECT ");
+        for (int i = 0; i < columnNames.length; i++) {
+            readSQL.append(columnNames[i]);
+            if (i < columnNames.length - 1) {
+                readSQL.append(", ");
+            }
+        }
+        readSQL.append(" FROM ").append(tableName).append(" WHERE account_id = ?");
+
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection(
+                    dbDriver.urlOfDatabase(),
+                    dbDriver.username(),
+                    dbDriver.password()
+            );
+
+            // Prepare the SQL statement
+            pstmt = theCon.prepareStatement(readSQL.toString());
+            pstmt.setLong(1, userID);
+
+            // Execute the query and process the results
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                for (String column : columnNames) {
+                    userData.add(rs.getObject(column)); // Fetch each column value
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Close resources
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (theCon != null) theCon.close();
+        }
+
+        return userData;
     }
 }

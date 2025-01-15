@@ -7,7 +7,7 @@ import java.awt.*;
  * @author Mike Smith University of Brighton
  * @version 1.0
  */
-class PosOnScrn
+public class PosOnScrn
 {
   private final static int clientW = 400;
   private final static int clientH = 300;
