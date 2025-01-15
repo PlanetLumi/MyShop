@@ -99,19 +99,18 @@ public class AdminView implements Observer {
     }
 
     public void AdminCreatePanel(JFrame window, MiddleFactory mf, int x, int y) {
-        workerSearch.setBounds(110, 200, 270, 30);
-        workerSearch.setText("Search Employees");
         Container cp = window.getContentPane();
         cp.setLayout(null);
-        cp.add(workerSearch);
         // Set the size and position of the frame
         window.setSize(W+200, H+200);
         window.setLocation(x, y);
         DefaultListModel<String> listModel = new DefaultListModel<>();
         JList<String> resultList = new JList<>(listModel);
         JScrollPane scrollPane = new JScrollPane(resultList);
-        scrollPane.setBounds(50, 80, 300, 150);
+        scrollPane.setBounds(50, 100, 200, 150);
         window.add(scrollPane);
+        workerSearch.setBounds(110, 50, 270, 30);
+        workerSearch.setText("Search Employees");
 
         workerSearch.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -148,13 +147,13 @@ public class AdminView implements Observer {
                 user.forEach(listModel::addElement);
             }
         });
-
-
+        cp.add(scrollPane);
+        cp.add(workerSearch);
         Font f = new Font("Monospaced", Font.PLAIN, 12);
         pageTitle.setBounds(110, 0, 270, 20);
         pageTitle.setText("Manage Accounts");
         cp.add(pageTitle);
-        selectEmployee.setBounds(30, 200, 270, 40);
+        selectEmployee.setBounds(30, 300, 270, 40);
         selectEmployee.setText("Designate New Manager");
         selectEmployee.addActionListener(e -> {
             try {

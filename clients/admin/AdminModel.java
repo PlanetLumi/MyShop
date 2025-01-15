@@ -86,7 +86,7 @@ public class AdminModel extends Observable {
         addObserver(view);
         frame.setVisible(true);
     }
-    public void sendUserMessage(String username, String message) {
+    public void sendUserMessage(String username, String message) throws SQLException {
         AccountCreation account = new AccountCreation();
         account.newData("UserDetails", "message",new String[] {message}, account.getID(username));
     }

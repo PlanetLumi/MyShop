@@ -45,4 +45,9 @@ public class CashierController
   {
     model.doBought();
   }
+
+  public void doSearch(String productName){
+    model.doSearch(productName);
+  }
 }
+

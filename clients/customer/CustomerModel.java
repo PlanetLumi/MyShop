@@ -2,6 +2,9 @@ package clients.customer;
 
 import catalogue.Basket;
 import catalogue.Product;
+import clients.accounts.AccountCreation;
+import clients.accounts.Session;
+import clients.accounts.SessionManager;
 import debug.DEBUG;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
@@ -9,6 +12,7 @@ import middle.StockException;
 import middle.StockReader;
 
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.Observable;
 
 /**
@@ -57,40 +61,28 @@ public class CustomerModel extends Observable
    */
   public void doCheck(String productNum )
   {
-    theBasket.clear();                          // Clear s. list
+    theBasket.clear();
     String theAction = "";
-    pn  = productNum.trim();                    // Product no.
-    int    amount  = 1;                         //  & quantity
-    try
-    {
-      if ( theStock.exists( pn ) )              // Stock Exists?
-      {                                         // T
-        Product pr = theStock.getDetails( pn ); //  Product
-        if ( pr.getQuantity() >= amount )       //  In stock?
-        { 
-          theAction =                           //   Display 
-            String.format( "%s : %7.2f (%2d) ", //
-              pr.getDescription(),              //    description
-              pr.getPrice(),                    //    price
-              pr.getQuantity() );               //    quantity
-          pr.setQuantity( amount );             //   Require 1
-          theBasket.add( pr );                  //   Add to basket
-          thePic = theStock.getImage( pn );     //    product
-        } else {                                //  F
-          theAction =                           //   Inform
-            pr.getDescription() +               //    product not
-            " not in stock" ;                   //    in stock
+    pn = productNum.trim();
+    try {
+      if (theStock.exists(pn)) {
+        Product product = theStock.getDetails(pn);
+        if (product.getQuantity() > 0) {
+          theAction = String.format("%s : %.2f (%d available)",
+                  product.getDescription(), product.getPrice(), product.getQuantity());
+          theBasket.add(product);
+          thePic = theStock.getImage(pn);
+        } else {
+          theAction = product.getDescription() + " is out of stock!";
         }
-      } else {                                  // F
-        theAction =                             //  Inform Unknown
-          "Unknown product number " + pn;       //  product number
+      } else {
+        theAction = "Product not found: " + pn;
       }
-    } catch( StockException e )
-    {
-      DEBUG.error("CustomerClient.doCheck()\n%s",
-      e.getMessage() );
+    } catch (StockException e) {
+      theAction = "Error accessing stock: " + e.getMessage();
     }
-    setChanged(); notifyObservers(theAction);
+    setChanged();
+    notifyObservers(theAction);
   }
 
   /**
@@ -129,6 +121,20 @@ public class CustomerModel extends Observable
   protected Basket makeBasket()
   {
     return new Basket();
+  }
+  public static String getMessage() throws SQLException {
+    AccountCreation account = new AccountCreation();
+    SessionManager sessionManager = SessionManager.getInstance();
+    Session session = sessionManager.getCurrentSession();
+    return account.readData("UserDetails", new String[] {"message"}, session.getAccount().getAccount_id()).toString();
+
+  }
+
+  public void clearMessage() throws SQLException {
+    AccountCreation account = new AccountCreation();
+    SessionManager sessionManager = SessionManager.getInstance();
+    Session session = sessionManager.getCurrentSession();
+    account.newData("UserDetails","message",new String[] {""}, session.getAccount().getAccount_id());
   }
 }
 

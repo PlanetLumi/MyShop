@@ -34,7 +34,7 @@ class Setup
     "drop table StockTable",
     "drop table ProductTable",
   "create table ProductTable ("+
-      "productNo      Char(4)," +
+      "productNo      Char(4) Primary Key," +
       "description    Varchar(40)," +
       "picture        Varchar(80)," +
       "price          Float)",
@@ -57,7 +57,7 @@ class Setup
 
 
   "create table StockTable ("+
-      "productNo      Char(4)," +
+      "productNo      Char(4) Primary Key," +
       "stockLevel     Integer)",
 
   "insert into StockTable values ( '0001',  90 )",
@@ -81,7 +81,7 @@ class Setup
       "locked BOOLEAN)",
 
   "create table UserDetails (" +
-       "account_id BigInt Generated Always as Identity Primary Key," +
+       "account_id BigInt Primary Key," +
        "first_name Varchar(20)," +
        "second_name Varchar(20)," +
        "gender Varchar(20)," +

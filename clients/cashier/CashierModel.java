@@ -4,8 +4,13 @@ import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
+import remote.R_StockRW;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Observable;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Implements the Model of the cashier client
@@ -20,7 +25,7 @@ public class CashierModel extends Observable
 
   private String      pn = "";                      // Product being processed
 
-  private StockReadWriter theStock     = null;
+  private R_StockRW theStock     = null;
   private OrderProcessing theOrder     = null;
 
   /**
@@ -32,7 +37,6 @@ public class CashierModel extends Observable
   {
     try                                           // 
     {      
-      theStock = mf.makeStockReadWriter();        // Database access
       theOrder = mf.makeOrderProcessing();        // Process order
     } catch ( Exception e )
     {
@@ -194,5 +198,28 @@ public class CashierModel extends Observable
   {
     return new Basket();
   }
+
+  public void doSearch(String productName) {
+    String message;
+    try {
+      List<String[]> data = theStock.findProductByName(productName.trim());
+      Product product = new Product(Arrays.toString(data.get(1)), Arrays.toString(data.get(2)), Double.parseDouble(Arrays.toString(data.get(3))), parseInt(Arrays.toString(data.get(4))));
+
+      if (product != null) {
+        message = String.format("Product found: %s (%d in stock)",
+                product.getDescription(),
+                product.getQuantity());
+        theBasket.clear();
+        theBasket.add(product);
+      } else {
+        message = "Product not found: " + productName;
+      }
+    } catch (Exception e) {
+      message = "Error searching for product: " + e.getMessage();
+    }
+    setChanged();
+    notifyObservers(message);
+  }
 }
-  
+
+

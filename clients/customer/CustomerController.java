@@ -1,5 +1,7 @@
 package clients.customer;
 
+import java.sql.SQLException;
+
 /**
  * The Customer Controller
  */
@@ -37,6 +39,11 @@ public class CustomerController
     model.doClear();
   }
 
-  
+  public static String displayMessage() throws SQLException {
+    return CustomerModel.getMessage();
+  }
+  public void clearMessage() throws SQLException {
+    model.clearMessage();
+  }
 }
 

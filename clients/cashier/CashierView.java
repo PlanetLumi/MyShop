@@ -68,7 +68,7 @@ public class CashierView implements Observer
     
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+            e -> cont.doSearch(theInput.getText()));
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 

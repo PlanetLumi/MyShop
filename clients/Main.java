@@ -78,6 +78,8 @@ public class Main
 
     model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
     window.setVisible(true);         // start Screen
+    view.displayMessage(window);
+
   }
 
   /**

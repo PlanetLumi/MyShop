@@ -41,7 +41,7 @@ public class CustomerView implements Observer
 
   private Picture thePicture = new Picture(80,80);
   private StockReader theStock   = null;
-  private CustomerController cont= null;
+  private CustomerController cont = null;
 
   /**
    * Construct the view
@@ -49,8 +49,13 @@ public class CustomerView implements Observer
    * @param mf    Factor to deliver order and stock objects
    * @param x     x-cordinate of position of window on screen 
    * @param y     y-cordinate of position of window on screen  
-   */
-  
+   **/
+
+  public void setController( CustomerController c )
+  {
+    cont = c;
+  }
+
   public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y ) throws SQLException {
     try                                             // 
     {      
@@ -101,15 +106,8 @@ public class CustomerView implements Observer
     
     rootWindow.setVisible( true );                  // Make visible);
     theInput.requestFocus();
-    AccountCreation account = new AccountCreation();
-    SessionManager sessionManager = SessionManager.getInstance();
-    Session session = sessionManager.getCurrentSession();
-    String message = account.readData("UserDetails", new String[] {"message"}, session.getAccount().getAccount_id()).toString();
-    System.out.println(message);
-    if(!Objects.equals(message, "")){
-      System.out.println(message);
-      JOptionPane.showMessageDialog(rootWindow, message);
-    }// Focus is here
+
+// Focus is here
   }
 
    /**
@@ -117,31 +115,31 @@ public class CustomerView implements Observer
    * @param c   The controller
    */
 
-  public void setController( CustomerController c )
-  {
-    cont = c;
-  }
 
   /**
    * Update the view
    * @param modelC   The observed model
    * @param arg      Specific args 
    */
-   
-  public void update( Observable modelC, Object arg )
-  {
-    CustomerModel model  = (CustomerModel) modelC;
-    String        message = (String) arg;
-    theAction.setText( message );
-    ImageIcon image = model.getPicture();  // Image of product
-    if ( image == null )
-    {
-      thePicture.clear();                  // Clear picture
-    } else {
-      thePicture.set( image );             // Display picture
+  public void displayMessage(RootPaneContainer rpc) throws SQLException {
+    String message = CustomerController.displayMessage();
+    if(!Objects.equals(message, "[]")){
+      JOptionPane.showMessageDialog((Component) rpc, message);
+      cont.clearMessage();
     }
-    theOutput.setText( model.getBasket().getDetails() );
-    theInput.requestFocus();               // Focus is here
+  }
+
+  public void update(Observable modelC, Object arg) {
+    CustomerModel model = (CustomerModel) modelC;
+    String message = (String) arg;
+    theAction.setText(message);
+    ImageIcon image = model.getPicture();
+    if (image != null) {
+      thePicture.set(image);
+    } else {
+      thePicture.clear();
+    }
+    theOutput.setText(model.getBasket().getDetails());
   }
 
 }

@@ -36,4 +36,5 @@ public interface StockReadWriter extends StockReader
    */
   void modifyStock(Product detail) throws StockException;
 
+
 }

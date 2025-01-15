@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Fully functioning login and session iD">
-      <change afterPath="$PROJECT_DIR$/login/RegisterView.java" afterDir="false" />
+    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="The lords work">
+      <change afterPath="$PROJECT_DIR$/clients/accounts/ProductDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middle/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/db.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log.ctrl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catshop.db/log/log1.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c101.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c101.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c111.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c111.dat" afterDir="false" />
@@ -44,23 +44,20 @@
       <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cb1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cb1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/PosOnScrn.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/PosOnScrn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/Setup.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/Setup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/accounts/AccountCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/accounts/AccountCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/accounts/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/accounts/SessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/admin/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/admin/AdminModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/admin/AdminView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/customer/CustomerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/cashier/CashierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/cashier/CashierController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/cashier/CashierModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/cashier/CashierModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/cashier/CashierView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/cashier/CashierView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/customer/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/customer/CustomerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/customer/CustomerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/login/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/LoginModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/login/LoginModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/login/LoginView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middle/StockReadWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/middle/StockReadWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log1.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c101.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c101.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c111.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c111.dat" afterDir="false" />
@@ -95,12 +92,12 @@
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cb1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cb1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf0.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/PosOnScrn.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/PosOnScrn.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/Setup.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/Setup.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView$Name.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView$Name.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/derby.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/remote/R_StockRW.java" beforeDir="false" afterPath="$PROJECT_DIR$/remote/R_StockRW.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +141,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.AdminClient.executor": "Run",
     "Application.Main.executor": "Run",
-    "Application.Setup.executor": "Debug",
+    "Application.Setup.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
@@ -253,7 +250,7 @@
       <workItem from="1736645620719" duration="13892000" />
       <workItem from="1736800271286" duration="11696000" />
       <workItem from="1736816565107" duration="14221000" />
-      <workItem from="1736889801369" duration="23832000" />
+      <workItem from="1736889801369" duration="33192000" />
     </task>
     <task id="LOCAL-00001" summary="sET UP">
       <option name="closed" value="true" />
@@ -303,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736895542716</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="The lords work">
+      <option name="closed" value="true" />
+      <created>1736915183157</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1736915183157</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,6 +332,7 @@
     <MESSAGE value="Develoepd large amount of login and session management" />
     <MESSAGE value="Integrating session Id and amanagemnt" />
     <MESSAGE value="Fully functioning login and session iD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fully functioning login and session iD" />
+    <MESSAGE value="The lords work" />
+    <option name="LAST_COMMIT_MESSAGE" value="The lords work" />
   </component>
 </project>

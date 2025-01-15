@@ -98,31 +98,47 @@ public class AccountCreation {
 
     public void newData(String tableName, String columnName, String[] values, long userID) {
         DBAccessFactory.setAction("Create");
+
+        if (!tableName.matches("[a-zA-Z0-9_]+") || !columnName.matches("[a-zA-Z0-9_]+")) {
+            throw new IllegalArgumentException("Invalid table or column name.");
+        }
+
         try {
             dbDriver = (new DBAccessFactory()).getNewDBAccess();
             dbDriver.loadDriver();
-            theCon = DriverManager.getConnection
-                    (dbDriver.urlOfDatabase(),
-                            dbDriver.username(),
-                            dbDriver.password());
-
-            // Dynamically construct the SQL query with the column name
+            theCon = DriverManager.getConnection(
+                    dbDriver.urlOfDatabase(),
+                    dbDriver.username(),
+                    dbDriver.password()
+            );
+            System.out.println(tableName + columnName + values[0] + userID);
             String updateSQL = "UPDATE " + tableName + " SET " + columnName + " = ? WHERE account_id = ?";
             pstmt = theCon.prepareStatement(updateSQL);
 
             for (String value : values) {
+                System.out.println(value);
                 pstmt.setString(1, value);
-                pstmt.setLong(2, userID); // Bind the userID for the WHERE clause
+                pstmt.setLong(2, userID);
+
                 int rowsUpdated = pstmt.executeUpdate();
                 if (rowsUpdated > 0) {
                     System.out.println("Updated column " + columnName + " to: " + value);
+                } else {
+                    System.out.println("No rows updated. Check account_id: " + userID);
+                    String testSQL = "SELECT * FROM Accounts WHERE account_id = ?";
+                    pstmt = theCon.prepareStatement(updateSQL);
                 }
             }
-
-            pstmt.close();
-            theCon.close();
         } catch (Exception e) {
+            System.err.println("SQL Error: " + e.getMessage());
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (theCon != null) theCon.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing resources: " + e.getMessage());
+            }
         }
     }
 
@@ -386,5 +402,37 @@ public class AccountCreation {
         }
 
         return userData;
+    }
+
+    public void testSQL(long userID) throws SQLException {
+        DBAccessFactory.setAction("Create");
+        try {
+            dbDriver = (new DBAccessFactory()).getNewDBAccess();
+            dbDriver.loadDriver();
+            theCon = DriverManager.getConnection
+                    (dbDriver.urlOfDatabase(),
+                            dbDriver.username(),
+                            dbDriver.password());
+            String readAccountSQL = "SELECT * FROM UserDetails WHERE account_id = ?";
+            pstmt = theCon.prepareStatement(readAccountSQL);
+            pstmt.setLong(1, userID);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                System.out.println("Account Found:");
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.println(metaData.getColumnName(i) + ": " + rs.getString(i));
+                }
+            } else {
+                System.out.println("Account not found");
+            }
+            rs.close();
+            pstmt.close();
+            theCon.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
