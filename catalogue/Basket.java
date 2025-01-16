@@ -1,10 +1,7 @@
 package catalogue;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Formatter;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * A collection of products,
@@ -17,7 +14,8 @@ public class Basket extends ArrayList<Product> implements Serializable
 {
   private static final long serialVersionUID = 1;
   private int    theOrderNum = 0;          // Order number
-  
+  private HashMap<Product, Integer> productPurchaseInfo = new HashMap();
+
   /**
    * Constructor for a basket which is
    *  used to represent a customer order/ wish list
@@ -45,7 +43,7 @@ public class Basket extends ArrayList<Product> implements Serializable
   {
     return theOrderNum;
   }
-  
+
   /**
    * Add a product to the Basket.
    * Product is appended to the end of the existing products
@@ -56,8 +54,14 @@ public class Basket extends ArrayList<Product> implements Serializable
   // Will be in the Java doc for Basket
   @Override
   public boolean add( Product pr )
-  {                              
-    return super.add( pr );     // Call add in ArrayList
+  {
+    return super.add(pr);     // Call add in ArrayList
+  }
+  public void addIn(Product pr, int currentQuantity){
+    productPurchaseInfo.merge(pr, currentQuantity, Integer::sum);
+  }
+  public void sumbitBasket(){
+
   }
 
   /**
@@ -92,5 +96,8 @@ public class Basket extends ArrayList<Product> implements Serializable
       fr.close();
     }
     return sb.toString();
+  }
+  public HashMap<Product, Integer> returnProductPurchaseInfo(){
+    return productPurchaseInfo;
   }
 }

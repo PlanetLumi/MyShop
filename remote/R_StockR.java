@@ -1,11 +1,13 @@
 package remote;
 
 import catalogue.Product;
+import clients.accounts.ProductDB;
 import dbAccess.StockR;
 import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -63,6 +65,11 @@ public class      R_StockR
          throws RemoteException, StockException
   {
     return aStockR.getImage( pNum );
+  }
+  public List<Object[]> findProduct(String description) throws StockException {
+    ProductDB productDB = new ProductDB();
+    System.out.println( "findProduct() STOCK_R" );
+    return productDB.getAllProductInfo(description);
   }
 
 }

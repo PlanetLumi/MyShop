@@ -117,8 +117,5 @@ public class      R_StockRW
   {
     aStockRW.modifyStock( product );
   }
-  public List<String[]> findProductByName(String description) throws StockException {
-        ProductDB productDB = new ProductDB();
-        return productDB.getAllProductInfo(description);
-  }
+
 }

@@ -16,6 +16,7 @@ public class Product implements Serializable
   private String theDescription;      // Description of product
   private double thePrice;            // Price of product
   private int    theQuantity;         // Quantity involved
+  private String theImg;
 
   /**
    * Construct a product details
@@ -25,11 +26,12 @@ public class Product implements Serializable
    * @param aQuantity The Quantity of the product involved
    */
   public Product( String aProductNum, String aDescription,
-                  double aPrice, int aQuantity )
+                  double aPrice, String aImg, int aQuantity )
   {
     theProductNum  = aProductNum;     // Product number
     theDescription = aDescription;    // Description of product
     thePrice       = aPrice;          // Price of product
+    theImg         = aImg;
     theQuantity    = aQuantity;       // Quantity involved
   }
   
@@ -57,5 +59,7 @@ public class Product implements Serializable
   { 
     theQuantity = aQuantity;
   }
+  public String getImg()   { return theImg; }
+
 
 }

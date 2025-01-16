@@ -4,6 +4,7 @@ import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
 import middle.*;
+import remote.R_StockR;
 import remote.R_StockRW;
 
 import java.util.Arrays;
@@ -26,6 +27,7 @@ public class CashierModel extends Observable
   private String      pn = "";                      // Product being processed
 
   private R_StockRW theStock     = null;
+  private R_StockR theStockR = null;
   private OrderProcessing theOrder     = null;
 
   /**
@@ -202,10 +204,25 @@ public class CashierModel extends Observable
   public void doSearch(String productName) {
     String message;
     try {
-      List<String[]> data = theStock.findProductByName(productName.trim());
-      Product product = new Product(Arrays.toString(data.get(1)), Arrays.toString(data.get(2)), Double.parseDouble(Arrays.toString(data.get(3))), parseInt(Arrays.toString(data.get(4))));
+      List<Object[]> data = theStockR.findProduct(productName.trim());
+      if (data != null && !data.isEmpty()) {
+        Object[] row = data.getFirst();
+        if (row.length < 4) {
+          message = "Error: Product data is incomplete.";
+          System.out.println(message);
+          setChanged();
+          notifyObservers(message);
+          return;
+        }
 
-      if (product != null) {
+        // Map row data to Product fields
+        Product product = new Product(
+                String.valueOf(row[0]),               // Product Number
+                String.valueOf(row[1]),               // Description
+                Double.parseDouble(String.valueOf(row[2])), // Price
+                String.valueOf(row[3]),   // Quantity
+                0);
+
         message = String.format("Product found: %s (%d in stock)",
                 product.getDescription(),
                 product.getQuantity());

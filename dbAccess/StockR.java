@@ -8,12 +8,14 @@ package dbAccess;
  */
 
 import catalogue.Product;
+import clients.accounts.ProductDB;
 import debug.DEBUG;
 import middle.StockException;
 import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -114,31 +116,8 @@ public class StockR implements StockReader
    * @param pNum The product number
    * @return Details in an instance of a Product
    */
-  public synchronized Product getDetails( String pNum )
-         throws StockException
-  {
-    try
-    {
-      Product   dt = new Product( "0", "", 0.00, 0 );
-      ResultSet rs = getStatementObject().executeQuery(
-        "select description, price, stockLevel " +
-        "  from ProductTable, StockTable " +
-        "  where  ProductTable.productNo = '" + pNum + "' " +
-        "  and    StockTable.productNo   = '" + pNum + "'"
-      );
-      if ( rs.next() )
-      {
-        dt.setProductNum( pNum );
-        dt.setDescription(rs.getString( "description" ) );
-        dt.setPrice( rs.getDouble( "price" ) );
-        dt.setQuantity( rs.getInt( "stockLevel" ) );
-      }
-      rs.close();
-      return dt;
-    } catch ( SQLException e )
-    {
-      throw new StockException( "SQL getDetails: " + e.getMessage() );
-    }
+  public synchronized Product getDetails( String pNum ){
+      return null;
   }
 
   /**
@@ -170,6 +149,13 @@ public class StockR implements StockReader
     
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
+  }
+
+  @Override
+  public List<Object[]> findProduct(String pNum) throws StockException {
+    ProductDB productDB = new ProductDB();
+    System.out.println( "findProduct() STOCK_R" );
+    return productDB.getAllProductInfo(pNum);
   }
 
 }

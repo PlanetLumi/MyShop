@@ -27,7 +27,10 @@ class Setup
     "drop trigger AutoPopulateUserDetails",
     "drop trigger AutoPopulateUserCardDetails",
     "drop trigger AutoPopulateOrderHistory",
+    "drop trigger AutoPopulateBasket",
     "drop table UserCardDetails",
+    "drop table Basket",
+    "drop table BasketItems",
     "drop table OrderHistory",
     "drop table UserDetails",
     "drop table Accounts",
@@ -38,6 +41,7 @@ class Setup
       "description    Varchar(40)," +
       "picture        Varchar(80)," +
       "price          Float)",
+
 
   "insert into ProductTable values " +
      "('0001', '40 inch LED HD TV', 'images/pic0001.jpg', 269.00)",
@@ -99,6 +103,19 @@ class Setup
         "cardholder_name Varchar(20)," +
         "foreign key (account_id) references Accounts(account_id))",
 
+  "create table Basket (" +
+         "basket_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
+          "account_id BIGINT NOT NULL," +
+          "foreign key (account_id) REFERENCES Accounts(account_id))",
+
+  "create table BasketItems (" +
+          "basket_id BIGINT,"+
+          "productNo CHAR(4)," +
+          "quantity INT NOT NULL," +
+          "Primary Key (basket_id, productNo)," +
+          "Foreign Key (basket_id) references Basket(account_id)," +
+          "Foreign Key (productNo) references ProductTable(productNo))",
+
   "create table OrderHistory (" +
         "account_id BigInt Primary Key," +
         "productNo Char(4)," +
@@ -106,8 +123,9 @@ class Setup
         "foreign key (account_id) references Accounts(account_id))",
         "Create Trigger AutoPopulateUserDetails After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into UserDetails (account_id) Values (NewAccount.account_id)",
         "Create Trigger AutoPopulateUserCardDetails After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into UserCardDetails (account_id) Values (NewAccount.account_id)",
-        "Create Trigger AutoPopulateOrderHistory After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into OrderHistory (account_id) Values (NewAccount.account_id)"
- };
+        "Create Trigger AutoPopulateOrderHistory After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into OrderHistory (account_id) Values (NewAccount.account_id)",
+        "Create Trigger AutoPopulateBasket After Insert On Accounts Referencing New As NewAccount for Each Row Insert Into Basket (account_id) Values (NewAccount.account_id)",
+  };
 
 
   public static void main(String[] args) throws NoSuchAlgorithmException, SQLException {
