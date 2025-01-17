@@ -5,7 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Implemented Colour utils">
+      <change afterPath="$PROJECT_DIR$/testing/FakeProductDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/InMemoryOrderProcessing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/InMemoryStockReadWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/PackingControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/PackingModelTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/PackingViewTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyShop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MyShop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/Basket.java" beforeDir="false" afterPath="$PROJECT_DIR$/catalogue/Basket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/db.lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/log/log2.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log2.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/ce80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/ce80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cf80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cf80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cf91.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cf91.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/admin/AdminModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/admin/AdminView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/packing/PackingModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/packing/PackingModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/packing/PackingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/packing/PackingView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/MyShop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/MyShop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catalogue/Basket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catalogue/Basket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log2.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log2.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ce80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ce80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf91.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf91.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingModel$StateOf.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingModel$StateOf.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/derby.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +75,9 @@
     &quot;accountId&quot;: &quot;0e0cf22d-b9d8-440e-ac5d-dfcf24537113&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/testing/InMemoryOrderProcessing.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -49,38 +87,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.AdminClient.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Setup.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;test&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lumie123/IdeaProjects/MyShop/lib/db-derby-10.14.2.0-lib/lib/derby.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.AdminClient.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.Setup.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "test",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lumie123/IdeaProjects/MyShop/lib/db-derby-10.14.2.0-lib/lib/derby.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;derby&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "derby"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="AdminClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <classpathModifications>
@@ -165,7 +203,7 @@
       <workItem from="1736816565107" duration="14221000" />
       <workItem from="1736889801369" duration="33240000" />
       <workItem from="1737033353777" duration="27540000" />
-      <workItem from="1737083992769" duration="32596000" />
+      <workItem from="1737083992769" duration="38660000" />
     </task>
     <task id="LOCAL-00001" summary="sET UP">
       <option name="closed" value="true" />
@@ -271,7 +309,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737114811884</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Implemented Colour utils">
+      <option name="closed" value="true" />
+      <created>1737117327070</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1737117327070</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

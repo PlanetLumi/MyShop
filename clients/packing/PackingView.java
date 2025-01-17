@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * A single-window Packing View that:
@@ -20,17 +23,13 @@ import java.util.Observer;
  */
 public class PackingView extends JFrame implements Observer
 {
-  // ---------------------------------------------------------------------
-  // 1) Some constants to identify the cards
-  // ---------------------------------------------------------------------
+
   private static final String CARD_ORDER_SELECTION = "ORDER_SELECTION";
   private static final String CARD_PACKING_STEP    = "PACKING_STEP";
 
   private PackingController controller;
 
-  // ---------------------------------------------------------------------
-  // Fields for the "Order Selection" portion
-  // ---------------------------------------------------------------------
+
   private JTable orderTable;
   private DefaultTableModel orderTableModel;
   private JButton confirmBtn;
@@ -41,8 +40,8 @@ public class PackingView extends JFrame implements Observer
   private JButton packBtn;
   private JButton setDeliveryBtn;
 
-  // This JPanel holds both “screens” in a CardLayout
   private JPanel cards;
+
 
   // Constructor
   // ---------------------------------------------------------------------
@@ -207,6 +206,7 @@ public class PackingView extends JFrame implements Observer
     for (int r = 0; r < itemsModel.getRowCount(); r++) {
       itemsModel.setValueAt("Packed", r, 2);
     }
+    goBackToOrderSelection();
     JOptionPane.showMessageDialog(this, "Items packed!");
   }
 

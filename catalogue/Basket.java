@@ -124,4 +124,8 @@ public class Basket extends ArrayList<Product> implements Serializable
 
     return sb.toString();
   }
+
+  public Object get() {
+      return null;
+  }
 }

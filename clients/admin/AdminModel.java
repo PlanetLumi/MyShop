@@ -58,7 +58,7 @@ public class AdminModel extends Observable {
         Dimension pos = PosOnScrn.getPos();
 
         // Configure the JFrame
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(new Dimension(pos.width, pos.height));
         frame.setLocation(x, y);
 

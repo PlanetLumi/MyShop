@@ -38,18 +38,18 @@ public class AdminView implements Observer {
     private static final int W = 800;
 
     // Common UI components
-    private static final JLabel pageTitle      = new JLabel();
-    private static final JLabel options        = new JLabel();
-    private static final JTextField workerSearch = new JTextField();
-    private static final JTextField userSearch   = new JTextField();
-    private static final JButton selectEmployee  = UtilClass.createRoundedButton(Name.CHECK);
-    private static final JButton lockUser        = UtilClass.createRoundedButton(Name.CHECK);
-    private static final JButton unlockUser      = UtilClass.createRoundedButton(Name.CHECK);
-    private static final JButton theBtOpenPanel  = UtilClass.createRoundedButton("");
-    private static final JButton theBtOpenSecurityPanel = UtilClass.createRoundedButton("");
+    private  final JLabel pageTitle      = new JLabel();
+    private  final JLabel options        = new JLabel();
+    private  final JTextField workerSearch = new JTextField();
+    private  final JTextField userSearch   = new JTextField();
+    private  final JButton selectEmployee  = UtilClass.createRoundedButton(Name.CHECK);
+    private  final JButton lockUser        = UtilClass.createRoundedButton(Name.CHECK);
+    private  final JButton unlockUser      = UtilClass.createRoundedButton(Name.CHECK);
+    private  final JButton theBtOpenPanel  = UtilClass.createRoundedButton("");
+    private  final JButton theBtOpenSecurityPanel = UtilClass.createRoundedButton("");
 
     // “Go Back” button used in sub-panels
-    private static final JButton theBtGoBack = UtilClass.createRoundedButton(Name.BACK);
+    private  final JButton theBtGoBack = UtilClass.createRoundedButton(Name.BACK);
 
     // Additional UI references
     private final JTextArea theOutput = new JTextArea();

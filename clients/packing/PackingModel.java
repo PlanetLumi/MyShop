@@ -9,6 +9,8 @@ import middle.MiddleFactory;
 import middle.OrderException;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
+import testing.InMemoryOrderProcessing;
+import testing.InMemoryStockReadWriter;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,6 +33,10 @@ public class PackingModel extends Observable {
   private String theAction = "";
 
   private StateOf worker = new StateOf();
+
+  public PackingModel(InMemoryStockReadWriter inMemoryStockReadWriter, InMemoryOrderProcessing inMemoryOrderProcessing) {
+  }
+
   public List<Map<String, Object>> fetchUnpackedOrdersFromDB() throws SQLException {
     ProductDB db = new ProductDB();
     return db.fetchUnpackedOrdersFromDB();
