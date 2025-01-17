@@ -1,5 +1,6 @@
 package clients.backDoor;
 
+import clients.UtilClass;
 import middle.MiddleFactory;
 import middle.StockReadWriter;
 
@@ -35,7 +36,7 @@ public class BackDoorView implements Observer
   // -- Searching Section
   private final JLabel searchLabel = new JLabel("Search:");
   private final JTextField searchField = new JTextField();
-  private final JButton searchBtn = new JButton(SEARCH);
+  private final JButton searchBtn = UtilClass.createRoundedButton(SEARCH);
 
   // -- Table for results
   private JTable productTable;
@@ -52,9 +53,9 @@ public class BackDoorView implements Observer
   private final JLabel lblStock = new JLabel("Stock:");
   private final JTextField txtStock = new JTextField();
 
-  private final JButton updateBtn = new JButton(UPDATE);
-  private final JButton addStockBtn = new JButton(ADDSTOCK);
-  private final JButton clearBtn = new JButton(CLEAR);
+  private final JButton updateBtn = UtilClass.createRoundedButton(UPDATE);
+  private final JButton addStockBtn = UtilClass.createRoundedButton(ADDSTOCK);
+  private final JButton clearBtn = UtilClass.createRoundedButton(CLEAR);
 
   private BackDoorController cont;
 

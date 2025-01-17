@@ -1,6 +1,8 @@
 package login;
 
+import clients.UtilClass;
 import clients.Picture;
+import clients.UtilClass;
 import middle.MiddleFactory;
 import middle.StockReader;
 
@@ -35,9 +37,9 @@ public class RegisterView implements Observer {
     private static final JPasswordField passwordInputRe = new JPasswordField();
     private final JTextArea theOutput = new JTextArea();
     private final JScrollPane theSP = new JScrollPane();
-    private static final JButton theBtCheck = new JButton(Name.CHECK);
-    private static final JButton theBtClear = new JButton(Name.CLEAR);
-    private static final JButton theBtOpenPanel = new JButton();
+    private static final JButton theBtCheck = UtilClass.createRoundedButton(Name.CHECK);
+    private static final JButton theBtClear = UtilClass.createRoundedButton(Name.CLEAR);
+    private static final JButton theBtOpenPanel = UtilClass.createRoundedButton("");
 
     private Picture thePicture = new Picture(80, 80);
     private StockReader theStock = null;

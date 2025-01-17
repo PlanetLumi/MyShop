@@ -1,6 +1,7 @@
 package clients.admin;
 
 import clients.Picture;
+import clients.UtilClass;
 import middle.MiddleFactory;
 import middle.StockReader;
 
@@ -41,11 +42,11 @@ public class AdminView implements Observer {
     private static final JLabel options        = new JLabel();
     private static final JTextField workerSearch = new JTextField();
     private static final JTextField userSearch   = new JTextField();
-    private static final JButton selectEmployee  = new JButton(Name.CHECK);
-    private static final JButton lockUser        = new JButton(Name.CHECK);
-    private static final JButton unlockUser      = new JButton(Name.CHECK);
-    private static final JButton theBtOpenPanel  = new JButton();
-    private static final JButton theBtOpenSecurityPanel = new JButton();
+    private static final JButton selectEmployee  = UtilClass.createRoundedButton(Name.CHECK);
+    private static final JButton lockUser        = UtilClass.createRoundedButton(Name.CHECK);
+    private static final JButton unlockUser      = UtilClass.createRoundedButton(Name.CHECK);
+    private static final JButton theBtOpenPanel  = UtilClass.createRoundedButton("");
+    private static final JButton theBtOpenSecurityPanel = UtilClass.createRoundedButton("");
 
     // “Go Back” button used in sub-panels
     private static final JButton theBtGoBack = new JButton(Name.BACK);

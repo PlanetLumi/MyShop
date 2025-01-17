@@ -20,20 +20,20 @@ public class UtilClass {
     }
 
     /**
-     * Creates a rounded button with black text and a lighter black (gray) border.
+     * Creates a rounded button with black text and a dark gray border.
      */
     public static JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setFocusPainted(false);
 
-        // Black text:
+        // Black text
         button.setForeground(Color.BLACK);
 
-        // Turquoise background or your desired color:
+        // Turquoise background
         button.setBackground(TURQUOISE);
 
-        // Use a gray color for the border for that "lighter black" look
-        button.setBorder(new RoundedBorder(10, new Color(80, 80, 80)));
+        // Dark gray border
+        button.setBorder(new RoundedBorder(10, new Color(64, 64, 64)));
 
         return button;
     }
@@ -70,7 +70,7 @@ public class UtilClass {
             g.setColor(borderColor);
             // Draw the round rect border
             g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-            // Reset the graphics object’s color
+            // Reset the graphics object's color
             g.setColor(oldColor);
         }
     }

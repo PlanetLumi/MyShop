@@ -4,14 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Got everything working">
-      <change afterPath="$PROJECT_DIR$/clients/UtilClass.java" afterDir="false" />
+    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Implemented Colour utils">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/login/LoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/UtilClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/UtilClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/admin/AdminView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/admin/AdminView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/backDoor/BackDoorView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/backDoor/BackDoorView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/customer/CustomerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/login/RegisterView.java" beforeDir="false" afterPath="$PROJECT_DIR$/login/RegisterView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/backDoor/BackDoorController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/backDoor/BackDoorController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/backDoor/BackDoorView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/backDoor/BackDoorView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log2.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log2.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ce80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/ce80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf80.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf80.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf91.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/cf91.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/packing/PackingView.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/derby.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,7 +180,7 @@
       <workItem from="1736816565107" duration="14221000" />
       <workItem from="1736889801369" duration="33240000" />
       <workItem from="1737033353777" duration="27540000" />
-      <workItem from="1737083992769" duration="26135000" />
+      <workItem from="1737083992769" duration="27955000" />
     </task>
     <task id="LOCAL-00001" summary="sET UP">
       <option name="closed" value="true" />
@@ -254,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737109286760</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Got everything working">
+      <option name="closed" value="true" />
+      <created>1737110582988</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1737110582988</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,7 +298,8 @@
     <MESSAGE value="End me" />
     <MESSAGE value="Setting up cashier" />
     <MESSAGE value="Got everything working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got everything working" />
+    <MESSAGE value="Implemented Colour utils" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Colour utils" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

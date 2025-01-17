@@ -1,5 +1,6 @@
 package clients.customer;
 
+import clients.UtilClass;
 import catalogue.Basket;
 import catalogue.Product;
 import clients.Picture;
@@ -25,15 +26,15 @@ public class CustomerView implements Observer
   private final JLabel pageTitle      = new JLabel("Search Products");
   private final JLabel theAction      = new JLabel("");
   private final JTextField theInput   = new JTextField();
-  private final JButton theBtCheck    = new JButton("Check");
-  private final JButton theBtClear    = new JButton("Clear");
+  private final JButton theBtCheck    = UtilClass.createRoundedButton("Check");
+  private final JButton theBtClear    = UtilClass.createRoundedButton("Clear");
   private final JLabel theQuantity    = new JLabel("Quantity:");
   private final JTextField theQtyField= new JTextField("1");
-  private final JButton thePlusBtn    = new JButton("+");
-  private final JButton theMinusBtn   = new JButton("-");
-  private final JButton addToBasket   = new JButton("Add To Basket");
-  private final JButton theViewBasketBtn = new JButton("Open Basket");
-  private final JButton theSubmitBtn  = new JButton("Purchase");
+  private final JButton thePlusBtn    = UtilClass.createRoundedButton("+");
+  private final JButton theMinusBtn   = UtilClass.createRoundedButton("-");
+  private final JButton addToBasket   = UtilClass.createRoundedButton("Add To Basket");
+  private final JButton theViewBasketBtn = UtilClass.createRoundedButton("Open Basket");
+  private final JButton theSubmitBtn  = UtilClass.createRoundedButton("Purchase");
   private final Picture thePicture    = new Picture(80,80);
 
   private JTable productTable;
@@ -273,7 +274,7 @@ public class CustomerView implements Observer
     cp.add(totalLabel);
 
     // Drop item button
-    JButton dropItemButton = new JButton("Drop Selected Item");
+    JButton dropItemButton = UtilClass.createRoundedButton("Drop Selected Item");
     dropItemButton.setBounds(20, 400, 160, 30);
     dropItemButton.setFont(f);
     cp.add(dropItemButton);
@@ -300,7 +301,7 @@ public class CustomerView implements Observer
     });
 
     // A "Return" button to go back to the main screen
-    JButton backBtn = new JButton("Return");
+    JButton backBtn = UtilClass.createRoundedButton("Return");
     backBtn.setBounds(400, 400, 120, 30);
     backBtn.setFont(f);
     cp.add(backBtn);
