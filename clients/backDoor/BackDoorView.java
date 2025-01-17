@@ -60,6 +60,7 @@ public class BackDoorView implements Observer
   private BackDoorController cont;
 
   public BackDoorView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) throws SQLException {
+    UtilClass.setTurquoiseBackground(rpc);
     Container cp = rpc.getContentPane();
     Container rootWindow = (Container) rpc;
     cp.setLayout(null);
@@ -68,16 +69,20 @@ public class BackDoorView implements Observer
 
     // Title
     pageTitle.setBounds(180, 0, 250, 30);
+    pageTitle.setForeground(Color.BLACK);
     cp.add(pageTitle);
 
     // Action label
     theAction.setBounds(20, 35, 400, 20);
+    theAction.setForeground(Color.BLACK);
     cp.add(theAction);
 
     // Search label + field + button
     searchLabel.setBounds(20, 60, 60, 25);
+    searchLabel.setForeground(Color.BLACK);
     cp.add(searchLabel);
     searchField.setBounds(80, 60, 200, 25);
+    searchField.setForeground(Color.BLACK);
     cp.add(searchField);
     searchBtn.setBounds(290, 60, 80, 25);
     cp.add(searchBtn);

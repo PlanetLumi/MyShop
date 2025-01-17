@@ -36,7 +36,6 @@ public class LoginView implements Observer {
         Container rootWindow = (Container) rpc;
         cp.setLayout(null);
 
-        // Use our style utility to set a turquoise background
         UtilClass.setTurquoiseBackground(rpc);
 
         // Size and position
@@ -50,7 +49,7 @@ public class LoginView implements Observer {
         pageTitle.setBounds(110, 0, 270, 20);
         pageTitle.setText("User Login");
         pageTitle.setFont(f);
-        pageTitle.setForeground(Color.WHITE); // White text on turquoise
+        pageTitle.setForeground(Color.BLACK);
         cp.add(pageTitle);
 
         // Username

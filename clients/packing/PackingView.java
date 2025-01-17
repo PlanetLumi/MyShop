@@ -1,5 +1,8 @@
 package clients.packing;
 
+import clients.UtilClass;
+import jdk.jshell.execution.Util;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -94,6 +97,7 @@ public class PackingView extends JFrame implements Observer
     panel.setSize(600, 400);
 
     JLabel title = new JLabel("Unpacked Orders:");
+    title.setForeground(Color.BLACK);
     title.setBounds(20, 10, 200, 30);
     panel.add(title);
 
@@ -109,7 +113,7 @@ public class PackingView extends JFrame implements Observer
     panel.add(sp);
 
     // Confirm Button
-    confirmBtn = new JButton("Confirm");
+    confirmBtn = UtilClass.createRoundedButton("Confirm");
     confirmBtn.setBounds(20, 320, 100, 30);
     confirmBtn.addActionListener(e -> doConfirmOrder());
     panel.add(confirmBtn);
@@ -155,9 +159,9 @@ public class PackingView extends JFrame implements Observer
   private JPanel buildPackingStepPanel() {
     JPanel panel = new JPanel(null);
     panel.setSize(600, 400);
-
     // Title
     JLabel lbl = new JLabel("Packing Step");
+    lbl.setForeground(Color.BLACK);
     lbl.setBounds(20, 10, 400, 30);
     panel.add(lbl);
 
@@ -173,13 +177,13 @@ public class PackingView extends JFrame implements Observer
     panel.add(sp);
 
     // Pack button
-    packBtn = new JButton("Pack Items");
+    packBtn = UtilClass.createRoundedButton("Pack Items");
     packBtn.setBounds(20, 300, 120, 30);
     packBtn.addActionListener(e -> doPackItems());
     panel.add(packBtn);
 
     // SetDelivery button
-    setDeliveryBtn = new JButton("Set for Delivery");
+    setDeliveryBtn = UtilClass.createRoundedButton("Set for Delivery");
     setDeliveryBtn.setBounds(160, 300, 150, 30);
     setDeliveryBtn.addActionListener(e -> {
       try {

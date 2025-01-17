@@ -4,6 +4,7 @@ import clients.UtilClass;
 import catalogue.Basket;
 import catalogue.Product;
 import clients.Picture;
+import jdk.jshell.execution.Util;
 import middle.MiddleFactory;
 import middle.StockException;
 
@@ -25,6 +26,7 @@ public class CustomerView implements Observer
 
   private final JLabel pageTitle      = new JLabel("Search Products");
   private final JLabel theAction      = new JLabel("");
+
   private final JTextField theInput   = new JTextField();
   private final JButton theBtCheck    = UtilClass.createRoundedButton("Check");
   private final JButton theBtClear    = UtilClass.createRoundedButton("Clear");
@@ -64,6 +66,7 @@ public class CustomerView implements Observer
 
   private void buildMainScreen(RootPaneContainer rpc, MiddleFactory mf, int x, int y)
   {
+    UtilClass.setTurquoiseBackground(rpc);
     Container cp         = rpc.getContentPane();
     Container rootWindow = (Container) rpc;
     cp.removeAll();
@@ -72,7 +75,10 @@ public class CustomerView implements Observer
     rootWindow.setLocation(x, y);
 
     pageTitle.setBounds(110, 0, 270, 20);
+    pageTitle.setForeground(Color.BLACK);
+
     cp.add(pageTitle);
+
 
     // Check & Clear
     theBtCheck.setBounds(16, 25, 80, 40);
@@ -86,6 +92,7 @@ public class CustomerView implements Observer
 
     // Search input
     theInput.setBounds(110, 50, 400, 40);
+    theInput.setForeground(Color.BLACK);
     cp.add(theInput);
 
     // Picture box
@@ -108,9 +115,11 @@ public class CustomerView implements Observer
 
     // Quantity
     theQuantity.setBounds(520, 100, 60, 20);
+    theQuantity.setForeground(Color.BLACK);
     cp.add(theQuantity);
 
     theQtyField.setBounds(580, 95, 60, 30);
+    theQtyField.setForeground(Color.BLACK);
     cp.add(theQtyField);
 
     thePlusBtn.setBounds(650, 95, 45, 30);
@@ -203,6 +212,7 @@ public class CustomerView implements Observer
    */
   public void openCustomerBasketView(RootPaneContainer rpc, MiddleFactory mf, int x, int y)
   {
+    UtilClass.setTurquoiseBackground(rpc);
     Container cp         = rpc.getContentPane();
     Container rootWindow = (Container) rpc;
     cp.removeAll();
@@ -325,6 +335,7 @@ public class CustomerView implements Observer
     CustomerModel model = (CustomerModel) modelC;
     String msg = (String) arg;
     theAction.setText(msg);
+    theAction.setForeground(Color.BLACK);
 
     // If the model has a new "main" image to show, do so
     ImageIcon icon = model.getPicture();

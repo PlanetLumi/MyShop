@@ -49,12 +49,15 @@ public class RegisterView implements Observer {
         Container cp = window.getContentPane();
         cp.setLayout(null);
 
+
         // Set the size and position of the frame
         window.setSize(W, H);
         window.setLocation(x, y);
+        UtilClass.setTurquoiseBackground(window);
 
         Font f = new Font("Monospaced", Font.PLAIN, 12);
         pageTitle.setBounds(110, 0, 270, 20);
+        pageTitle.setForeground(Color.BLACK);
         pageTitle.setText("User Register");
         pageTitle.setFont(f);
         cp.add(pageTitle);
@@ -62,6 +65,7 @@ public class RegisterView implements Observer {
         usernameInput.setText("Enter Username");
         usernameInput.setFont(f);
         usernameInput.setEditable(true);
+        usernameInput.setForeground(Color.BLACK);
         cp.add(usernameInput);
         passwordInput.setBounds(40, 80, 400, 20);
         passwordInput.setText("Enter Password");

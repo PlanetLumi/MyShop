@@ -33,7 +33,7 @@ public class UtilClass {
         button.setBackground(TURQUOISE);
 
         // Dark gray border
-        button.setBorder(new RoundedBorder(10, new Color(64, 64, 64)));
+        button.setBorder(new RoundedBorder(20, new Color(64, 64, 64)));
 
         return button;
     }

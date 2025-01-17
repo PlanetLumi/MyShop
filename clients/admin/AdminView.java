@@ -49,7 +49,7 @@ public class AdminView implements Observer {
     private static final JButton theBtOpenSecurityPanel = UtilClass.createRoundedButton("");
 
     // “Go Back” button used in sub-panels
-    private static final JButton theBtGoBack = new JButton(Name.BACK);
+    private static final JButton theBtGoBack = UtilClass.createRoundedButton(Name.BACK);
 
     // Additional UI references
     private final JTextArea theOutput = new JTextArea();
@@ -70,6 +70,7 @@ public class AdminView implements Observer {
      * @param y   Y-coordinate for the window
      */
     public AdminView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
+        UtilClass.setTurquoiseBackground(rpc);
         Container cp = rpc.getContentPane();
         Container rootWindow = (Container) rpc;
         cp.setLayout(new BorderLayout(10, 10));
@@ -82,6 +83,7 @@ public class AdminView implements Observer {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         pageTitle.setText("Manager Options");
         pageTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        pageTitle.setForeground(Color.BLACK);
         topPanel.add(pageTitle);
 
         // Center panel: Buttons to open sub-panels
@@ -132,21 +134,24 @@ public class AdminView implements Observer {
     public void AdminCreatePanel(JFrame window, MiddleFactory mf, int x, int y) {
         window.getContentPane().removeAll(); // Clear any previous layout
         window.setTitle("Manager Employee Panel");
+        UtilClass.setTurquoiseBackground(window);
 
         // Use a BorderLayout for overall structure
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         window.setContentPane(contentPanel);
-
+        UtilClass.setTurquoiseBackground(window);
         // Top panel with page title
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         pageTitle.setText("Manage Accounts");
         pageTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        pageTitle.setForeground(Color.BLACK);
         topPanel.add(pageTitle);
 
         // Sub-panel for searching employees
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         workerSearch.setColumns(20);
         workerSearch.setText("Search Employees");
+        workerSearch.setForeground(Color.BLACK);
         searchPanel.add(workerSearch);
 
         // Sub-panel for the list + promotion button
@@ -157,16 +162,20 @@ public class AdminView implements Observer {
         JList<String> resultList = new JList<>(listModel);
         resultList.setVisibleRowCount(8);
         JScrollPane scrollPane = new JScrollPane(resultList);
+        scrollPane.setForeground(Color.BLACK);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Options/Info label
         options.setText("Promote Employee to Manager");
+        options.setForeground(Color.BLACK);
         options.setFont(new Font("SansSerif", Font.ITALIC, 14));
         centerPanel.add(options, BorderLayout.NORTH);
 
         // Button panel at the bottom
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        bottomPanel.setForeground(Color.BLACK);
         selectEmployee.setText("Designate as Manager");
+        selectEmployee.setForeground(Color.BLACK);
         selectEmployee.addActionListener(e -> {
             if (cont != null) {
                 try {
@@ -246,11 +255,12 @@ public class AdminView implements Observer {
         // Use a BorderLayout for overall structure
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         window.setContentPane(contentPanel);
-
+        UtilClass.setTurquoiseBackground(window);
         // Top panel with page title
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         pageTitle.setText("Manage Security");
         pageTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        pageTitle.setForeground(Color.BLACK);
         topPanel.add(pageTitle);
 
         // Search panel
