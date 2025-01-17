@@ -9,57 +9,49 @@ import java.io.Serializable;
  * @version 2.0
  */
 
-public class Product implements Serializable
-{
-  private static final long serialVersionUID = 20092506;
-  private String theProductNum;       // Product number
-  private String theDescription;      // Description of product
-  private double thePrice;            // Price of product
-  private int    theQuantity;         // Quantity involved
-  private String theImg;
+public class Product {
+  private String productNum;
+  private String description;
+  private double price;
+  private String imgPath;    // <== store image path here
+  private int quantity;
 
-  /**
-   * Construct a product details
-   * @param aProductNum Product number
-   * @param aDescription Description of product
-   * @param aPrice The price of the product
-   * @param aQuantity The Quantity of the product involved
-   */
-  public Product( String aProductNum, String aDescription,
-                  double aPrice, String aImg, int aQuantity )
-  {
-    theProductNum  = aProductNum;     // Product number
-    theDescription = aDescription;    // Description of product
-    thePrice       = aPrice;          // Price of product
-    theImg         = aImg;
-    theQuantity    = aQuantity;       // Quantity involved
+  // Example constructor that matches your code's usage
+  public Product(String productNo, String desc, double price, String imgPath, int qty) {
+    this.productNum  = productNo;
+    this.description = desc;
+    this.price       = price;
+    this.imgPath     = imgPath;
+    this.quantity    = qty;
   }
-  
-  public String getProductNum()  { return theProductNum; }
-  public String getDescription() { return theDescription; }
-  public double getPrice()       { return thePrice; }
-  public int    getQuantity()    { return theQuantity; }
+
+
+  // other getters...
+  public String getProductNum()   { return this.productNum; }
+  public String getDescription()  { return this.description; }
+  public double getPrice()        { return this.price; }
+  public int getQuantity()        { return this.quantity; }
   
   public void setProductNum( String aProductNum )
-  { 
-    theProductNum = aProductNum;
+  {
+    productNum = aProductNum;
   }
   
   public void setDescription( String aDescription )
-  { 
-    theDescription = aDescription;
+  {
+    description = aDescription;
   }
   
   public void setPrice( double aPrice )
-  { 
-    thePrice = aPrice;
+  {
+    price = aPrice;
   }
   
   public void setQuantity( int aQuantity )
-  { 
-    theQuantity = aQuantity;
+  {
+    quantity = aQuantity;
   }
-  public String getImg()   { return theImg; }
+  public String getImg()   { return imgPath; }
 
 
 }

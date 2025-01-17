@@ -1,308 +1,354 @@
 package clients.customer;
 
 import catalogue.Basket;
-import catalogue.BetterBasket;
+import catalogue.Product;
 import clients.Picture;
-import clients.accounts.AccountCreation;
-import clients.accounts.Session;
-import clients.accounts.SessionManager;
 import middle.MiddleFactory;
 import middle.StockException;
-import middle.StockReader;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-
-
-/**
- * Implements the Customer view.
- */
-
 public class CustomerView implements Observer
 {
-  class Name                              // Names of buttons
+  private static final int W = 800;
+  private static final int H = 600;
+
+  private final JLabel pageTitle      = new JLabel("Search Products");
+  private final JLabel theAction      = new JLabel("");
+  private final JTextField theInput   = new JTextField();
+  private final JButton theBtCheck    = new JButton("Check");
+  private final JButton theBtClear    = new JButton("Clear");
+  private final JLabel theQuantity    = new JLabel("Quantity:");
+  private final JTextField theQtyField= new JTextField("1");
+  private final JButton thePlusBtn    = new JButton("+");
+  private final JButton theMinusBtn   = new JButton("-");
+  private final JButton addToBasket   = new JButton("Add To Basket");
+  private final JButton theViewBasketBtn = new JButton("Open Basket");
+  private final JButton theSubmitBtn  = new JButton("Purchase");
+  private final Picture thePicture    = new Picture(80,80);
+
+  private JTable productTable;
+  private DefaultTableModel productTableModel;
+  private JScrollPane productTableSP;
+
+  private CustomerController cont;
+
+  // We'll keep a reference to the RootPaneContainer, MiddleFactory, x, y
+  // so we can re-build the main screen from a helper method:
+  private RootPaneContainer rootRPC;
+  private MiddleFactory     rootMF;
+  private int               rootX, rootY;
+
+  // Keep track of products from the last search
+  private List<Product> lastSearchResults;
+
+  public CustomerView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) throws SQLException
   {
-    public static final String CHECK  = "Check";
-    public static final String CLEAR  = "Clear";
+    this.rootRPC = rpc;
+    this.rootMF  = mf;
+    this.rootX   = x;
+    this.rootY   = y;
+
+    buildMainScreen(rpc, mf, x, y);
   }
 
-  private static final int H = 600;       // Height of window pixels
-  private static final int W = 700;       // Width  of window pixels
-
-  private final JLabel      pageTitle  = new JLabel();
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtCheck = new JButton( Name.CHECK );
-  private final JButton     theBtClear = new JButton( Name.CLEAR );
-  private final JButton     addToBasket = new JButton();
-  private final JButton     thePlusBtn = new JButton();
-  private final JButton     theMinusBtn = new JButton();
-  private final JLabel      theQuantity  = new JLabel();
-  private final JButton     theViewBasketBtn = new JButton();
-  private Picture thePicture = new Picture(80,80);
-  private StockReader theStock   = null;
-  private CustomerController cont = null;
-
-  /**
-   * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-cordinate of position of window on screen 
-   * @param y     y-cordinate of position of window on screen  
-   **/
-
-  public void setController( CustomerController c )
+  private void buildMainScreen(RootPaneContainer rpc, MiddleFactory mf, int x, int y)
   {
-    cont = c;
-  }
-
-  public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y ) throws SQLException {
-    try                                             // 
-    {      
-      theStock  = mf.makeStockReader();             // Database Access
-    } catch ( Exception e )
-    {
-      System.out.println("Exception: " + e.getMessage() );
-    }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
-
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
-    
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Search products" );                        
-    cp.add( pageTitle );
-
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
-    theBtCheck.addActionListener(                   // Call back code
-      e -> {
-          try {
-              cont.doCheck( theInput.getText() );
-              cont.getPicture();
-          } catch (StockException | RemoteException ex) {
-              throw new RuntimeException(ex);
-          }
-      });
-    cp.add( theBtCheck );                           //  Add to canvas
-
-    theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
-    theBtClear.addActionListener(                   // Call back code
-      e -> cont.doClear() );
-    cp.add( theBtClear );                           //  Add to canvas
-
-    theAction.setBounds( 110, 25 , 1000, 20 );       // Message area
-    theAction.setText( " " );                       // blank
-    cp.add( theAction );                            //  Add to canvas
-
-    theInput.setBounds( 110, 50, 400, 40 );         // Product no area
-    theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
-    
-    theSP.setBounds( 110, 100, 400, 160 );          // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-
-    thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
-    cp.add( thePicture );                           //  Add to canvas
-    thePicture.clear();
-
-    thePlusBtn.setBounds(200,60,100, 10);
-    thePlusBtn.setText("+");
-    thePlusBtn.addActionListener(e -> {
-      if(!theOutput.getText().isEmpty()) {
-        cont.plusOne();
-        theQuantity.setText(String.valueOf(cont.getCurrentQuantity()));
-      }else{
-            JOptionPane.showMessageDialog((Component) rpc, "Please enter a product");
-      }
-    });
-    cp.add( thePlusBtn );
-    theMinusBtn.setBounds(200,80,100, 10);
-    theMinusBtn.setText("-");
-    theMinusBtn.addActionListener(e -> {
-      if(!theOutput.getText().isEmpty() || !theInput.getText().isEmpty()) {
-        cont.takeOne();
-        theQuantity.setText(String.valueOf(cont.getCurrentQuantity()));
-      } else{
-        JOptionPane.showMessageDialog((Component) rpc, "Please enter a product");
-      }
-    });
-    cp.add( theMinusBtn );
-    addToBasket.setBounds(200, 100, 200, 40);
-    addToBasket.setText("Add To Basket");
-    addToBasket.setFont(f);
-    addToBasket.addActionListener( e-> {
-        cont.addToBasket();
-        cont.clearQuantity();
-        theQuantity.setText(String.valueOf(cont.getCurrentQuantity()));
-    } );
-    theViewBasketBtn.setBounds(200, 150, 200, 40);
-    theViewBasketBtn.setText("Open Basket");
-    theViewBasketBtn.setFont(f);
-    theViewBasketBtn.addActionListener( e-> {
-      cont.submitBasket();
-      openCustomerBasketView((RootPaneContainer) theViewBasketBtn.getTopLevelAncestor(), mf,x ,y);
-
-    });
-    rootWindow.setVisible( true );                  // Make visible);
-    theInput.requestFocus();
-
-// Focus is here
-  }
-
-  public void openCustomerBasketView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
-    try {
-      theStock = mf.makeStockReader(); // Database Access
-    } catch (Exception e) {
-      System.out.println("Exception: " + e.getMessage());
-    }
-    Container cp = rpc.getContentPane(); // Content Pane
-    Container rootWindow = (Container) rpc; // Root Window
-    cp.removeAll(); // Clear previous components
-    cp.setLayout(null); // No layout manager
-    rootWindow.setSize(W, H); // Set window size
+    Container cp         = rpc.getContentPane();
+    Container rootWindow = (Container) rpc;
+    cp.removeAll();
+    cp.setLayout(null);
+    rootWindow.setSize(W, H);
     rootWindow.setLocation(x, y);
 
-    Font f = new Font("Monospaced", Font.PLAIN, 12); // Font setup
-
-// Page Title
     pageTitle.setBounds(110, 0, 270, 20);
-    pageTitle.setText("Your Basket");
     cp.add(pageTitle);
 
-// Input Field for Searching Basket
-    theInput.setBounds(50, 50, 400, 30);
-    theInput.setText("Search Basket...");
+    // Check & Clear
+    theBtCheck.setBounds(16, 25, 80, 40);
+    theBtClear.setBounds(16, 70, 80, 40);
+    cp.add(theBtCheck);
+    cp.add(theBtClear);
+
+    // Action label
+    theAction.setBounds(110, 25, 400, 20);
+    cp.add(theAction);
+
+    // Search input
+    theInput.setBounds(110, 50, 400, 40);
     cp.add(theInput);
 
-// JList for Displaying Basket Items
-    DefaultListModel<String> listModel = new DefaultListModel<>();
-    JList<String> theOutput = new JList<>(listModel);
-    theOutput.setFont(f);
+    // Picture box
+    thePicture.setBounds(16, 120, 80, 80);
+    cp.add(thePicture);
+    thePicture.clear();
 
-// Scroll Pane for the JList
-    theSP.setBounds(50, 100, 400, 400);
-    theSP.getViewport().add(theOutput);
-    cp.add(theSP);
-
-// Add Document Listener to Input Field
-    theInput.getDocument().addDocumentListener(new DocumentListener() {
-
+    // The product table
+    String[] columnNames = { "Product No", "Description", "Price", "Stock Level" };
+    productTableModel = new DefaultTableModel(columnNames, 0) {
       @Override
-      public void insertUpdate(DocumentEvent e) {
-        try {
-          updateList();
-        } catch (SQLException ex) {
-          ex.printStackTrace();
-        }
+      public boolean isCellEditable(int row, int column) {
+        return false;
       }
+    };
+    productTable = new JTable(productTableModel);
+    productTableSP = new JScrollPane(productTable);
+    productTableSP.setBounds(110, 100, 400, 180);
+    cp.add(productTableSP);
 
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        try {
-          updateList();
-        } catch (SQLException ex) {
-          ex.printStackTrace();
-        }
-      }
+    // Quantity
+    theQuantity.setBounds(520, 100, 60, 20);
+    cp.add(theQuantity);
 
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        try {
-          updateList();
-        } catch (SQLException ex) {
-          ex.printStackTrace();
-        }
-      }
+    theQtyField.setBounds(580, 95, 60, 30);
+    cp.add(theQtyField);
 
-      private void updateList() throws SQLException {
-        String search = theInput.getText(); // Get the search input
-        List<String> userItems = getBskItmByContent(search); // Fetch basket items
-        listModel.clear(); // Clear current list items
-        userItems.forEach(listModel::addElement); // Add new items to the list
+    thePlusBtn.setBounds(650, 95, 45, 30);
+    cp.add(thePlusBtn);
+    theMinusBtn.setBounds(700, 95, 45, 30);
+    cp.add(theMinusBtn);
+
+    // Add to basket
+    addToBasket.setBounds(520, 140, 150, 40);
+    cp.add(addToBasket);
+
+    // View basket
+    theViewBasketBtn.setBounds(520, 190, 150, 40);
+    cp.add(theViewBasketBtn);
+
+    // Listeners
+    theBtCheck.addActionListener(e -> {
+      try {
+        cont.doCheck(theInput.getText());
+        cont.getImg();
+      } catch (StockException | RemoteException ex) {
+        ex.printStackTrace();
+        throw new RuntimeException(ex);
       }
     });
+    theBtClear.addActionListener(e -> cont.doClear());
 
-    JButton dropItmBtn = new JButton("Drop Item");
-    dropItmBtn.setBounds(500, 40, 100, 30);
-    dropItmBtn.setFont(f);
-    dropItmBtn.setText("Drop Item");
-    dropItmBtn.addActionListener(e -> {
-      String selected = theInput.getText();
-      if(selected != null && !selected.isEmpty()) {
-        try {
-          cont.dropBskItem(theOutput.getSelectedValue());
-          listModel.removeElement(selected);
-        } catch (Exception e1) {
-          JOptionPane.showMessageDialog((Component) rpc, "Error dropping item");
-        }
-      }
-    });
-    cp.add(dropItmBtn);
-    thePlusBtn.setBounds(200, 150, 200, 40);
-    thePlusBtn.setText("+");
     thePlusBtn.addActionListener(e -> {
-      cont.
-    })
+      try {
+        int val = Integer.parseInt(theQtyField.getText());
+        theQtyField.setText(String.valueOf(val + 1));
+      } catch (NumberFormatException ex) {
+        theQtyField.setText("1");
+      }
+    });
+    theMinusBtn.addActionListener(e -> {
+      try {
+        int val = Integer.parseInt(theQtyField.getText());
+        if (val > 1) {
+          theQtyField.setText(String.valueOf(val - 1));
+        }
+      } catch (NumberFormatException ex) {
+        theQtyField.setText("1");
+      }
+    });
+    addToBasket.addActionListener(e -> {
+      int quantity;
+      try {
+        quantity = Integer.parseInt(theQtyField.getText());
+      } catch (NumberFormatException ex) {
+        quantity = 1;
+      }
+      cont.addToBasket(quantity);
+    });
+    theViewBasketBtn.addActionListener(e -> {
+      cont.submitBasket();
+      openCustomerBasketView(rpc, mf, x, y);
+    });
 
+    // If user selects a row in the table, show that product’s image
+    productTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+      if (!e.getValueIsAdjusting()) {
+        int selectedRow = productTable.getSelectedRow();
+        if (selectedRow != -1 && lastSearchResults != null
+                && selectedRow < lastSearchResults.size()) {
+          Product p = lastSearchResults.get(selectedRow);
+          if (p.getImg() != null && !p.getImg().isEmpty()) {
+            thePicture.set(new ImageIcon(p.getImg()));
+          } else {
+            thePicture.clear();
+          }
+          cont.setSelectedProduct(
+                  p.getProductNum(),
+                  p.getDescription(),
+                  p.getPrice(),
+                  p.getQuantity(),
+                  p.getImg()
+          );
+        }
+      }
+    });
 
-// Make the root window visible
     rootWindow.setVisible(true);
-    theInput.requestFocus();
-
-
-  }
-  private List getBskItmByContent(String query) throws SQLException {
-    return cont.getBskItmByContent(query);
+    cp.repaint();
   }
 
-
   /**
-  * The controller object, used so that an interaction can be passed to the controller
-  * @param c   The controller
-  */
-
-
-  /**
-   * Update the view
-   * @param modelC   The observed model
-   * @param arg      Specific args 
+   * Show the user's basket in a new panel (still within the same JFrame).
+   * Now includes a second image box for the selected basket item.
    */
-  public void displayMessage(RootPaneContainer rpc) throws SQLException {
-    String message = CustomerController.displayMessage();
-    if(!Objects.equals(message, "[]") && !Objects.equals(message, null)) {
-      JOptionPane.showMessageDialog((Component) rpc, message);
-      cont.clearMessage();
+  public void openCustomerBasketView(RootPaneContainer rpc, MiddleFactory mf, int x, int y)
+  {
+    Container cp         = rpc.getContentPane();
+    Container rootWindow = (Container) rpc;
+    cp.removeAll();
+    cp.setLayout(null);
+    rootWindow.setSize(W, H);
+    rootWindow.setLocation(x, y);
+
+    Font f = new Font("Monospaced", Font.PLAIN, 12);
+
+    JLabel pageTitle = new JLabel("Your Basket");
+    pageTitle.setBounds(20, 0, 270, 20);
+    cp.add(pageTitle);
+
+    // Table for basket
+    String[] basketCols = { "Product No", "Description", "Unit Price", "Quantity", "Subtotal" };
+    DefaultTableModel basketModel = new DefaultTableModel(basketCols, 0) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    JTable basketTable = new JTable(basketModel);
+    JScrollPane basketSP = new JScrollPane(basketTable);
+    basketSP.setBounds(20, 50, 500, 300);
+    cp.add(basketSP);
+
+    // A second image area for basket items
+    Picture basketPicture = new Picture(80, 80);
+    basketPicture.setBounds(540, 50, 80, 80);
+    basketPicture.clear();
+    cp.add(basketPicture);
+
+    // Fill table from the model's basket
+    Map<catalogue.Product, Integer> basketData = cont.getBasket().returnProductPurchaseInfo();
+    double totalPrice = 0.0;
+    java.util.List<Product> basketProducts = new java.util.ArrayList<>(basketData.keySet());
+
+    for (Product p : basketProducts) {
+      int qty = basketData.get(p);
+      double subtotal = p.getPrice() * qty;
+      totalPrice += subtotal;
+      basketModel.addRow(new Object[] {
+              p.getProductNum(),
+              p.getDescription(),
+              p.getPrice(),
+              qty,
+              subtotal
+      });
     }
+
+    // Listen for selection in the basket table to show item image
+    basketTable.getSelectionModel().addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting()) {
+        int selRow = basketTable.getSelectedRow();
+        if (selRow != -1 && selRow < basketProducts.size()) {
+          Product selectedP = basketProducts.get(selRow);
+          if (selectedP.getImg() != null && !selectedP.getImg().isEmpty()) {
+            basketPicture.set(new ImageIcon(selectedP.getImg()));
+          } else {
+            basketPicture.clear();
+          }
+        }
+      }
+    });
+
+    // Show total
+    JLabel totalLabel = new JLabel("Total: " + totalPrice);
+    totalLabel.setBounds(20, 360, 200, 30);
+    cp.add(totalLabel);
+
+    // Drop item button
+    JButton dropItemButton = new JButton("Drop Selected Item");
+    dropItemButton.setBounds(20, 400, 160, 30);
+    dropItemButton.setFont(f);
+    cp.add(dropItemButton);
+
+    dropItemButton.addActionListener(evt -> {
+      int selectedRow = basketTable.getSelectedRow();
+      if (selectedRow != -1) {
+        Product toRemove = basketProducts.get(selectedRow);
+        cont.dropBskItem(toRemove.getProductNum());
+        basketModel.removeRow(selectedRow);
+        basketProducts.remove(selectedRow);
+        basketPicture.clear();
+      }
+    });
+
+    // A Purchase button
+    theSubmitBtn.setBounds(200, 400, 160, 30);
+    theSubmitBtn.setFont(f);
+    cp.add(theSubmitBtn);
+    theSubmitBtn.addActionListener(evt -> {
+      cont.purchaseBasket();
+      basketModel.setRowCount(basketProducts.size());  // Just to visually clear rows
+      basketPicture.clear();
+    });
+
+    // A "Return" button to go back to the main screen
+    JButton backBtn = new JButton("Return");
+    backBtn.setBounds(400, 400, 120, 30);
+    backBtn.setFont(f);
+    cp.add(backBtn);
+    backBtn.addActionListener(evt -> {
+      // Rebuild the main purchase screen
+      buildMainScreen(rpc, mf, x, y);
+    });
+
+    rootWindow.setVisible(true);
+    cp.repaint();
   }
 
-  public void update(Observable modelC, Object arg) {
+  // Let the controller be assigned
+  public void setController(CustomerController c) {
+    this.cont = c;
+  }
+
+  @Override
+  public void update(Observable modelC, Object arg)
+  {
     CustomerModel model = (CustomerModel) modelC;
-    String message = (String) arg;
-    theAction.setText(message);
-    ImageIcon image = model.getPicture();
-    if (image != null) {
-      thePicture.set(image);
+    String msg = (String) arg;
+    theAction.setText(msg);
+
+    // If the model has a new "main" image to show, do so
+    ImageIcon icon = model.getPicture();
+    if (icon != null) {
+      thePicture.set(icon);
     } else {
       thePicture.clear();
     }
-    theOutput.setText(model.getBasket().getDetails());
   }
 
+  /**
+   * Called by the controller to fill the table with search results.
+   * Also store a local list of Product objects so we can easily reference them
+   * for selection.
+   */
+  public void populateProductTable(List<Product> products) {
+    productTableModel.setRowCount(0);
+    this.lastSearchResults = products;
+    for (Product p : products) {
+      productTableModel.addRow(new Object[] {
+              p.getProductNum(),
+              p.getDescription(),
+              p.getPrice(),
+              p.getQuantity()
+      });
+    }
+  }
 }

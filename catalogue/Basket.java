@@ -1,103 +1,93 @@
 package catalogue;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
- * A collection of products,
- * used to record the products that are to be wished to be purchased.
- * @author  Mike Smith University of Brighton
- * @version 2.2
- *
+ * A collection of products representing the user's in-memory basket
+ * before they finalize (submit) the purchase.
  */
-public class Basket extends ArrayList<Product> implements Serializable
-{
-  private static final long serialVersionUID = 1;
-  private int    theOrderNum = 0;          // Order number
-  private HashMap<Product, Integer> productPurchaseInfo = new HashMap();
+public class Basket extends ArrayList<Product> implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-  /**
-   * Constructor for a basket which is
-   *  used to represent a customer order/ wish list
-   */
-  public Basket()
-  {
-    theOrderNum  = 0;
-  }
-  
-  /**
-   * Set the customers unique order number
-   * Valid order Numbers 1 .. N
-   * @param anOrderNum A unique order number
-   */
-  public void setOrderNum( int anOrderNum )
-  {
-    theOrderNum = anOrderNum;
+  private int orderNum = 0;
+  private HashMap<Product, Integer> productQuantities = new HashMap<>();
+
+  public Basket() {
+    // For now, we just keep an empty basket
   }
 
   /**
-   * Returns the customers unique order number
-   * @return the customers order number
+   * Optional: store an order/basket ID if you want
    */
-  public int getOrderNum()
-  {
-    return theOrderNum;
+  public int getOrderNum() {
+    return orderNum;
+  }
+  public void setOrderNum(int orderNum) {
+    this.orderNum = orderNum;
   }
 
   /**
-   * Add a product to the Basket.
-   * Product is appended to the end of the existing products
-   * in the basket.
-   * @param pr A product to be added to the basket
-   * @return true if successfully adds the product
+   * Add a product to the Basket's ArrayList (for any legacy usage).
+   * Also optional: track it in the productQuantities map
    */
-  // Will be in the Java doc for Basket
   @Override
-  public boolean add( Product pr )
-  {
-    return super.add(pr);     // Call add in ArrayList
-  }
-  public void addIn(Product pr, int currentQuantity){
-    productPurchaseInfo.merge(pr, currentQuantity, Integer::sum);
-  }
-  public void sumbitBasket(){
-
+  public boolean add(Product pr) {
+    return super.add(pr);
   }
 
   /**
-   * Returns a description of the products in the basket suitable for printing.
-   * @return a string description of the basket products
+   * Adds or increments an item in the productQuantities map
    */
-  public String getDetails()
-  {
-    Locale uk = Locale.UK;
-    StringBuilder sb = new StringBuilder(256);
-    Formatter     fr = new Formatter(sb, uk);
-    String csign = (Currency.getInstance( uk )).getSymbol();
-    double total = 0.00;
-    if ( theOrderNum != 0 )
-      fr.format( "Order number: %03d\n", theOrderNum );
-      
-    if ( this.size() > 0 )
-    {
-      for ( Product pr: this )
-      {
-        int number = pr.getQuantity();
-        fr.format("%-7s",       pr.getProductNum() );
-        fr.format("%-14.14s ",  pr.getDescription() );
-        fr.format("(%3d) ",     number );
-        fr.format("%s%7.2f",    csign, pr.getPrice() * number );
-        fr.format("\n");
-        total += pr.getPrice() * number;
-      }
-      fr.format("----------------------------\n");
-      fr.format("Total                       ");
-      fr.format("%s%7.2f\n",    csign, total );
-      fr.close();
-    }
-    return sb.toString();
+  public void addIn(Product pr, int quantity) {
+    productQuantities.merge(pr, quantity, Integer::sum);
   }
-  public HashMap<Product, Integer> returnProductPurchaseInfo(){
-    return productPurchaseInfo;
+
+  /**
+   * Returns the internal mapping of Product -> quantity
+   */
+  public HashMap<Product, Integer> returnProductPurchaseInfo() {
+    return productQuantities;
+  }
+
+  /**
+   * Clears both the ArrayList and the productQuantities map
+   */
+  @Override
+  public void clear() {
+    super.clear();
+    productQuantities.clear();
+  }
+
+  /**
+   * Returns a textual summary of items in the basket (for debugging)
+   */
+  public String getDetails() {
+    Locale uk = Locale.UK;
+    StringBuilder sb = new StringBuilder();
+    Formatter fr = new Formatter(sb, uk);
+    double total = 0.0;
+    String csign = (java.util.Currency.getInstance(uk)).getSymbol();
+
+    for (Product p : productQuantities.keySet()) {
+      int qty = productQuantities.get(p);
+      double lineTotal = p.getPrice() * qty;
+      total += lineTotal;
+
+      fr.format("%-7s %-14.14s (%3d) %s%7.2f\n",
+              p.getProductNum(),
+              p.getDescription(),
+              qty,
+              csign,
+              lineTotal);
+    }
+    fr.format("----------------------------\n");
+    fr.format("Total: %s%.2f\n", csign, total);
+    fr.close();
+
+    return sb.toString();
   }
 }

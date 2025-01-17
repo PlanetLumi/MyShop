@@ -1,5 +1,6 @@
 package clients.accounts;
 
+import catalogue.Basket;
 import catalogue.Product;
 import dbAccess.DBAccess;
 
@@ -23,6 +24,9 @@ public class ProductDB {
         public static ResultSet rs = null;
         public static PreparedStatement pstmt = null;
 
+        public ProductDB() throws SQLException {
+        }
+
         public List<Object[]> getAllProductInfo(String description) {
                 List<Object[]> results = new ArrayList<>();
                 DBAccessFactory.setAction("Create");
@@ -37,8 +41,8 @@ public class ProductDB {
 
                         String getAllQuery = "SELECT * FROM ProductTable WHERE description LIKE ? OR productNo LIKE ?";
                         pstmt = theCon.prepareStatement(getAllQuery);
-                        pstmt.setString(1, "%" + description + "%");
-                        pstmt.setString(2, "%" + description + "%");
+                        pstmt.setString(1, "%" + description.toUpperCase() + "%");
+                        pstmt.setString(2, "%" + description.toUpperCase() + "%");
                         rs = pstmt.executeQuery();
 
                         System.out.println("Executing query: " + getAllQuery);
@@ -208,8 +212,11 @@ public class ProductDB {
                                 dbDriver.username(),
                                 dbDriver.password()
                         );
-                        pstmt = theCon.prepareStatement("SELECT productNo FROM Basket WHERE account_id = ?");
+                        pstmt = theCon.prepareStatement(
+                                "SELECT basket_id FROM Basket WHERE account_id = ?"
+                        );
                         pstmt.setInt(1, userID);
+
                         rs = pstmt.executeQuery();
                         System.out.println("Executing query: " + userID);
                         if (rs.next()) {
@@ -222,9 +229,8 @@ public class ProductDB {
         }
 
         public void drpBskItem(int basketID, int productID) {
-                DBAccessFactory.setAction("Create"); // Setting the action to create
+                DBAccessFactory.setAction("Create");
                 try {
-                        // Initialize database connection
                         dbDriver = (new DBAccessFactory()).getNewDBAccess();
                         dbDriver.loadDriver();
                         theCon = DriverManager.getConnection(
@@ -232,19 +238,22 @@ public class ProductDB {
                                 dbDriver.username(),
                                 dbDriver.password()
                         );
-                pstmt = theCon.prepareStatement("DELETE FROM BasketItems WHERE productNo == ? AND basketID = ?");
-                pstmt.setInt(1, productID);
-                pstmt.setInt(2, basketID);
-                int rowsInserted = pstmt.executeUpdate();
-                if (rowsInserted > 0) {
-                        System.out.println("Successfguly deleted");
-                }
-                pstmt.close();
-                theCon.close();
+                        pstmt = theCon.prepareStatement(
+                                "DELETE FROM BasketItems WHERE productNo = ? AND basket_id = ?"
+                        );
+                        pstmt.setInt(1, productID);
+                        pstmt.setInt(2, basketID);
+                        int rowsInserted = pstmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                                System.out.println("Successfully deleted basket item.");
+                        }
+                        pstmt.close();
+                        theCon.close();
                 } catch (Exception e) {
                         throw new RuntimeException(e);
                 }
         }
+
         public void setNewQuantity(int basketID, int productID, int quantity) {
                 DBAccessFactory.setAction("Create"); // Setting the action to create
                 try {
@@ -256,7 +265,7 @@ public class ProductDB {
                                 dbDriver.username(),
                                 dbDriver.password()
                         );
-                        pstmt = theCon.prepareStatement("UPDATE BasketItems SET quantity == ? WHERE productNo == ? AND basketID = ?");
+                        pstmt = theCon.prepareStatement("UPDATE BasketItems SET quantity = ? WHERE productNo = ? AND basketID = ?");
                         pstmt.setInt(1, quantity);
                         pstmt.setInt(2, productID);
                         pstmt.setInt(3, basketID);
@@ -269,6 +278,130 @@ public class ProductDB {
                 } catch (Exception e) {
                         throw new RuntimeException(e);
                 }
+        }
+
+        public void insertBasketIntoOrderHistory(long userId, Basket basket) throws Exception {
+                // Suppose you have a DBAccess or something similar
+                // We'll do direct JDBC here as an example
+
+                // 1) Connect
+                DBAccessFactory.setAction("Create"); // Setting the action to create
+                dbDriver.loadDriver();
+                try (Connection con = DriverManager.getConnection(
+                        dbDriver.urlOfDatabase(),
+                        dbDriver.username(),
+                        dbDriver.password())) {
+                        // 2) Prepare an INSERT statement for OrderHistory
+                        //    The table has (account_id, productNo, purchase_date)
+                        //    We'll store purchase_date as CURRENT_DATE or something
+                        String insertSQL =
+                                "INSERT INTO OrderHistory (account_id, productNo, purchase_date) VALUES (?, ?, CURRENT_DATE)";
+                        try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
+
+                                // 3) For each product in the basket:
+                                for (Map.Entry<Product, Integer> entry : basket.returnProductPurchaseInfo().entrySet()) {
+                                        Product p = entry.getKey();
+
+                                        ps.setLong(1, userId);
+                                        ps.setString(2, p.getProductNum());
+                                        // We rely on "CURRENT_DATE" for the 3rd column
+                                        ps.addBatch();
+                                }
+                                // 4) Execute batch
+                                ps.executeBatch();
+                        }
+                }
+        }
+
+        public void updateStockLevel(String productNo, int purchasedQty) throws Exception {
+                DBAccessFactory.setAction("Create");
+                dbDriver.loadDriver();
+
+                try (Connection con = DriverManager.getConnection(
+                        dbDriver.urlOfDatabase(),
+                        dbDriver.username(),
+                        dbDriver.password())) {
+                        // 1) Fetch the current stock level
+                        String selectSQL = "SELECT stockLevel FROM StockTable WHERE productNo = ?";
+                        try (PreparedStatement psSel = con.prepareStatement(selectSQL)) {
+                                psSel.setString(1, productNo);
+                                try (ResultSet rsSel = psSel.executeQuery()) {
+                                        if (!rsSel.next()) {
+                                                System.out.println("No stock row found for product " + productNo);
+                                                return;
+                                        }
+                                        int currentStock = rsSel.getInt("stockLevel");
+                                        int newStock = currentStock - purchasedQty;
+                                        if (newStock < 0) newStock = 0; // or handle negative differently
+
+                                        // 2) Update the stock level
+                                        String updateSQL = "UPDATE StockTable SET stockLevel = ? WHERE productNo = ?";
+                                        try (PreparedStatement psUpd = con.prepareStatement(updateSQL)) {
+                                                psUpd.setInt(1, newStock);
+                                                psUpd.setString(2, productNo);
+                                                psUpd.executeUpdate();
+                                                System.out.println("Updated stock for " + productNo
+                                                        + ": old=" + currentStock
+                                                        + ", purchased=" + purchasedQty
+                                                        + ", new=" + newStock);
+                                        }
+                                }
+                        }
+                }
+        }
+
+        public List<Map<String, Object>> fetchUnpackedOrdersFromDB() {
+                List<Map<String, Object>> results = new ArrayList<>();
+
+// 1) Open DB connection
+                DBAccessFactory.setAction("Create");
+                try {
+                        dbDriver = new DBAccessFactory().getNewDBAccess();
+                        dbDriver.loadDriver();
+                        theCon = DriverManager.getConnection(
+                                dbDriver.urlOfDatabase(),
+                                dbDriver.username(),
+                                dbDriver.password()
+                        );
+
+// 2) Suppose your OrderHistory has columns:
+//    orderHistoryId, account_id, productNo, purchase_date, isPacked
+//    We only want rows where isPacked = false
+                        String sql = "SELECT orderHistoryId, account_id, productNo, purchase_date "
+                                + "FROM OrderHistory "
+                                + "WHERE isPacked = false";  // or “= 0” or however you store it
+
+                        try (PreparedStatement ps = theCon.prepareStatement(sql)) {
+                                try (ResultSet rs = ps.executeQuery()) {
+
+                                        // 3) Iterate result set, building a map per row
+                                        while (rs.next()) {
+                                                Map<String, Object> row = new HashMap<>();
+                                                row.put("orderHistoryId", rs.getLong("orderHistoryId"));
+                                                row.put("account_id", rs.getLong("account_id"));
+                                                row.put("productNo", rs.getString("productNo"));
+                                                row.put("purchase_date", rs.getDate("purchase_date"));
+                                                // etc. add more columns if you want
+                                                results.add(row);
+                                        }
+                                }
+                        }
+                } catch (SQLException ex) {
+                        // Handle or log
+                        ex.printStackTrace();
+                } catch (Exception e) {
+                        throw new RuntimeException(e);
+                } finally {
+                        // 4) Clean up
+                        if (theCon != null) {
+                                try {
+                                        theCon.close();
+                                } catch (SQLException e) { /* log */ }
+                        }
+                }
+
+                return results;
+
         }
 }
 

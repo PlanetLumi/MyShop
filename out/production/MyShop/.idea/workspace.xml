@@ -4,29 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="End me">
+    <list default="true" id="02153fa7-b04b-4bb6-bfc5-6cb5410839bd" name="Changes" comment="Implementing basket and search">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/BasketRW.java" beforeDir="false" afterPath="$PROJECT_DIR$/catalogue/BasketRW.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/catalogue/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/db.lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/log.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c121.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c121.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c130.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c130.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c141.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c141.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c20.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c20.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c200.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c200.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c211.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c211.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c51.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c51.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c60.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c60.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c71.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c71.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c81.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c81.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/c90.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/c90.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/ca1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/ca1.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" beforeDir="false" afterPath="$PROJECT_DIR$/catshop.db/seg0/cf0.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/Setup.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/Setup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/accounts/ProductDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/accounts/ProductDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/cashier/CashierModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/cashier/CashierModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/customer/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/customer/CustomerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/customer/CustomerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/clients/customer/CustomerView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catalogue/Basket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catalogue/Basket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catalogue/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catalogue/Product.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/db.lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/cashier/CashierModel$State.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/cashier/CashierModel$State.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/cashier/CashierModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/cashier/CashierModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/log.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/log/logmirror.ctrl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c60.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c60.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c81.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/catshop.db/seg0/c81.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/Setup.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/Setup.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView$Name.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView$Name.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/clients/customer/CustomerView.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/MyShop/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/derby.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/remote/R_StockR.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/remote/R_StockR.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MyShop/remote/R_StockRW.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MyShop/remote/R_StockRW.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/remote/R_StockR.java" beforeDir="false" afterPath="$PROJECT_DIR$/remote/R_StockR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/remote/R_StockRW.java" beforeDir="false" afterPath="$PROJECT_DIR$/remote/R_StockRW.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +61,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -65,39 +89,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.AdminClient.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Setup.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lumie123/IdeaProjects/MyShop/lib/db-derby-10.14.2.0-lib/lib/derby.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.AdminClient.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.Setup.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "test",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lumie123/IdeaProjects/MyShop/lib/db-derby-10.14.2.0-lib/lib/derby.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;derby&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "derby"
     ]
   }
-}</component>
-  <component name="RunManager" selected="Application.Main">
+}]]></component>
+  <component name="RunManager" selected="Application.Setup">
     <configuration name="AdminClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <classpathModifications>
         <entry path="C:\Users\Lumie123\IdeaProjects\MyShop\lib\db-derby-10.14.2.0-lib\lib\derby.jar" />
@@ -153,8 +177,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Setup" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.AdminClient" />
       </list>
     </recent_temporary>
@@ -180,7 +204,7 @@
       <workItem from="1736800271286" duration="11696000" />
       <workItem from="1736816565107" duration="14221000" />
       <workItem from="1736889801369" duration="33240000" />
-      <workItem from="1737033353777" duration="3214000" />
+      <workItem from="1737033353777" duration="27540000" />
     </task>
     <task id="LOCAL-00001" summary="sET UP">
       <option name="closed" value="true" />

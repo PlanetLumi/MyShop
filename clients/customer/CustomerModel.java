@@ -16,6 +16,7 @@ import remote.R_StockR;
 import javax.swing.*;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -35,113 +36,50 @@ public class CustomerModel extends Observable
   private OrderProcessing theOrder     = null;
   private ImageIcon       thePic       = null;
   private R_StockR stockR      = null;
-  private BasketRW basketRW =              null;
+  private BasketRW basketRW;
   public int currentQuantity              = 0;
-
+  private ImageIcon picture;
+  private String message;
+  private Basket basket;
 
   /*
    * Construct the model of the Customer
    * @param mf The factory to create the connection objects
    */
-  public CustomerModel(MiddleFactory mf)
-  {
-    try                                          // 
-    {  
-      theStock = mf.makeStockReader();           // Database access
-    } catch ( Exception e )
-    {
-      DEBUG.error("CustomerModel.constructor\n" +
-                  "Database not created?\n%s\n", e.getMessage() );
+
+  public CustomerModel(MiddleFactory mf) throws SQLException {
+    try {
+      theStock = mf.makeStockReader();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    theBasket = makeBasket();                    // Initial Basket
-    basketRW = new BasketRW(theBasket); //Initialise basket Table Access
+    // Initialize the in-memory basket
+    basket = new Basket();
+    // The RW class for reading/writing
+    basketRW = new BasketRW();
   }
-  
+
   /**
    * return the Basket of products
    * @return the basket of products
    */
-  public Basket getBasket()
-  {
-    return theBasket;
-  }
-
   /**
    * Check if the product is in Stock
    * @param productNum The product number
    */
-  public void doCheck(String pn) throws StockException, RemoteException {
-    String message;
-    System.out.println("Searching for product: " + pn);
-    try {
-      List<Object[]> data = theStock.findProduct(pn.trim());
-      if (data != null && !data.isEmpty()) {
-        Object[] row = data.getFirst(); // Get the first matching row
-        if (row.length < 5) { // Ensure row has enough columns
-          message = "Error: Product data is incomplete.";
-          System.out.println(message);
-          setChanged();
-          notifyObservers(message);
-          return;
-        }
 
-        theProduct = new Product(
-                String.valueOf(row[0]),               // Product Number
-                String.valueOf(row[1]),               // Description
-                Double.parseDouble(String.valueOf(row[3])), // Image Path
-                String.valueOf(row[2]),               // Price
-                Integer.parseInt(String.valueOf(row[4])));    // Quantity
-
-        String imagePath = theProduct.getImg();
-        if (imagePath != null && !imagePath.isEmpty()) {
-          thePic = new ImageIcon(imagePath);
-        } else {
-          thePic = null; // Handle missing image
-        }
-
-        message = String.format("Product found: %s (%d in stock)",
-                theProduct.getDescription(),
-                theProduct.getQuantity());
-        theBasket.clear();
-        theBasket.add(theProduct);
-      } else {
-        message = "Product not found: " + pn;
-      }
-    } catch (Exception e) {
-      message = "Error searching for product: " + e.getMessage();
-      e.printStackTrace();
-    }
-    setChanged();
-    notifyObservers(message);
-  }
   /**
    * Clear the products from the basket
    */
-  public void doClear()
-  {
-    String theAction = "";
-    theBasket.clear();                        // Clear s. list
-    theAction = "Enter Product Number";       // Set display
-    thePic = null;                            // No picture
-    setChanged(); notifyObservers(theAction);
-  }
-  
+
   /**
    * Return a picture of the product
    * @return An instance of an ImageIcon
-   */ 
-  public ImageIcon getPicture()
-  {
-    return thePic;
-  }
-  
+   */
+
   /**
    * ask for update of view callled at start
    */
-  private void askForUpdate()
-  {
-    setChanged(); notifyObservers("START only"); // Notify
-  }
 
   /**
    * Make a new Basket
@@ -181,14 +119,49 @@ public class CustomerModel extends Observable
   public void clearQuantity() {
     currentQuantity = 0;
   }
-  public List getBskItmByContent(String content){
-    return List.of(basketRW.getBskItmByContent(content));
+
+
+  public Basket getBasket() {
+    return basket;
   }
-  public void dropBskItem(String product){
-    basketRW.drpBskItem(extractProductNumber(product));
+
+  public ImageIcon getPicture() {
+    return picture;
   }
-  public int extractProductNumber(String product) {
-    return Integer.parseInt(product.split(" ")[0]);
+
+  public void setPicture(ImageIcon pic) {
+    this.picture = pic;
+    setChanged();
+    notifyObservers("Picture Updated");
   }
-}
+  public void setMessage(String msg) {
+    this.message = msg;
+    setChanged();
+    notifyObservers(msg);
+  }
+  public void addToBasket(Product p, int qty) {
+    basket.addIn(p, qty);
+    setChanged();
+    notifyObservers("Added product " + p.getProductNum());
+  }
+
+  public void removeFromBasket(Product p) {
+    // remove from in-memory basket
+    basket.returnProductPurchaseInfo().remove(p);
+    setChanged();
+    notifyObservers("Removed product " + p.getProductNum());
+  }
+
+  public void saveBasketToDB() {
+    basketRW.saveBasket(basket);
+  }
+
+  public void loadBasketFromDB() {
+    basket.clear();
+    basketRW.loadBasket(basket);
+    setChanged();
+    notifyObservers("Basket loaded from DB");
+  }
+
+  }
 

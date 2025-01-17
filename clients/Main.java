@@ -12,6 +12,7 @@ import clients.cashier.CashierView;
 import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
+import clients.packing.PackingClient;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
@@ -24,6 +25,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+import static clients.customer.CustomerModel.getMessage;
+
 /**
  * Starts all the clients (user interface)  as a single application.
  * Good for testing the system using a single application.
@@ -35,15 +38,15 @@ import java.sql.SQLException;
 
 public class Main
 {
-  public static void main (String args[])
-  {
+  JOptionPane popup = null;
+  public static void main (String args[]) throws Exception {
     new Main().begin();
   }
 
   /**
    * Starts the system (Non distributed)
    */
-  public void begin() {
+  public void begin() throws Exception {
     //DEBUG.set(true); /* Lots of debug info */
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
     startLoginGUI_MVC( mlf );
@@ -77,9 +80,11 @@ public class Main
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
+    if(!getMessage().isEmpty() && !getMessage().equals("[]") && !getMessage().equals("[null]")){
+      popup.createDialog(getMessage());
+      model.clearMessage();
+    }
     window.setVisible(true);         // start Screen
-    view.displayMessage(window);
-
   }
 
   /**
@@ -110,19 +115,7 @@ public class Main
   
   public void startPackingGUI_MVC(MiddleFactory mlf)
   {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "Packing Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    PackingModel model      = new PackingModel(mlf);
-    PackingView view        = new PackingView( window, mlf, pos.width, pos.height );
-    PackingController cont  = new PackingController( model, view );
-    view.setController( cont );
-
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+    PackingClient.displayGUI(mlf);
   }
   
   /**
