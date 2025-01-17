@@ -180,6 +180,7 @@ public class CustomerController {
         int productID = Integer.parseInt(p.getProductNum());
         productDB.drpBskItem(basketId, productID);
       }
+      insertBasketIntoOrderHistory(userId, model.getBasket());
 
       // 4) Clear the in-memory basket
       model.getBasket().returnProductPurchaseInfo().clear();

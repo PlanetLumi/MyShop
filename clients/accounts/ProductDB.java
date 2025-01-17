@@ -138,7 +138,7 @@ public class ProductDB {
                         );
 
                         // SQL to insert basket data into the UserBasket table
-                        String insertSQL = "INSERT INTO BasketItems (basket_id, productNo, quantity) VALUES (?, ?, ?)";
+                        String insertSQL = "INSERT INTO BasketItems (basket_id, productNo, quantity, status) VALUES (?, ?, ?, ?)";
 
                         // Create PreparedStatement
                         PreparedStatement pstmt = theCon.prepareStatement(insertSQL);
@@ -152,7 +152,7 @@ public class ProductDB {
                                 pstmt.setInt(1, userID);                // User ID
                                 pstmt.setString(2, product.getProductNum()); // Product number
                                 pstmt.setInt(3, quantity);              // Quantity
-                                pstmt.setDouble(4, product.getPrice() * quantity);
+                                pstmt.setString(4, "open");
 
                                 // Execute the INSERT statement
                                 int rowsInserted = pstmt.executeUpdate();
@@ -292,10 +292,8 @@ public class ProductDB {
                         dbDriver.username(),
                         dbDriver.password())) {
                         // 2) Prepare an INSERT statement for OrderHistory
-                        //    The table has (account_id, productNo, purchase_date)
-                        //    We'll store purchase_date as CURRENT_DATE or something
                         String insertSQL =
-                                "INSERT INTO OrderHistory (account_id, productNo, purchase_date) VALUES (?, ?, CURRENT_DATE)";
+                                "INSERT INTO OrderHistory (account_id, productNo, purchase_date, status) VALUES (?, ?, CURRENT_DATE, ?)";
                         try (PreparedStatement ps = con.prepareStatement(insertSQL)) {
 
                                 // 3) For each product in the basket:
@@ -304,7 +302,8 @@ public class ProductDB {
 
                                         ps.setLong(1, userId);
                                         ps.setString(2, p.getProductNum());
-                                        // We rely on "CURRENT_DATE" for the 3rd column
+                                        //  rely on "CURRENT_DATE" for the 3rd column
+                                        ps.setString(3, "open");
                                         ps.addBatch();
                                 }
                                 // 4) Execute batch
@@ -369,7 +368,7 @@ public class ProductDB {
 //    We only want rows where isPacked = false
                         String sql = "SELECT orderHistoryId, account_id, productNo, purchase_date "
                                 + "FROM OrderHistory "
-                                + "WHERE isPacked = false";  // or “= 0” or however you store it
+                                + "WHERE status = 'open'";  //
 
                         try (PreparedStatement ps = theCon.prepareStatement(sql)) {
                                 try (ResultSet rs = ps.executeQuery()) {
@@ -402,6 +401,118 @@ public class ProductDB {
 
                 return results;
 
+        }
+
+        public void setOrderStatus(long orderId, String status) {
+                DBAccessFactory.setAction("Create");
+                try {
+                        dbDriver = new DBAccessFactory().getNewDBAccess();
+                        dbDriver.loadDriver();
+                        theCon = DriverManager.getConnection(
+                                dbDriver.urlOfDatabase(),
+                                dbDriver.username(),
+                                dbDriver.password()
+                        );
+                        String sql = "UPDATE OrderHistory SET status = ? WHERE orderHistoryId = ?";
+                        try (PreparedStatement ps = theCon.prepareStatement(sql)) {
+                                ps.setString(1, status);
+                        } catch (SQLException e){
+                                e.printStackTrace();
+                        }
+                } catch (Exception e) {
+                        throw new RuntimeException(e);
+                }
+        }
+        public void updateProductDetails(String productId, String description, double newPrice, int stock){
+                DBAccessFactory.setAction("Create");
+                try {
+                        dbDriver = new DBAccessFactory().getNewDBAccess();
+                        dbDriver.loadDriver();
+                        theCon = DriverManager.getConnection(
+                                dbDriver.urlOfDatabase(),
+                                dbDriver.username(),
+                                dbDriver.password()
+                        );
+                        String sql = "UPDATE ProductTable SET description = ?, price = ? WHERE productNo = ?";
+                        String secondSQL = "UPDATE StockTable SET stockLevel = ? WHERE productNo = ?";
+                        try (PreparedStatement ps = theCon.prepareStatement(sql)) {
+                                ps.setString(1, description);
+                                ps.setFloat(2, (float) newPrice);
+                                ps.setString(3, productId);
+                                ps.executeUpdate();
+
+                        } catch (SQLException e){
+                                e.printStackTrace();
+                        }
+                        try(PreparedStatement ps2 = theCon.prepareStatement(secondSQL)) {
+                                ps2.setInt(1, stock);
+                                ps2.setString(2, productId);
+                                ps2.executeUpdate();
+                        } catch (SQLException e){
+                                e.printStackTrace();
+                        }
+                } catch (Exception e) {
+                        throw new RuntimeException(e);
+                }
+        }
+        public List<Object[]> searchProducts(String searchTerm){
+                DBAccessFactory.setAction("Create");
+                try{
+                        dbDriver = new DBAccessFactory().getNewDBAccess();
+                        dbDriver.loadDriver();
+                        theCon = DriverManager.getConnection(
+                                dbDriver.urlOfDatabase(),
+                                dbDriver.username(),
+                                dbDriver.password()
+                        );
+                        String sql = "SELECT * FROM ProductTable WHERE productNo = ? OR UPPER(description) LIKE UPPER(?) OR price = ?";
+                        PreparedStatement ps = theCon.prepareStatement(sql);
+                        try {
+                                ps.setString(1, searchTerm);
+                                ps.setString(2, "%" + searchTerm + "%");
+                                double numericSearchTerm = Double.parseDouble(searchTerm);
+                                ps.setDouble(3, numericSearchTerm); // set the price parameter
+                        } catch (NumberFormatException e) {
+                                ps.setNull(3, java.sql.Types.DOUBLE); // set price to NULL if searchTerm is not numeric
+                        }
+                        List<Object[]> results = new ArrayList<>();
+                        try (ResultSet rs = ps.executeQuery()) {
+                                if (rs.next()) {
+                                        String secondSQL = "SELECT stockLevel FROM StockTable WHERE productNo = ?";
+                                        PreparedStatement ps2 = theCon.prepareStatement(secondSQL);
+                                        ps2.setString(1, rs.getString("productNo"));
+
+                                        try (ResultSet rs2 = ps2.executeQuery()) {
+                                                if (rs2.next()) {
+                                                        results.add(new Object[] { rs.getString("productNo"), rs.getString("description"), rs.getFloat("price"), rs2.getInt("stockLevel") });
+                                                        return results;
+                                                }
+                                        }
+                                }
+                        }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            return List.of();
+        }
+        public void addStock(String productNo, int stock) throws SQLException {
+                DBAccessFactory.setAction("Create");
+                try {
+                        dbDriver = new DBAccessFactory().getNewDBAccess();
+                        dbDriver.loadDriver();
+                        theCon = DriverManager.getConnection(
+                                dbDriver.urlOfDatabase(),
+                                dbDriver.username(),
+                                dbDriver.password()
+                        );
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                String sql = "UPDATE StockTable SET stockLevel = ? WHERE productNo = ?";
+                PreparedStatement ps = theCon.prepareStatement(sql);
+                ps.setInt(1, stock);
+                ps.setString(2, productNo);
+                ps.executeUpdate();
         }
 }
 

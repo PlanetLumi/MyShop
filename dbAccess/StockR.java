@@ -152,7 +152,7 @@ public class StockR implements StockReader
   }
 
   @Override
-  public List<Object[]> findProduct(String pNum) throws StockException {
+  public List<Object[]> findProduct(String pNum) throws StockException, SQLException {
     ProductDB productDB = new ProductDB();
     System.out.println( "findProduct() STOCK_R" );
     return productDB.getAllProductInfo(pNum);

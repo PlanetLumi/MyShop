@@ -42,6 +42,7 @@ public class LoginView implements Observer{
     private Picture thePicture = new Picture(80, 80);
     private StockReader theStock = null;
     private LoginController cont = null;
+    private RootPaneContainer rpc;
 
         /**
          * Construct the view
@@ -53,6 +54,7 @@ public class LoginView implements Observer{
          */
 
     public LoginView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) {
+        this.rpc = rpc;
         Container cp = rpc.getContentPane();
         Container rootWindow = (Container) rpc;
         cp.setLayout(null);
@@ -93,7 +95,16 @@ public class LoginView implements Observer{
             cont.openRegisterPanel(x + 40, y);
         });
         cp.add(theBtOpenPanel);
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setFont(f);
+        logoutButton.setBounds(40, 170, 100, 40);
+        logoutButton.addActionListener(e -> {
+            cont.logout();
+        });
+        cp.add(logoutButton);
     }
+
 
 
         /**
@@ -104,6 +115,10 @@ public class LoginView implements Observer{
 
         public void setController(LoginController a) {
             cont = a;
+            cont.getRpc();
+        }
+        public Window getWindow() {
+            return (Window) this.rpc;
         }
 
         /**

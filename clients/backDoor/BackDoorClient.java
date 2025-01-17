@@ -5,6 +5,7 @@ import middle.Names;
 import middle.RemoteMiddleFactory;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 /**
  * The standalone BackDoor Client
@@ -13,8 +14,7 @@ import javax.swing.*;
 
 public class BackDoorClient
 {
-   public static void main (String args[])
-   {
+   public static void main (String args[]) throws SQLException {
      String stockURL = args.length < 1     // URL of stock RW
                      ? Names.STOCK_RW      //  default  location
                      : args[0];            //  supplied location
@@ -28,8 +28,7 @@ public class BackDoorClient
     displayGUI(mrf);                       // Create GUI
   }
   
-  private static void displayGUI(MiddleFactory mf)
-  {     
+  public static void displayGUI(MiddleFactory mf) throws SQLException {
     JFrame  window = new JFrame();
      
     window.setTitle( "BackDoor Client (MVC RMI)");

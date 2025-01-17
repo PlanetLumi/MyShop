@@ -6,6 +6,8 @@ import middle.Names;
 import middle.RemoteMiddleFactory;
 
 import javax.swing.*;
+import java.sql.SQLException;
+import java.util.Observer;
 
 /**
  * The standalone warehouse Packing Client. warehouse staff to pack the bought order
@@ -16,8 +18,7 @@ import javax.swing.*;
  */
 public class PackingClient 
 {
-   public static void main (String args[])
-   {
+   public static void main (String args[]) throws SQLException {
      String stockURL = args.length < 1     // URL of stock RW
                      ? Names.STOCK_RW      //  default  location
                      : args[0];            //  supplied location
@@ -31,19 +32,18 @@ public class PackingClient
     displayGUI(mrf);                       // Create GUI
   }
   
-  public static void displayGUI(MiddleFactory mf)
-  {     
+  public static void displayGUI(MiddleFactory mf) throws SQLException {
     JFrame  window = new JFrame();
      
     window.setTitle( "Packing Client (RMI MVC)");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     
     PackingModel      model = new PackingModel(mf);
-    PackingView       view  = new PackingView( window, mf, 0, 0 );
-    PackingController cont  = new PackingController( model, view );
+    PackingController cont  = new PackingController( model );
+    PackingView       view  = new PackingView(cont);
     view.setController( cont );
 
-    model.addObserver( view );       // Add observer to the model
+    model.addObserver((Observer) view);       // Add observer to the model
     window.setVisible(true);         // Display Screen
   }
 }

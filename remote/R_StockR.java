@@ -7,6 +7,7 @@ import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
@@ -66,7 +67,7 @@ public class      R_StockR
   {
     return aStockR.getImage( pNum );
   }
-  public List<Object[]> findProduct(String description) throws StockException {
+  public List<Object[]> findProduct(String description) throws StockException, SQLException {
     ProductDB productDB = new ProductDB();
     System.out.println( "findProduct() STOCK_R" );
     return productDB.getAllProductInfo(description);

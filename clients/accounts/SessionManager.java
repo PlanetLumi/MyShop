@@ -28,7 +28,7 @@ public class SessionManager {
     }
 
     // Log out a user and remove their session
-    public synchronized void logout(String sessionId) {
+    public synchronized void logout(UUID sessionId) {
         activeSessions.remove(sessionId);
     }
 

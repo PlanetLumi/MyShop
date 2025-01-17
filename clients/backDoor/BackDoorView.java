@@ -4,121 +4,216 @@ import middle.MiddleFactory;
 import middle.StockReadWriter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Implements the Customer view.
+ * Enhanced BackDoor view that can
+ * 1) Query stock by partial name/productNo,
+ * 2) Show search results in a table,
+ * 3) Let user pick a product and edit fields,
+ * 4) Update DB with new info (stock level, price, etc.).
  */
-
 public class BackDoorView implements Observer
 {
-  private static final String RESTOCK  = "Add";
+  private static final String SEARCH   = "Search";
+  private static final String UPDATE   = "Update";
   private static final String CLEAR    = "Clear";
-  private static final String QUERY    = "Query";
- 
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final String ADDSTOCK = "AddStock";
 
-  private final JLabel      pageTitle  = new JLabel();
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextField  theInputNo = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtClear = new JButton( CLEAR );
-  private final JButton     theBtRStock = new JButton( RESTOCK );
-  private final JButton     theBtQuery = new JButton( QUERY );
-  
-  private StockReadWriter theStock     = null;
-  private BackDoorController cont= null;
+  private static final int H = 500; // bigger height
+  private static final int W = 550; // bigger width
 
-  /**
-   * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-cordinate of position of window on screen 
-   * @param y     y-cordinate of position of window on screen  
-   */
-  public BackDoorView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
-    try                                             // 
-    {      
-      theStock = mf.makeStockReadWriter();          // Database access
-    } catch ( Exception e )
-    {
-      System.out.println("Exception: " + e.getMessage() );
+  private final JLabel pageTitle  = new JLabel("Staff: Manage Stock");
+  private final JLabel theAction  = new JLabel();
+
+  // -- Searching Section
+  private final JLabel searchLabel = new JLabel("Search:");
+  private final JTextField searchField = new JTextField();
+  private final JButton searchBtn = new JButton(SEARCH);
+
+  // -- Table for results
+  private JTable productTable;
+  private DefaultTableModel productTableModel;
+  private JScrollPane productTableSP;
+
+  // -- Edit fields
+  private final JLabel lblProdNo = new JLabel("ProductNo:");
+  private final JTextField txtProdNo = new JTextField();
+  private final JLabel lblDesc  = new JLabel("Description:");
+  private final JTextField txtDesc = new JTextField();
+  private final JLabel lblPrice = new JLabel("Price:");
+  private final JTextField txtPrice = new JTextField();
+  private final JLabel lblStock = new JLabel("Stock:");
+  private final JTextField txtStock = new JTextField();
+
+  private final JButton updateBtn = new JButton(UPDATE);
+  private final JButton addStockBtn = new JButton(ADDSTOCK);
+  private final JButton clearBtn = new JButton(CLEAR);
+
+  private BackDoorController cont;
+
+  public BackDoorView(RootPaneContainer rpc, MiddleFactory mf, int x, int y) throws SQLException {
+    Container cp = rpc.getContentPane();
+    Container rootWindow = (Container) rpc;
+    cp.setLayout(null);
+    rootWindow.setSize(W, H);
+    rootWindow.setLocation(x, y);
+
+    // Title
+    pageTitle.setBounds(180, 0, 250, 30);
+    cp.add(pageTitle);
+
+    // Action label
+    theAction.setBounds(20, 35, 400, 20);
+    cp.add(theAction);
+
+    // Search label + field + button
+    searchLabel.setBounds(20, 60, 60, 25);
+    cp.add(searchLabel);
+    searchField.setBounds(80, 60, 200, 25);
+    cp.add(searchField);
+    searchBtn.setBounds(290, 60, 80, 25);
+    cp.add(searchBtn);
+
+    // Table for search results
+    String[] colNames = { "ProductNo", "Description", "Price", "StockLevel" };
+    productTableModel = new DefaultTableModel(colNames, 0) {
+      @Override
+      public boolean isCellEditable(int row, int col) { return false; }
+    };
+    productTable = new JTable(productTableModel);
+    productTableSP = new JScrollPane(productTable);
+    productTableSP.setBounds(20, 100, 500, 150);
+    cp.add(productTableSP);
+
+    // "Edit product" fields
+    lblProdNo.setBounds(20, 270, 80, 25);
+    cp.add(lblProdNo);
+    txtProdNo.setBounds(100, 270, 80, 25);
+    cp.add(txtProdNo);
+
+    lblDesc.setBounds(200, 270, 80, 25);
+    cp.add(lblDesc);
+    txtDesc.setBounds(280, 270, 150, 25);
+    cp.add(txtDesc);
+
+    lblPrice.setBounds(20, 310, 80, 25);
+    cp.add(lblPrice);
+    txtPrice.setBounds(100, 310, 80, 25);
+    cp.add(txtPrice);
+
+    lblStock.setBounds(200, 310, 80, 25);
+    cp.add(lblStock);
+    txtStock.setBounds(280, 310, 80, 25);
+    cp.add(txtStock);
+
+    // Buttons
+    updateBtn.setBounds(20, 350, 90, 30);
+    cp.add(updateBtn);
+
+    addStockBtn.setBounds(120, 350, 90, 30);
+    cp.add(addStockBtn);
+
+    clearBtn.setBounds(220, 350, 90, 30);
+    cp.add(clearBtn);
+
+    // Listeners
+    searchBtn.addActionListener(e -> {
+        try {
+            cont.doSearch(searchField.getText());
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    });
+    updateBtn.addActionListener(e -> {doUpdate();
+    try {
+      cont.doSearch(searchField.getText());
+    } catch (SQLException ex) {
+      throw new RuntimeException(ex);
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
-    
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+  } );
+    addStockBtn.addActionListener(e -> {doAddStock();
+        try {
+            cont.doSearch(searchField.getText());
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    } );
+    clearBtn.addActionListener(e -> productTableModel.setRowCount(0));
 
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Staff check and manage stock" );                        
-    cp.add( pageTitle );
-    
-    theBtQuery.setBounds( 16, 25+60*0, 80, 40 );    // Buy button 
-    theBtQuery.addActionListener(                   // Call back code
-      e -> cont.doQuery( theInput.getText() ) );
-    cp.add( theBtQuery );                           //  Add to canvas
+    // When row is selected, populate edit fields
+    productTable.getSelectionModel().addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting()) {
+        int row = productTable.getSelectedRow();
+        if (row >= 0) {
+          txtProdNo.setText( productTableModel.getValueAt(row, 0).toString() );
+          txtDesc.setText(   productTableModel.getValueAt(row, 1).toString() );
+          txtPrice.setText(  productTableModel.getValueAt(row, 2).toString() );
+          txtStock.setText(  productTableModel.getValueAt(row, 3).toString() );
+        }
+      }
+    });
 
-    theBtRStock.setBounds( 16, 25+60*1, 80, 40 );   // Check Button
-    theBtRStock.addActionListener(                  // Call back code
-      e -> cont.doRStock( theInput.getText(),
-                          theInputNo.getText() ) );
-    cp.add( theBtRStock );                          //  Add to canvas
-
-    theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Buy button 
-    theBtClear.addActionListener(                   // Call back code
-      e -> cont.doClear() );
-    cp.add( theBtClear );                           //  Add to canvas
-
- 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
-
-    theInput.setBounds( 110, 50, 120, 40 );         // Input Area
-    theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
-    
-    theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
-    theInputNo.setText("0");                        // 0
-    cp.add( theInputNo );                           //  Add to canvas
-
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
-    theInput.requestFocus();                        // Focus is here
+    rootWindow.setVisible(true);
   }
-  
-  public void setController( BackDoorController c )
-  {
-    cont = c;
+
+  public void setController(BackDoorController c) {
+    this.cont = c;
   }
 
   /**
-   * Update the view, called by notifyObservers(theAction) in model,
-   * @param modelC   The observed model
-   * @param arg      Specific args 
+   * Called by the controller/model to refresh the table with new data
+   * or to show messages.
    */
   @Override
-  public void update( Observable modelC, Object arg )  
-  {
-    BackDoorModel model  = (BackDoorModel) modelC;
-    String        message = (String) arg;
-    theAction.setText( message );
-    
-    theOutput.setText( model.getBasket().getDetails() );
-    theInput.requestFocus();
+  public void update(Observable obs, Object arg) {
+    // If the model sends a message string:
+    if (arg instanceof String) {
+      theAction.setText((String) arg);
+    }
+  }
+
+  public void populateTable(List<Object[]> products) {
+    productTableModel.setRowCount(0);
+    for (Object[] row : products) {
+      productTableModel.addRow(row);
+    }
+  }
+
+
+  // "Update" wants to push new data to DB
+  private void doUpdate() {
+    String pNo = txtProdNo.getText().trim();
+    String desc = txtDesc.getText().trim();
+    String priceStr = txtPrice.getText().trim();
+    String stockStr = txtStock.getText().trim();
+
+    try {
+      double newPrice = Double.parseDouble(priceStr);
+      int newStock = Integer.parseInt(stockStr);
+      // Pass to controller
+      cont.doUpdate(pNo, desc, newPrice, newStock);
+    } catch (NumberFormatException ex) {
+      theAction.setText("Invalid number entered for price or stock.");
+    }
+  }
+
+  // "AddStock"  just adds a certain amount to the stock (instead of overwriting).
+  private void doAddStock() {
+    String pNo = txtProdNo.getText().trim();
+    String stockStr = txtStock.getText().trim();
+    try {
+      int addQty = Integer.parseInt(stockStr);
+      cont.doAddStock(pNo, addQty);
+    } catch (NumberFormatException ex) {
+      theAction.setText("Invalid number for stock to add.");
+    }
   }
 
 }

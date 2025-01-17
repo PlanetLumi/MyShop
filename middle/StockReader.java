@@ -3,6 +3,7 @@ package middle;
 import catalogue.Product;
 
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -41,5 +42,5 @@ public interface StockReader
   
   ImageIcon getImage(String pNum) throws StockException;
 
-  List<Object[]> findProduct(String pNum) throws StockException;
+  List<Object[]> findProduct(String pNum) throws StockException, SQLException;
 }

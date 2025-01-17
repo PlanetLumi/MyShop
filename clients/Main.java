@@ -3,12 +3,11 @@ package clients;
 import clients.admin.AdminController;
 import clients.admin.AdminModel;
 import clients.admin.AdminView;
+import clients.backDoor.BackDoorClient;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
-import clients.cashier.CashierController;
-import clients.cashier.CashierModel;
-import clients.cashier.CashierView;
+
 import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
@@ -55,14 +54,13 @@ public class Main
     MiddleFactory mlf = new LocalMiddleFactory();
     startCustomerGUI_MVC( mlf );
   }
-  public void cashierOpen(){
+  public void cashierOpen() throws SQLException {
     MiddleFactory mlf = new LocalMiddleFactory();
-    startCashierGUI_MVC( mlf );
     startPackingGUI_MVC( mlf );
+    startBackDoorGUI_MVC(mlf);
   }
-  public void managerOpen(MiddleFactory mlf){
-    startBackDoorGUI_MVC( mlf );
-    startAdminGUI_MVC( mlf );
+  public void managerOpen(MiddleFactory mlf) throws SQLException {
+    startAdminGUI_MVC(mlf);
   }
   /**
   * start the Customer client, -search product
@@ -81,7 +79,7 @@ public class Main
 
     model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
     if(!getMessage().isEmpty() && !getMessage().equals("[]") && !getMessage().equals("[null]")){
-      popup.createDialog(getMessage());
+      JOptionPane.showMessageDialog(window,getMessage());
       model.clearMessage();
     }
     window.setVisible(true);         // start Screen
@@ -91,30 +89,13 @@ public class Main
    * start the cashier client - customer check stock, buy product
    * @param mlf A factory to create objects to access the stock list
    */
-  public void startCashierGUI_MVC(MiddleFactory mlf )
-  {
-    JFrame  window = new JFrame();
-    window.setTitle( "Cashier Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    CashierModel model      = new CashierModel(mlf);
-    CashierView view        = new CashierView( window, mlf, pos.width, pos.height );
-    CashierController cont  = new CashierController( model, view );
-    view.setController( cont );
-
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
-    model.askForUpdate();            // Initial display
-  }
 
   /**
    * start the Packing client - for warehouse staff to pack the bought order for customer, one order at a time
    * @param mlf A factory to create objects to access the stock list
    */
   
-  public void startPackingGUI_MVC(MiddleFactory mlf)
-  {
+  public void startPackingGUI_MVC(MiddleFactory mlf) throws SQLException {
     PackingClient.displayGUI(mlf);
   }
   
@@ -122,21 +103,8 @@ public class Main
    * start the BackDoor client - store staff to check and update stock
    * @param mlf A factory to create objects to access the stock list
    */
-  public void startBackDoorGUI_MVC(MiddleFactory mlf )
-  {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "BackDoor Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    Dimension pos = PosOnScrn.getPos();
-    
-    BackDoorModel model      = new BackDoorModel(mlf);
-    BackDoorView view        = new BackDoorView( window, mlf, pos.width, pos.height );
-    BackDoorController cont  = new BackDoorController( model, view );
-    view.setController( cont );
-
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+  public void startBackDoorGUI_MVC(MiddleFactory mlf ) throws SQLException {
+    BackDoorClient.displayGUI(mlf);
   }
   public void startLoginGUI_MVC(MiddleFactory mlf)  {
     JFrame  window = new JFrame();

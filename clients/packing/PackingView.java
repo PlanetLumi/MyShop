@@ -1,106 +1,237 @@
 package clients.packing;
 
-import catalogue.Basket;
-import middle.MiddleFactory;
-import middle.OrderProcessing;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Implements the Packing view.
-
+ * A single-window Packing View that:
+ * 1) Lists orders from OrderHistory (unpacked).
+ * 2) Lets user select & confirm an order.
+ * 3) Switches to a "packing step" screen in the same window via CardLayout.
  */
-
-public class PackingView implements Observer
+public class PackingView extends JFrame implements Observer
 {
-  private static final String PACKED = "Packed";
+  // ---------------------------------------------------------------------
+  // 1) Some constants to identify the cards
+  // ---------------------------------------------------------------------
+  private static final String CARD_ORDER_SELECTION = "ORDER_SELECTION";
+  private static final String CARD_PACKING_STEP    = "PACKING_STEP";
 
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private PackingController controller;
 
-  private final JLabel      pageTitle  = new JLabel();
-  private final JLabel      theAction  = new JLabel();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtPack= new JButton( PACKED );
- 
-  private OrderProcessing theOrder     = null;
-  
-  private PackingController cont= null;
+  // ---------------------------------------------------------------------
+  // Fields for the "Order Selection" portion
+  // ---------------------------------------------------------------------
+  private JTable orderTable;
+  private DefaultTableModel orderTableModel;
+  private JButton confirmBtn;
 
-  /**
-   * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-cordinate of position of window on screen 
-   * @param y     y-cordinate of position of window on screen  
-   */
-  public PackingView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
-    try                                           // 
-    {      
-      theOrder = mf.makeOrderProcessing();        // Process order
-    } catch ( Exception e )
-    {
-      System.out.println("Exception: " + e.getMessage() );
+  // ---------------------------------------------------------------------
+  // Fields for the "Packing Step" portion
+  // ---------------------------------------------------------------------
+  private Long   selectedOrderId;
+  private JTable itemsTable;
+  private DefaultTableModel itemsModel;
+  private JButton packBtn;
+  private JButton setDeliveryBtn;
+
+  // This JPanel holds both “screens” in a CardLayout
+  private JPanel cards;
+
+  // ---------------------------------------------------------------------
+  // Constructor
+  // ---------------------------------------------------------------------
+  public PackingView(PackingController ctrl) throws SQLException {
+    super("Packing Client MVC");
+    this.controller = ctrl;
+
+    // (A) Create the CardLayout container
+    cards = new JPanel(new CardLayout());
+
+    // (B) Build each screen as a separate JPanel
+    JPanel orderSelectionPanel = buildOrderSelectionPanel();
+    JPanel packingStepPanel    = buildPackingStepPanel();
+
+    // (C) Add them to 'cards' with distinct names
+    cards.add(orderSelectionPanel, CARD_ORDER_SELECTION);
+    cards.add(packingStepPanel,    CARD_PACKING_STEP);
+
+    // (D) Put 'cards' in the frame’s content pane
+    getContentPane().setLayout(new BorderLayout());
+    getContentPane().add(cards, BorderLayout.CENTER);
+
+    // Basic window setup
+    setSize(600, 400);
+    setLocation(300, 200);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    // Show the "Order Selection" screen by default
+    showCard(CARD_ORDER_SELECTION);
+
+    setVisible(true);
+  }
+
+  // If you'd like to set the controller after constructing
+  public void setController(PackingController c) {
+    this.controller = c;
+  }
+
+  // ---------------------------------------------------------------------
+  // 2) A helper method to switch which card is visible
+  // ---------------------------------------------------------------------
+  private void showCard(String cardName) {
+    CardLayout cl = (CardLayout) (cards.getLayout());
+    cl.show(cards, cardName);
+  }
+
+  // ---------------------------------------------------------------------
+  // 3) Build the "Order Selection" panel
+  // ---------------------------------------------------------------------
+  private JPanel buildOrderSelectionPanel() throws SQLException {
+    // Using absolute layout as in your original code
+    JPanel panel = new JPanel(null);
+    panel.setSize(600, 400);
+
+    JLabel title = new JLabel("Unpacked Orders:");
+    title.setBounds(20, 10, 200, 30);
+    panel.add(title);
+
+    // Table + Model
+    String[] cols = {"OrderID", "AccountID", "ProductNo", "Date"};
+    orderTableModel = new DefaultTableModel(cols, 0) {
+      @Override
+      public boolean isCellEditable(int row, int col) { return false; }
+    };
+    orderTable = new JTable(orderTableModel);
+    JScrollPane sp = new JScrollPane(orderTable);
+    sp.setBounds(20, 50, 550, 250);
+    panel.add(sp);
+
+    // Confirm Button
+    confirmBtn = new JButton("Confirm");
+    confirmBtn.setBounds(20, 320, 100, 30);
+    confirmBtn.addActionListener(e -> doConfirmOrder());
+    panel.add(confirmBtn);
+
+    // Load data from DB
+    loadUnpackedOrders();
+
+    return panel;
+  }
+
+  // Helper to load the table data
+  private void loadUnpackedOrders() throws SQLException {
+    List<Map<String, Object>> unpicked = controller.fetchUnpackedOrders();
+
+    orderTableModel.setRowCount(0);
+    for (Map<String, Object> row : unpicked) {
+      orderTableModel.addRow(new Object[] {
+              row.get("orderHistoryId"),
+              row.get("account_id"),
+              row.get("productNo"),
+              row.get("purchase_date")
+      });
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
-    
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
-    
-    pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Packing Bought Order" );                        
-    cp.add( pageTitle );
-
-    theBtPack.setBounds( 16, 25+60*0, 80, 40 );   // Check Button
-    theBtPack.addActionListener(                   // Call back code
-      e -> cont.doPacked() );
-    cp.add( theBtPack );                          //  Add to canvas
-
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
-
-    theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
-  }
-  
-  public void setController( PackingController c )
-  {
-    cont = c;
   }
 
-  /**
-   * Update the view
-   * @param modelC   The observed model
-   * @param arg      Specific args 
-   */
-  @Override
-  public void update( Observable modelC, Object arg )
-  {
-	  PackingModel model  = (PackingModel) modelC;
-    String        message = (String) arg;
-    theAction.setText( message );
-    
-    Basket basket =  model.getBasket();
-    if ( basket != null )
-    {
-      theOutput.setText( basket.getDetails() );
-    } else {
-      theOutput.setText("");
+  // When user clicks "Confirm" on an order
+  private void doConfirmOrder() {
+    int sel = orderTable.getSelectedRow();
+    if (sel < 0) {
+      JOptionPane.showMessageDialog(this, "Please select an order first!");
+      return;
     }
+    // Extract the chosen Order ID (assuming it's a Long)
+    selectedOrderId = (Long) orderTableModel.getValueAt(sel, 0);
+
+    // The controller can do any logic needed
+    controller.confirmOrderForPacking(selectedOrderId);
+
+    // Now switch to the packing step card
+    // Also load the item details for that order
+    loadOrderDetails(selectedOrderId);
+    showCard(CARD_PACKING_STEP);
   }
 
+  // ---------------------------------------------------------------------
+  // 4) Build the "Packing Step" panel
+  // ---------------------------------------------------------------------
+  private JPanel buildPackingStepPanel() {
+    JPanel panel = new JPanel(null);
+    panel.setSize(600, 400);
+
+    // Title
+    JLabel lbl = new JLabel("Packing Step");
+    lbl.setBounds(20, 10, 400, 30);
+    panel.add(lbl);
+
+    // Table for items
+    String[] cols = {"ProductNo", "Quantity", "Status"};
+    itemsModel = new DefaultTableModel(cols, 0) {
+      @Override
+      public boolean isCellEditable(int row, int col) { return false; }
+    };
+    itemsTable = new JTable(itemsModel);
+    JScrollPane sp = new JScrollPane(itemsTable);
+    sp.setBounds(20, 50, 550, 200);
+    panel.add(sp);
+
+    // Pack button
+    packBtn = new JButton("Pack Items");
+    packBtn.setBounds(20, 300, 120, 30);
+    packBtn.addActionListener(e -> doPackItems());
+    panel.add(packBtn);
+
+    // SetDelivery button
+    setDeliveryBtn = new JButton("Set for Delivery");
+    setDeliveryBtn.setBounds(160, 300, 150, 30);
+    setDeliveryBtn.addActionListener(e -> {
+      try {
+        controller.doSetForDelivery(selectedOrderId);
+      } catch (SQLException ex) {
+        throw new RuntimeException(ex);
+      }
+    });
+    panel.add(setDeliveryBtn);
+
+    return panel;
+  }
+
+  // Called right before we switch to the CARD_PACKING_STEP
+  private void loadOrderDetails(Long orderHistId) {
+    // Clear old data
+    itemsModel.setRowCount(0);
+
+    // Example mock data: in real code, you’d query DB for lines in this order
+    // For each line, add e.g. [productNo, quantity, "Unpacked"]
+    // Here is just a single example row:
+    itemsModel.addRow(new Object[] {"0002", "1", "Unpacked"} );
+  }
+
+  // Called when user clicks "Pack Items"
+  private void doPackItems() {
+    // Update DB or model that items are "packed"
+    for (int r = 0; r < itemsModel.getRowCount(); r++) {
+      itemsModel.setValueAt("Packed", r, 2);
+    }
+    JOptionPane.showMessageDialog(this, "Items packed!");
+  }
+
+  // If you ever want to go back to the main list
+  public void goBackToOrderSelection() {
+    showCard(CARD_ORDER_SELECTION);
+  }
+
+  // ---------------------------------------------------------------------
+  // 5) Observer implementation to respond to model changes
+  // ---------------------------------------------------------------------
+  public void update(Observable o, Object arg) {
+    System.out.println("Model changed: " + arg);
+  }
 }
-

@@ -18,6 +18,12 @@ public class LoginController {
     private LoginModel model;
     private LoginView view;
     private Main main;
+    private Window rpc;  // Store a reference to the JFrame
+
+    public void getRpc() {
+        this.rpc = view.getWindow();
+    }
+
     MiddleFactory mlf = new LocalMiddleFactory();
     public LoginController(LoginModel model, LoginView view) {
         this.model = model;
@@ -34,13 +40,40 @@ public class LoginController {
     public void openRegisterPanel(int x, int y) {
         model.openRegisterPanel(x, y);
     }
-    public void adminLoginNext(){
+    public void adminLoginNext() throws SQLException {
         main.managerOpen(mlf);
     }
-    public void cashierLoginNext(){
+    public void cashierLoginNext() throws SQLException {
         main.cashierOpen();
     }
     public void createAccount(String username, String password, String verify, String role) throws SQLException, NoSuchAlgorithmException {
         model.createAccount(username, password, verify, role);
     }
+    public void logout() {
+        try {
+            model.logout(); // clear session data
+            closeAllOtherWindows();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void closeAllOtherWindows() {
+        // “keepOpen” is the reference to the main login window/view
+
+        Window loginWindow = SwingUtilities.getWindowAncestor(this.rpc);
+
+        for (Window w : Window.getWindows()) {
+            // If it's not the login window, dispose it
+            if (w != null && w.isShowing() && w != loginWindow) {
+                w.dispose();
+            }
+        }
+
+        if(loginWindow != null) {
+            loginWindow.setVisible(true);
+            loginWindow.toFront();
+        }
+    }
 }
+
+

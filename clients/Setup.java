@@ -1,6 +1,8 @@
 package clients;
 
+import clients.accounts.AccountCreation;
 import clients.admin.AdminController;
+import clients.admin.AdminModel;
 import dbAccess.DBAccess;
 import dbAccess.DBAccessFactory;
 
@@ -115,7 +117,7 @@ class Setup
 
           // 8) Create OrderHistory
           "create table OrderHistory (" +
-                  "orderHistoryId BigInt Generated Always as Identity Primary Key," +
+                  "orderHistoryId BigInt," +
                   "account_id BigInt," +
                   "productNo Char(4)," +
                   "purchase_date DATE," +
@@ -212,9 +214,10 @@ class Setup
     // 5) Now call Admin injection logic
     //-------------------------------------------------------------------------
     try {
-      AdminController.injectAdmin();
-      AdminController.injectEmployees();
-      AdminController.injectUsers();
+
+      injectAdmin();
+      injectEmployees();
+      injectUsers();
     } catch (Exception e) {
       throw new RuntimeException("Error in AdminController injection: ", e);
     }
@@ -326,4 +329,38 @@ class Setup
       System.err.println("Error dropping constraint " + constraintName + ": " + e.getMessage());
     }
   }
+  /**
+   * Injects multiple employees into the database,  for testing.
+   *
+   * @throws SQLException if database operations fail
+   */
+  public static void injectEmployees() throws SQLException {
+    AccountCreation creator = new AccountCreation();
+    for (int i = 0; i < 25; i++) {
+      String name = "employee" + i;
+      String password = "password" + i;
+      creator.createAccount(name, password, "cashier");
+    }
+  }
+
+  public static void injectAdmin() throws NoSuchAlgorithmException, SQLException {
+    AccountCreation creator = new AccountCreation();
+    creator.createAccount("admin1", "RainyDayz49!", "admin");
+  }
+
+
+  /**
+   * Injects multiple users into the database, for testing.
+   *
+   * @throws SQLException if database operations fail
+   */
+  public static void injectUsers() throws SQLException {
+    AccountCreation creator = new AccountCreation();
+    for (int i = 0; i < 25; i++) {
+      String name = "user" + i;
+      String password = "password" + i;
+      creator.createAccount(name, password, "user");
+    }
+  }
+
 }

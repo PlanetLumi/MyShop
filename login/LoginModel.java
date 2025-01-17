@@ -90,5 +90,14 @@ public class LoginModel extends Observable {
         addObserver(view);
         frame.setVisible(true);
     }
+    public void logout() throws SQLException {
+        SessionManager sm = SessionManager.getInstance();
+        Session currentSession = sm.getCurrentSession();
+        if(currentSession != null) {
+            sm.logout(currentSession.getSessionId());
+        }
+        setChanged();
+        notifyObservers();
+    }
 }
 

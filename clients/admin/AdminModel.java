@@ -1,94 +1,161 @@
 package clients.admin;
 
-import java.awt.*;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-
 import clients.PosOnScrn;
 import clients.accounts.AccountCreation;
-import login.LoginController;
-import login.RegisterView;
 import middle.MiddleFactory;
-import security.Encryption;
 
 import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Observable;
 
-import static java.awt.SystemColor.window;
-
-
+/**
+ * Model class for the Admin module. Contains the business logic
+ * for managing admins, employees, and users.
+ */
 public class AdminModel extends Observable {
-    MiddleFactory mlf;
-    AdminController cont;
-    public AdminModel(MiddleFactory mf) {
-        this.mlf = mf;
+
+    private final MiddleFactory middleFactory;
+    private AdminController controller;
+
+    /**
+     * Constructor that accepts a MiddleFactory, which is typically
+     * used to obtain references to database or other middle-tier
+     * components.
+     *
+     * @param middleFactory MiddleFactory object for connectivity
+     */
+    public AdminModel(MiddleFactory middleFactory) {
+        this.middleFactory = middleFactory;
     }
-    public static void injectAdmin() throws NoSuchAlgorithmException, SQLException {
-        AccountCreation create = new AccountCreation();
-        create.createAccount("admin1", "RainyDayz49!","admin");
+
+    /**
+     * Injects a default admin into the database for testing or initialization.
+     *
+     * @throws NoSuchAlgorithmException if the encryption algorithm is invalid.
+     * @throws SQLException            if database operations fail.
+     */
+
+    /**
+     * Sets the controller for this model.
+     *
+     * @param controller AdminController instance
+     */
+    public void setController(AdminController controller) {
+        this.controller = controller;
     }
-    public void setController(AdminController cont) {
-        this.cont = cont;
-    }
+
+    /**
+     * Opens a panel to manage employees, including the functionality
+     * to promote them to managers.
+     *
+     * @param x X-coordinate on the screen
+     * @param y Y-coordinate on the screen
+     */
     public void openManagerEmployeePanel(int x, int y) {
-        JFrame frame = new JFrame();
-        frame.setTitle("Open Manager Employee Panel");
+        JFrame frame = new JFrame("Open Manager Employee Panel");
         Dimension pos = PosOnScrn.getPos();
+
+        // Configure the JFrame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        AdminView view = new AdminView(frame, mlf, pos.width, pos.height);
-        view.AdminCreatePanel(frame, mlf, pos.width, pos.height);
-        view.setController(cont);
+        frame.setSize(new Dimension(pos.width, pos.height));
+        frame.setLocation(x, y);
+
+        // Create and set up the view
+        AdminView view = new AdminView(frame, middleFactory, pos.width, pos.height);
+        view.AdminCreatePanel(frame, middleFactory, pos.width, pos.height);
+        view.setController(controller);
+
         addObserver(view);
+
         frame.setVisible(true);
     }
-    public static void injectEmployees() throws SQLException {
-        AccountCreation create = new AccountCreation();
-        for(int x = 0; x < 25; x++) {
-            String name = "employee" + x;
-            String password = "password" + x;
-            create.createAccount(name, password, "cashier");
-        }
-    }
-    public static void injectUsers() throws SQLException {
-        AccountCreation create = new AccountCreation();
-        for(int x = 0; x < 25; x++) {
-            String name = "user" + x;
-            String password = "password" + x;
-            create.createAccount(name, password, "user");
-        }
-    }
+
+    /**
+     * Injects multiple employee accounts for testing or seeding the database.
+     *
+     * @throws SQLException if database operations fail
+     */
+
+
+    /**
+     * Injects multiple user accounts for testing or seeding the database.
+     *
+     * @throws SQLException if database operations fail
+     */
+
+
+    /**
+     * Promotes a given employee to a manager (admin role).
+     *
+     * @param employee The employee username to promote
+     * @param frame    The GUI frame for showing messages
+     */
     public void promoteToManager(String employee, JFrame frame) {
         if (employee != null) {
             try {
-                AccountCreation create = new AccountCreation();
-                create.newData("Accounts","role", new String[]{"admin"}, create.getID(employee));
-                JOptionPane.showMessageDialog(frame, "Employee " + employee + " has been promoted");
+                AccountCreation creator = new AccountCreation();
+                creator.newData("Accounts", "role", new String[]{"admin"}, creator.getID(employee));
+
+                JOptionPane.showMessageDialog(frame, "Employee " + employee + " has been promoted to manager.");
             } catch (Exception e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(frame,
+                        "Error promoting employee: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
-        } else{
-            JOptionPane.showMessageDialog(frame, "Please select an employee");
+        } else {
+            JOptionPane.showMessageDialog(frame, "Please select an employee.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }
-    }
-    public void lockUser(String username, boolean lock){
+
+    /**
+     * Locks or unlocks a user's account based on the boolean flag.
+     *
+     * @param username The username of the account to lock/unlock
+     * @param lock     True to lock; false to unlock
+     */
+    public void lockUser(String username, boolean lock) {
         AccountCreation account = new AccountCreation();
         account.lockUser(account.getID(username), lock);
     }
 
+    /**
+     * Opens the security manager panel, which handles user locking/unlocking
+     * and messaging.
+     *
+     * @param x X-coordinate on the screen
+     * @param y Y-coordinate on the screen
+     */
     public void openSecurityManagerPanel(int x, int y) {
-        JFrame frame = new JFrame();
-        frame.setTitle("Manager Security Panel");
+        JFrame frame = new JFrame("Manager Security Panel");
         Dimension pos = PosOnScrn.getPos();
+
+        // Configure the JFrame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        AdminView view = new AdminView(frame, mlf, pos.width, pos.height);
-        view.AdminSecurityPanel(frame, mlf, pos.width, pos.height);
-        view.setController(cont);
+        frame.setSize(new Dimension(pos.width, pos.height));
+        frame.setLocation(x, y);
+
+        // Create and set up the view
+        AdminView view = new AdminView(frame, middleFactory, pos.width, pos.height);
+        view.AdminSecurityPanel(frame, middleFactory, pos.width, pos.height);
+        view.setController(controller);
+
         addObserver(view);
+
         frame.setVisible(true);
     }
+
+    /**
+     * Sends a text message to a particular user.
+     *
+     * @param username The user’s username
+     * @param message  The message to send
+     * @throws SQLException if database operations fail
+     */
     public void sendUserMessage(String username, String message) throws SQLException {
         AccountCreation account = new AccountCreation();
-        account.newData("UserDetails", "message",new String[] {message}, account.getID(username));
+        account.newData("UserDetails", "message", new String[]{message}, account.getID(username));
     }
-
 }
