@@ -35,9 +35,6 @@ public class PackingView extends JFrame implements Observer
   private DefaultTableModel orderTableModel;
   private JButton confirmBtn;
 
-  // ---------------------------------------------------------------------
-  // Fields for the "Packing Step" portion
-  // ---------------------------------------------------------------------
   private Long   selectedOrderId;
   private JTable itemsTable;
   private DefaultTableModel itemsModel;
@@ -47,7 +44,6 @@ public class PackingView extends JFrame implements Observer
   // This JPanel holds both “screens” in a CardLayout
   private JPanel cards;
 
-  // ---------------------------------------------------------------------
   // Constructor
   // ---------------------------------------------------------------------
   public PackingView(PackingController ctrl) throws SQLException {
