@@ -35,8 +35,8 @@ public class RegisterView implements Observer {
     private static final JPasswordField passwordInputRe = new JPasswordField();
     private final JTextArea theOutput = new JTextArea();
     private final JScrollPane theSP = new JScrollPane();
-    private static final JButton theBtCheck = new JButton(LoginView.Name.CHECK);
-    private static final JButton theBtClear = new JButton(LoginView.Name.CLEAR);
+    private static final JButton theBtCheck = new JButton(Name.CHECK);
+    private static final JButton theBtClear = new JButton(Name.CLEAR);
     private static final JButton theBtOpenPanel = new JButton();
 
     private Picture thePicture = new Picture(80, 80);

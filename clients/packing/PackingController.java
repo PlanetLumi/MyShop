@@ -48,7 +48,6 @@ public class PackingController
    * Example: show the "Pack" screen for that order
    */
   private void openPackingStep(Long orderHistId) {
-    // Possibly we create a new specialized “PackingStepView”
 
   }
 

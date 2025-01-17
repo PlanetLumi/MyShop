@@ -77,22 +77,17 @@ public class PackingView extends JFrame implements Observer
     setVisible(true);
   }
 
-  // If you'd like to set the controller after constructing
   public void setController(PackingController c) {
     this.controller = c;
   }
 
-  // ---------------------------------------------------------------------
+
   // 2) A helper method to switch which card is visible
-  // ---------------------------------------------------------------------
   private void showCard(String cardName) {
     CardLayout cl = (CardLayout) (cards.getLayout());
     cl.show(cards, cardName);
   }
 
-  // ---------------------------------------------------------------------
-  // 3) Build the "Order Selection" panel
-  // ---------------------------------------------------------------------
   private JPanel buildOrderSelectionPanel() throws SQLException {
     // Using absolute layout as in your original code
     JPanel panel = new JPanel(null);
@@ -147,21 +142,16 @@ public class PackingView extends JFrame implements Observer
       JOptionPane.showMessageDialog(this, "Please select an order first!");
       return;
     }
-    // Extract the chosen Order ID (assuming it's a Long)
     selectedOrderId = (Long) orderTableModel.getValueAt(sel, 0);
 
     // The controller can do any logic needed
     controller.confirmOrderForPacking(selectedOrderId);
 
-    // Now switch to the packing step card
     // Also load the item details for that order
     loadOrderDetails(selectedOrderId);
     showCard(CARD_PACKING_STEP);
   }
 
-  // ---------------------------------------------------------------------
-  // 4) Build the "Packing Step" panel
-  // ---------------------------------------------------------------------
   private JPanel buildPackingStepPanel() {
     JPanel panel = new JPanel(null);
     panel.setSize(600, 400);
@@ -203,14 +193,11 @@ public class PackingView extends JFrame implements Observer
     return panel;
   }
 
-  // Called right before we switch to the CARD_PACKING_STEP
   private void loadOrderDetails(Long orderHistId) {
     // Clear old data
     itemsModel.setRowCount(0);
 
-    // Example mock data: in real code, you’d query DB for lines in this order
     // For each line, add e.g. [productNo, quantity, "Unpacked"]
-    // Here is just a single example row:
     itemsModel.addRow(new Object[] {"0002", "1", "Unpacked"} );
   }
 
@@ -223,14 +210,13 @@ public class PackingView extends JFrame implements Observer
     JOptionPane.showMessageDialog(this, "Items packed!");
   }
 
-  // If you ever want to go back to the main list
+  // If want to go back to the main list
   public void goBackToOrderSelection() {
     showCard(CARD_ORDER_SELECTION);
   }
 
-  // ---------------------------------------------------------------------
+  //
   // 5) Observer implementation to respond to model changes
-  // ---------------------------------------------------------------------
   public void update(Observable o, Object arg) {
     System.out.println("Model changed: " + arg);
   }
